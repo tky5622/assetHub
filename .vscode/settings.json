@@ -1,0 +1,115 @@
+{
+  "window.zoomLevel": -0.0910347954528925,
+  "explorer.sortOrder": "type",
+  // Editor
+  "editor.autoIndent": "full",
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": true,
+  "editor.cursorStyle": "line",
+  // "editor.fontSize": 16,
+  "editor.fontFamily": "FiraCode-Retina, SourceCodePro-Regular, Menlo",
+  "editor.fontLigatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": false,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true,
+    "source.organizeImports": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // "editor.letterSpacing": 0.5,
+  // "editor.lineHeight": 25,
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "none",
+  "editor.tabCompletion": "on",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "off",
+  // Terminal
+  "terminal.integrated.fontFamily": "MesloLGS NF, 'SourceCodePro+Powerline+Awesome Regular', Source Code Pro for Powerline, monospace, Meslo LG M for Powerline",
+  // "terminal.integrated.fontSize": 16,
+  "terminal.integrated.rendererType": "experimentalWebgl",
+  // Workbench
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 8,
+  "workbench.editor.highlightModifiedTabs": true,
+  // File settings
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/*.js": {
+      "when": "$(basename).ts"
+    },
+    "**/*.js.map": {
+      "when": "$(basename)"
+    }
+  },
+  // "files.hotExit": "onExit",
+  "files.defaultLanguage": "typescript",
+  "files.trimTrailingWhitespace": true,
+  "files.associations": {
+    "renovate.json5": "jsonc",
+    "tslint.json": "jsonc",
+    "nx.json": "jsonc"
+  },
+  // Prettier settings
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 100,
+  // Proto
+  "clang-format.style": "google",
+  "protoc": {
+    "options": [
+      "--proto_path=${workspaceRoot}/proto",
+      "--proto_path=${workspaceRoot}/third_party/proto",
+      "--proto_path=${env.GOPATH}/src"
+    ]
+  },
+  // CSSのチェック機能をオフ
+  "css.validate": false,
+
+  // JSXでもCSSクラスを補完できるように
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  // emmetでTailwind CSSのクラスを使えるように
+  "tailwindCSS.emmetCompletions": true,
+
+  // Tailwind CSSのDirectivesをLintする
+  "tailwindCSS.validate": true,
+
+  // REST client
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "client-id": "ngxapi",
+      "username": "sumo3",
+      "password": "demo",
+      "api-gateway-url": "http://localhost:8080"
+    },
+    "local": {
+      "oidc-issuer-url": "https://keycloak.kashmora.com/auth/realms/ngx",
+      "api-url": "http://localhost:3000"
+    },
+    "local-admin": {
+      "oidc-issuer-url": "https://keycloak.kashmora.com/auth/realms/ngx",
+      "api-url": "http://localhost:3000",
+      "username": "ngxadmin",
+      "password": "ngxadmin"
+    },
+    "production": {
+      "oidc-issuer-url": "https://keycloak.kashmora.com/auth/realms/ngx",
+      "api-url": "https://api.kashmora.com"
+    }
+  },
+  "audioCues.lineHasBreakpoint": "off",
+  "audioCues.lineHasFoldedArea": "off",
+  "audioCues.lineHasInlineSuggestion": "off",
+  "audioCues.noInlayHints": "off",
+  "audioCues.onDebugBreak": "off",
+  "audioCues.taskEnded": "off",
+  "audioCues.terminalQuickFix": "off",
+  "audioCues.lineHasError": "off"
+}

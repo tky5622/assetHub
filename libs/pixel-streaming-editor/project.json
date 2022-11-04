@@ -1,0 +1,44 @@
+{
+  "name": "pixel-streaming-editor",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/pixel-streaming-editor/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/pixel-streaming-editor",
+        "tsConfig": "libs/pixel-streaming-editor/tsconfig.lib.json",
+        "project": "libs/pixel-streaming-editor/package.json",
+        "entryFile": "libs/pixel-streaming-editor/src/index.ts",
+        "external": ["@emotion/react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/pixel-streaming-editor/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/pixel-streaming-editor/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/pixel-streaming-editor"],
+      "options": {
+        "jestConfig": "libs/pixel-streaming-editor/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
