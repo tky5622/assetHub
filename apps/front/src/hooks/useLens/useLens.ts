@@ -14,9 +14,9 @@ export function trimString(string: string, length: number) {
 }
 
 export function parseJwt (token: string) {
-  var base64Url = token.split('.')[1];
-  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
 
@@ -30,15 +30,22 @@ export const useRefreshAuthToken = () => {
 
   const refreshTokenHandler = React.useCallback(async () => {
       const CurrentRefreshToken = localStorage.getItem(LENS_REFRESH_TOKEN)
+      const CurrentAccessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
+
       console.log(CurrentRefreshToken, 'CurrentRefreshToken')
       if (!CurrentRefreshToken) return
   try {
     const authData = await refMutation({
       variables: {
-       request: {
-        refreshToken: CurrentRefreshToken
-       }
-    },
+        request: {
+          refreshToken: CurrentRefreshToken,
+        },
+      },
+      context: {
+        headers: {
+          Authorization: `Bearer ${CurrentAccessToken}`,
+        },
+      },
     })
     console.log(authData, 'authData')
 
@@ -58,7 +65,7 @@ export const useRefreshAuthToken = () => {
   } catch (err) {
     console.log('error:', err)
   }
-  }, [])
+  }, [refMutation])
 
   return { refreshTokenHandler }
 

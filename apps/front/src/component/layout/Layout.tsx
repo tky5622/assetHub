@@ -1,5 +1,6 @@
 // app/page.tsx
 /** @jsxImportSource @emotion/react */
+'use client'
 
 import { AppShell } from '@mantine/core'
 import React from 'react'
