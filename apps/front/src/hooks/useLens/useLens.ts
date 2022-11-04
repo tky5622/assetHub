@@ -17,7 +17,7 @@ import { useLocalStorage } from 'usehooks-ts'
 import { refreshAuth } from '../../libs/authentication/refresh'
 import { createProfile } from '../../libs/create-profile'
 import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
-
+import { LensAuthLoadingState } from '../../recoil/atoms/LensAuthLoading'
 
 export const useGetProfile = (userProfileId: string) => {
   const userProfile = useQuery(profileQueryById, {
@@ -37,6 +37,7 @@ export const useGetProfile = (userProfileId: string) => {
 
 export const useLensAuth = (address: string) => {
   const [userProfileId, setUserProfileId] = useRecoilState(LensProfileIdState)
+  const [authLoading, setAuthLoading] = useRecoilState(LensAuthLoadingState)
 
   // challenge
   const { data, loading, error } = useQuery(AuthChallengeQuery, {
@@ -62,6 +63,7 @@ export const useLensAuth = (address: string) => {
   const onClickCreateProfile = React.useCallback(async () => {
     // sign message with challenge text
     const sign = await signer.data?.signMessage(data?.challenge.text)
+    setAuthLoading(true)
     console.log(sign, 'test signt wait ')
     // auth with challenge message
     const authResult = await authFunc({
@@ -93,16 +95,10 @@ export const useLensAuth = (address: string) => {
 
     // set State to recoil
     setUserProfileId(profileId ? profileId : '')
+    setAuthLoading(false)
+
     console.log(profileId, 'create profile, //check what stored')
-  }, [
-    SetAccessToken,
-    SetRefreshToken,
-    address,
-    authFunc,
-    data?.challenge.text,
-    setUserProfileId,
-    signer.data,
-  ])
+  }, [SetAccessToken, SetRefreshToken, address, authFunc, data?.challenge.text, setAuthLoading, setUserProfileId, signer.data])
 
   return { onClickCreateProfile, userProfileId }
 }
