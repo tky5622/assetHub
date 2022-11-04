@@ -1,3 +1,4 @@
+'use client'
 import { Button, Modal } from '@mantine/core'
 import { useRecoilState } from 'recoil'
 import { LensSignupModalState } from '../../../recoil/atoms/LensSignupModal'
