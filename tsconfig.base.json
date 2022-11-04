@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@hoge/contract": ["apps/contract/typechain/index.ts"],
+      "@standiart/lens-api": ["libs/lens-api/src/index.ts"],
       "@standiart/my-lib": ["libs/my-lib/src/index.ts"],
       "@standiart/pixel-streaming-editor": [
         "libs/pixel-streaming-editor/src/index.ts"
