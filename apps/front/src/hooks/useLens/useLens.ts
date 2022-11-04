@@ -7,6 +7,108 @@ import { FOLLOWER_QUERY } from '../../graphql/lens.followers.query'
 import { refreshTokenMutaiton } from '../../graphql/mutations/lens.auth.refresh.mutation'
 import { PUBLICATION_QUERY } from '../../graphql/queries/lens.publicaition.query'
 
+import { useSigner } from '@web3modal/react'
+import { AuthMutation } from '../../graphql/mutations/lens.auth.mutation'
+import { AuthChallengeQuery } from '../../graphql/queries/lens.auth.query'
+import { profileQueryById } from '../../graphql/queries/lens.profile-by-id.query'
+// import { CreateProfile } from '@use-lens/react-apollo'
+import { useRecoilState } from 'recoil'
+import { useLocalStorage } from 'usehooks-ts'
+import { refreshAuth } from '../../libs/authentication/refresh'
+import { createProfile } from '../../libs/create-profile'
+import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
+
+
+export const useGetProfile = (userProfileId: string) => {
+  const userProfile = useQuery(profileQueryById, {
+    variables: {
+      profileId: userProfileId,
+    },
+  })
+  console.log(userProfileId, 'usetProfileId')
+
+  console.log(userProfile, 'defaultprofile')
+  const userProfileData = userProfile?.data
+  return userProfileData
+}
+
+
+
+
+export const useLensAuth = (address: string) => {
+  const [userProfileId, setUserProfileId] = useRecoilState(LensProfileIdState)
+
+  // challenge
+  const { data, loading, error } = useQuery(AuthChallengeQuery, {
+    variables: {
+      request: {
+        address: address,
+      },
+    },
+  })
+
+  const signer = useSigner()
+  console.log(data, 'data')
+  console.log(data?.challenge.text)
+  // const sign = useSignMessage(data?.challenge.text)
+
+  const [authFunc] = useMutation(AuthMutation)
+  const [accessToken, SetAccessToken] = useLocalStorage('LensAccessToken', '')
+  const [refreshToken, SetRefreshToken] = useLocalStorage(
+    'LensRefreshToken',
+    ''
+  )
+
+  const onClickCreateProfile = React.useCallback(async () => {
+    // sign message with challenge text
+    const sign = await signer.data?.signMessage(data?.challenge.text)
+    console.log(sign, 'test signt wait ')
+    // auth with challenge message
+    const authResult = await authFunc({
+      variables: {
+        request: {
+          address: address,
+          signature: sign,
+        },
+      },
+    })
+
+    // set Tokens from Lens API
+    console.log(authResult, 'authResult')
+    SetAccessToken(authResult.data.authenticate.accessToken)
+    SetRefreshToken(authResult.data.authenticate.refreshToken)
+
+    // refresh Token before creating profile
+    console.log('try refresh')
+    const refreshResult = await refreshAuth({
+      refreshToken: authResult.data.authenticate.refreshToken,
+    })
+
+    // create profile
+    console.log(console.log('refresh: result', refreshResult))
+    const profileId = await createProfile(
+      address,
+      authResult.data.authenticate.accessToken
+    )
+
+    // set State to recoil
+    setUserProfileId(profileId ? profileId : '')
+    console.log(profileId, 'create profile, //check what stored')
+  }, [
+    SetAccessToken,
+    SetRefreshToken,
+    address,
+    authFunc,
+    data?.challenge.text,
+    setUserProfileId,
+    signer.data,
+  ])
+
+  return { onClickCreateProfile, userProfileId }
+}
+
+
+
 
 export function trimString(string: string, length: number) {
   if (!string) return null

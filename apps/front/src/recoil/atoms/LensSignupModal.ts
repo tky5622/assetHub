@@ -2,6 +2,6 @@
 import { atom } from "recoil";
 
 export const LensSignupModalState = atom({
-  key: "create_notepad",
+  key: "lens-modal-state",
   default: false,
 });

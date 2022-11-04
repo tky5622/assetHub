@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { Avatar, Group, Text, UnstyledButton } from '@mantine/core';
 import { forwardRef } from 'react';
 
