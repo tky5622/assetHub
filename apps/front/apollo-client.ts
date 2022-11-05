@@ -3,25 +3,25 @@
 import {
   ApolloClient,
   ApolloLink,
-  DefaultOptions,
+  // DefaultOptions,
   from,
   HttpLink,
-  InMemoryCache,
+  InMemoryCache
 } from '@apollo/client/core'
 import { onError } from '@apollo/client/link/error'
 import fetch from 'cross-fetch'
 import { LENS_API } from './src/constant/lensTokens'
 
-const defaultOptions: DefaultOptions = {
-  watchQuery: {
-    fetchPolicy: 'no-cache',
-    errorPolicy: 'ignore',
-  },
-  query: {
-    fetchPolicy: 'no-cache',
-    errorPolicy: 'all',
-  },
-}
+// const defaultOptions: DefaultOptions = {
+//   watchQuery: {
+//     fetchPolicy: 'no-cache',
+//     errorPolicy: 'ignore',
+//   },
+//   query: {
+//     fetchPolicy: 'no-cache',
+//     errorPolicy: 'all',
+//   },
+// }
 
 const httpLink = new HttpLink({
   uri: LENS_API,
@@ -42,7 +42,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 // example how you can pass in the x-access-token into requests using `ApolloLink`
 let authLink
 
-if (typeof window === 'undefined') {
+if (typeof window !== 'undefined') {
   authLink = new ApolloLink((operation, forward) => {
     const token = localStorage
       ? localStorage.getItem('LensAccessToken')

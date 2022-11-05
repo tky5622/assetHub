@@ -11,7 +11,7 @@ import { useSigner } from '@web3modal/react'
 import { useRecoilValue } from 'recoil'
 import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
 import { createPost } from '../../libs/set-publication-metadata'
-import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
+import { LensUserProfilesState } from '../../recoil/atoms/LensUserProfiles'
 import LitShare from '../litShare/LitShare'
 import RoundButton from '../shared/RoundButton'
 import NftDropZone from './NftDropZone'
@@ -48,9 +48,9 @@ import NftDropZone from './NftDropZone'
 
 
 const usePostPublication = (values: any, setIsOpen: any) => {
+  console.log(values, setIsOpen)
   const signer = useSigner()
-  const profileId = useRecoilValue(LensProfileIdState)
-  const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
+  const profiles = useRecoilValue(LensUserProfilesState)
 
   const mintNftHandler = React.useCallback((profileId: string, ipfsResult: string, accessToken: string) => {
     createPost(profileId, ipfsResult, accessToken, signer)
@@ -60,6 +60,9 @@ const usePostPublication = (values: any, setIsOpen: any) => {
 
   const onClick = React.useCallback(async(values: any) => {
     console.log('ss')
+    const profileId = profiles[0]?.id
+    const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
+
     setIsLoading(true)
     const result = await fetch('/api/upload-publication-ipfs', {
       method: 'POST',
@@ -78,10 +81,10 @@ const usePostPublication = (values: any, setIsOpen: any) => {
     console.log(uri, 'console.log uri')
 
 
-    mintNftHandler(profileId, uri.path, accessToken || '')
+    mintNftHandler(profileId, uri?.path, accessToken || '')
     // setIsLoading,
     // setIsOpen
-  },[accessToken, mintNftHandler, profileId])
+  },[mintNftHandler, profiles])
 
   return {onClick, isLoading}
 }
