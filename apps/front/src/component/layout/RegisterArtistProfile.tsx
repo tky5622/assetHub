@@ -1,7 +1,8 @@
 'use client'
 import { Button, Modal } from '@mantine/core'
-import { useRecoilState } from 'recoil'
+// import { useRecoilState } from 'recoil'
 import {FC} from 'react'
+import { RegisterArtistForm } from './RegisterArtistForm'
 
 type RegisterArtistProfileProps  = {
   isRegistered: boolean
@@ -12,6 +13,7 @@ export const RegisterArtistProfile: FC<RegisterArtistProfileProps>= ({ isRegiste
 
   return (
     <Modal onClose={() => console.log('cannot close')} opened={isRegistered}>
+      <RegisterArtistForm />
       <Button>create profile</Button>
     </Modal>
   )

@@ -10,13 +10,13 @@ import { useForm } from '@mantine/form'
 import RoundButton from '../shared/RoundButton'
 import { CreatePublicSetProfileMetadataUriRequest } from '../../graphql/generated'
 
-export const RegisterArtistForm: any = ({  }: any) => {
+export const RegisterArtistForm: any = () => {
   // const { setNftList } = useContext(AppContext)
 
   const form = useForm({
     initialValues: {
       name: '',
-      description,
+      description: '',
       file: '',
     },
   })
@@ -28,7 +28,6 @@ export const RegisterArtistForm: any = ({  }: any) => {
     <>
               <LoadingOverlay visible={isLoading} overlayBlur={2} />
                   <form
-                    onSubmit={}
                   >
                     <TextInput
                       id="name"
@@ -44,11 +43,10 @@ export const RegisterArtistForm: any = ({  }: any) => {
                     />
                   </form>
                   <Group>
-                    <RoundButton onClick={}>Close</RoundButton>
+                    <RoundButton >Close</RoundButton>
                     <RoundButton
                       // isLoading={isLoading}
                       type={'submit'}
-                      onClick={}
                     >
                       Upload
                     </RoundButton>

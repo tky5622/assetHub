@@ -26,21 +26,20 @@ type LayoutProps = {
 }
 
 
-const useDefaultProfile = () => {
-  const { address } = useAccount()
-  console.log(address, 'ETH, address')
-  const data = useDefaultProfileQuery({ ethereumAddress: address })
+// const useDefaultProfile = () => {
+//   const { address } = useAccount()
+//   console.log(address, 'ETH, address')
+//   const data = useDefaultProfileQuery({ ethereumAddress: address })
 
-  // const getDefaultProfile = async () => {
-  //   // const tokenZ = localStorage.getItem(LENS_ACCESS_TOKEN)
-  //   const defaultProfile = await getDefaultProfileRequest({ ethereumAddress: address })
-  //   console.log(defaultProfile, 'defaultProfile')
-  //   return defaultProfile
-  // }
+//   // const getDefaultProfile = async () => {
+//   //   // const tokenZ = localStorage.getItem(LENS_ACCESS_TOKEN)
+//   //   const defaultProfile = await getDefaultProfileRequest({ ethereumAddress: address })
+//   //   console.log(defaultProfile, 'defaultProfile')
+//   //   return defaultProfile
+//   // }
 
-  return { data }
-}
-
+//   return { data }
+// }
 
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
@@ -98,8 +97,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // const { defaultProfile } = useDefaultProfileQuery({ ethereumAddress: address })
   // console.log(defaultProfile, 'default profile')
 
-
-
     // const test = refreshTokenHandler()
     // async function checkConnection() {
     //   const provider = new ethers.providers.Web3Provider(
@@ -115,8 +112,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     //   }
     // }
     // checkConnection()
-
-
   // }, [listenForRouteChangeEvents])
   const isLoading = useRecoilValue(LensAuthLoadingState)
 
@@ -159,8 +154,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 }
 
 export default Layout
-
-
 // const Test = () => {
 //   const { data } = useDefaultProfile()
 //   console.log(data, 'datatata')

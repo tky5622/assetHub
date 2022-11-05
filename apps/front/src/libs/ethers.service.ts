@@ -1,8 +1,8 @@
-// import { TypedDataDomain } from '@ethersproject/abstract-signer';
-// import { ethers, utils, Wallet } from 'ethers';
+import { TypedDataDomain } from '@ethersproject/abstract-signer';
+import { ethers, utils, Wallet } from 'ethers';
 // import { MUMBAI_RPC_URL, PK } from './config';
 // import test from '@web3modal/ethereum'
-// import { omit } from './helpers';
+import { omit } from './helpers';
 
 // test.providers.jsonRpcProvider('https://rpc-mumbai.matic.today')
 // export const ethersProvider = new ethers.providers.JsonRpcProvider('MUMBAI_RPC_URL');
@@ -15,23 +15,23 @@
 //   return getSigner().address;
 // };
 
-// export const signedTypeData = (
-//   domain: TypedDataDomain,
-//   types: Record<string, any>,
-//   value: Record<string, any>
-// ) => {
-//   const signer = getSigner();
-//   // remove the __typedname from the signature!
-//   return signer._signTypedData(
-//     omit(domain, '__typename'),
-//     omit(types, '__typename'),
-//     omit(value, '__typename')
-//   );
-// };
+export const signedTypeData = (
+  domain: TypedDataDomain,
+  types: Record<string, any>,
+  value: Record<string, any>,
+  signer: any
+) => {
+  // remove the __typedname from the signature!
+  return signer._signTypedData(
+    omit(domain, '__typename'),
+    omit(types, '__typename'),
+    omit(value, '__typename')
+  );
+};
 
-// export const splitSignature = (signature: string) => {
-//   return utils.splitSignature(signature);
-// };
+export const splitSignature = (signature: string) => {
+  return utils.splitSignature(signature);
+};
 
 // export const sendTx = (
 //   transaction: ethers.utils.Deferrable<ethers.providers.TransactionRequest>

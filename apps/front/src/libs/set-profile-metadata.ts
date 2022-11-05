@@ -1,25 +1,22 @@
+import { layoutApolloClient } from '../../apollo-client';
 import { v4 as uuidv4 } from 'uuid'
-import { apolloClient } from '../apollo-client'
-import { login } from '../authentication/login'
-import { argsBespokeInit, PROFILE_ID } from '../config'
 import {
-  getAddressFromSigner,
   signedTypeData,
   splitSignature,
-} from '../ethers.service'
+} from './ethers.service'
 import {
   CreatePublicSetProfileMetadataUriRequest,
   CreateSetProfileMetadataTypedDataDocument,
 } from '../graphql/generated'
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed'
-import { ProfileMetadata } from '../interfaces/profile-metadata'
-import { uploadIpfs } from '../ipfs'
-import { lensPeriphery } from '../lens-hub'
+import { pollUntilIndexed } from './has-transaction-been-indexed'
+import { ProfileMetadata } from './profile-metadata'
+import { uploadIpfs } from './ipfs'
+import { lensPeripheryGenerator } from './lens-hub'
 
 export const createSetProfileMetadataTypedData = async (
   request: CreatePublicSetProfileMetadataUriRequest
 ) => {
-  const result = await apolloClient.mutate({
+  const result = await layoutApolloClient.mutate({
     mutation: CreateSetProfileMetadataTypedDataDocument,
     variables: {
       request,
@@ -30,7 +27,8 @@ export const createSetProfileMetadataTypedData = async (
 }
 
 export const signCreateSetProfileMetadataTypedData = async (
-  request: CreatePublicSetProfileMetadataUriRequest
+  request: CreatePublicSetProfileMetadataUriRequest,
+  signer: any
 ) => {
   const result = await createSetProfileMetadataTypedData(request)
   console.log('create profile metadata: createCommentTypedData', result)
@@ -41,23 +39,21 @@ export const signCreateSetProfileMetadataTypedData = async (
   const signature = await signedTypeData(
     typedData.domain,
     typedData.types,
-    typedData.value
+    typedData.value,
+    signer
   )
   console.log('create profile metadata: signature', signature)
 
   return { result, signature }
 }
 
-const setProfileMetadata = async () => {
-  const profileId = PROFILE_ID
+const setProfileMetadata = async (signer: any) => {
+  const profileId = 'test'
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this')
   }
+  const address = ''
 
-  const address = getAddressFromSigner()
-  console.log('create profile metadata: address', address)
-
-  await login(address)
 
   const ipfsResult = await uploadIpfs<ProfileMetadata>({
     name: 'LensProtocol.eth',
@@ -83,13 +79,15 @@ const setProfileMetadata = async () => {
   }
 
   const signedResult = await signCreateSetProfileMetadataTypedData(
-    createProfileMetadataRequest
+    createProfileMetadataRequest,
+    signer,
   )
   console.log('create comment: signedResult', signedResult)
 
   const typedData = signedResult.result.typedData
 
   const { v, r, s } = splitSignature(signedResult.signature)
+  const lensPeriphery = lensPeripheryGenerator('')
 
   const tx = await lensPeriphery.setProfileMetadataURIWithSig({
     profileId: createProfileMetadataRequest.profileId,

@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import { layoutApolloClient } from '../../apollo-client'
 // import { login } from './authentication/login';
 // import { argsBespokeInit } from '../config/config';
@@ -5,26 +6,21 @@ import { layoutApolloClient } from '../../apollo-client'
 // import { follow } from '../follow/follow';
 import { HasTxHashBeenIndexedDocument, HasTxHashBeenIndexedRequest } from '../graphql/generated';
 
-const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest, token: string) => {
+const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest) => {
   const result = await layoutApolloClient.query({
     query: HasTxHashBeenIndexedDocument,
     variables: {
       request,
     },
     fetchPolicy: 'network-only',
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
   })
 
   return result?.data?.hasTxHashBeenIndexed;
 };
 
-export const pollUntilIndexed = async (input: { txHash: string } | { txId: string }, token: string) => {
+export const pollUntilIndexed = async (input: { txHash: string } | { txId: string }) => {
   while (true) {
-    const response = await hasTxBeenIndexed(input, token);
+    const response = await hasTxBeenIndexed(input);
     console.log('pool until indexed: result', response);
 
     if (response?.__typename === 'TransactionIndexedResult') {

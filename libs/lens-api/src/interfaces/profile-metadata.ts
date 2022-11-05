@@ -13,3 +13,5 @@ export interface ProfileMetadata extends GenericMetadata {
   cover_picture?: string;
   attributes: AttributeData[];
 }
+
+
