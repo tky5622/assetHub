@@ -5,9 +5,9 @@ import { layoutApolloClient } from '../../apollo-client';
 import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
 import { pollUntilIndexed } from './has-transaction-been-indexed';
 // import { Metadata, PublicationMainFocus } from './publication-metadata';
-import { lensHubGenerator } from './lens-hub'
-import { TypedDataDomain } from '@ethersproject/abstract-signer'
-import { omit } from './helpers'
+import { TypedDataDomain } from '@ethersproject/abstract-signer';
+import { omit } from './helpers';
+import { lensHubGenerator } from './lens-hub';
 
 
 export const splitSignature = (signature: string) => {
@@ -15,46 +15,90 @@ export const splitSignature = (signature: string) => {
 }
 
 
-export const createPostTypedData = async (request: CreatePublicPostRequest) => {
+export const createPostTypedData = async (
+  request: CreatePublicPostRequest,
+  accessToken: string
+) => {
+  console.log('createPostTypedData', accessToken, request)
+  console.log(accessToken, 'accessToken')
   const result = await layoutApolloClient.mutate({
     mutation: CreatePostTypedDataDocument,
     variables: {
       request,
     },
+    context: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
   })
 
-  return result.data!.createPostTypedData;
-};
+  return result.data?.createPostTypedData
+}
 
-export const signedTypeData = (
+export const signedTypeData = async (
   domain: TypedDataDomain,
   types: Record<string, any>,
   value: Record<string, any>,
-  signer: any
+  signTypedData: any
 ) => {
   // remove the __typedname from the signature!
-  return signer._signTypedData(
-    omit(domain, '__typename'),
-    omit(types, '__typename'),
-    omit(value, '__typename')
-  )
+  console.log(signTypedData, 'before signTypedData Signer')
+  // signtyped data
+  // const signedData = await signTypedData(
+  //   omit(domain, '__typename'),
+  //   omit(types, '__typename'),
+  //   omit(value, '__typename')
+  // )
+
+    const signedData3 = await signTypedData({
+      domain: omit(domain, '__typename'),
+      types: omit(types, '__typename'),
+      value: omit(value, '__typename')
+    }
+    )
+
+  // const signedData2 = await signTypedData({
+  //     domain,
+  //     types,
+  //     value,
+  //   }
+  //   )
+
+  console.log(signedData3, signedData3, 'signedData result')
+  return signedData3
 }
 
 
-export const signCreatePostTypedData = async (request: CreatePublicPostRequest, signer: any) => {
-  const result = await createPostTypedData(request);
-  console.log('create post: createPostTypedData', result);
+export const signCreatePostTypedData = async (
+  request: CreatePublicPostRequest,
+  signTypedData: any,
+  accessToken: string
+) => {
+  const result = await createPostTypedData(request, accessToken)
+  console.log('create post: createPostTypedData', result, result?.typedData)
 
-  const typedData = result.typedData;
-  console.log('create post: typedData', typedData);
+  const typedData = result?.typedData
+  console.log('create post: typedData', typedData, result)
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value, signer);
-  console.log('create post: signature', signature);
+  const signature = await signedTypeData(
+    typedData?.domain,
+    typedData?.types,
+    typedData?.value,
+    signTypedData
+  )
+  console.log('create post: signature', signature)
 
-  return { result, signature };
-};
+  return { result, signature }
+}
 
-export const createPost = async (profileId: string, path: any, accessToken: string, signer: any) => {
+export const createPost = async (
+  profileId: string,
+  path: any,
+  accessToken: string,
+  signer: any,
+  signTypedData: any
+) => {
   const createPostRequest = {
     profileId,
     contentURI: 'ipfs://' + path,
@@ -85,28 +129,38 @@ export const createPost = async (profileId: string, path: any, accessToken: stri
       followerOnlyReferenceModule: false,
     },
   }
-  console.log(createPostRequest, profileId, path, accessToken, 'createPost values')
+  console.log(
+    createPostRequest,
+    profileId,
+    path,
+    accessToken,
+    'createPost values'
+  )
 
-
-  const signedResult = await signCreatePostTypedData(createPostRequest, signer)
+  const signedResult = await signCreatePostTypedData(
+    createPostRequest,
+    signTypedData,
+    accessToken
+  )
   console.log('create post: signedResult', signedResult)
 
-  const typedData = signedResult.result.typedData
+  const typedData = signedResult?.result?.typedData
+  console.log(typedData, signedResult, 'signedResult.result.typedData')
 
   const { v, r, s } = splitSignature(signedResult.signature)
 
   const tx = await lensHubGenerator(signer).postWithSig({
-    profileId: typedData.value.profileId,
-    contentURI: typedData.value.contentURI,
-    collectModule: typedData.value.collectModule,
-    collectModuleInitData: typedData.value.collectModuleInitData,
-    referenceModule: typedData.value.referenceModule,
-    referenceModuleInitData: typedData.value.referenceModuleInitData,
+    profileId: typedData?.value.profileId,
+    contentURI: typedData?.value.contentURI,
+    collectModule: typedData?.value.collectModule,
+    collectModuleInitData: typedData?.value.collectModuleInitData,
+    referenceModule: typedData?.value.referenceModule,
+    referenceModuleInitData: typedData?.value.referenceModuleInitData,
     sig: {
       v,
       r,
       s,
-      deadline: typedData.value.deadline,
+      deadline: typedData?.value.deadline,
     },
   })
 
@@ -117,7 +171,7 @@ export const createPost = async (profileId: string, path: any, accessToken: stri
 
   console.log('create post: profile has been indexed')
 
-  const logs = indexedResult.txReceipt!.logs
+  const logs = indexedResult.txReceipt?.logs
 
   console.log('create post: logs', logs)
 
@@ -126,15 +180,15 @@ export const createPost = async (profileId: string, path: any, accessToken: stri
   )
   console.log('topicid we care about', topicId)
 
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId)
+  const profileCreatedLog = logs?.find((l: any) => l.topics[0] === topicId)
   console.log('create post: created log', profileCreatedLog)
 
-  const profileCreatedEventLog = profileCreatedLog!.topics
+  const profileCreatedEventLog = profileCreatedLog?.topics
   console.log('create post: created event logs', profileCreatedEventLog)
 
   const publicationId = utils.defaultAbiCoder.decode(
     ['uint256'],
-    profileCreatedEventLog[2]
+    profileCreatedEventLog ? profileCreatedEventLog[2] :  ''
   )[0]
 
   console.log(

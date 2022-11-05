@@ -10,6 +10,7 @@ import {
 // lens contract info can all be found on the deployed
 // contract address on polygon.
 export const lensHubGenerator = (signer: any) => {
+  console.log(LENS_HUB_CONTRACT, LENS_HUB_ABI, signer)
   return new ethers.Contract(LENS_HUB_CONTRACT || '', LENS_HUB_ABI, signer)
 }
 export const lensPeripheryGenerator = (signer: any) =>

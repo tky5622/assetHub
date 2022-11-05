@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 // import { ethers } from 'ethers'
 // import { address } from '../../abi/contractAddress'
 // import ABI from '../../abi/nft.json'
-import { useSigner } from '@web3modal/react'
+import { useSigner, useSignTypedData } from '@web3modal/react'
 import { useRecoilValue } from 'recoil'
 import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
 import { createPost } from '../../libs/set-publication-metadata'
@@ -51,10 +51,12 @@ const usePostPublication = (values: any, setIsOpen: any) => {
   console.log(values, setIsOpen)
   const signer = useSigner()
   const profiles = useRecoilValue(LensUserProfilesState)
+  const { signTypedData }= useSignTypedData({test: 'test'})
 
-  const mintNftHandler = React.useCallback((profileId: string, ipfsResult: string, accessToken: string) => {
-    createPost(profileId, ipfsResult, accessToken, signer)
-  },[signer])
+
+  const mintNftHandler = React.useCallback(async (profileId: string, ipfsResult: string, accessToken: string) => {
+    await createPost(profileId, ipfsResult, accessToken, signer.data, signTypedData)
+  },[signTypedData, signer])
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -81,7 +83,10 @@ const usePostPublication = (values: any, setIsOpen: any) => {
     console.log(uri, 'console.log uri')
 
 
-    mintNftHandler(profileId, uri?.path, accessToken || '')
+    if (accessToken){
+    await mintNftHandler(profileId, uri?.path, accessToken)
+    }
+
     // setIsLoading,
     // setIsOpen
   },[mintNftHandler, profiles])
@@ -141,9 +146,9 @@ const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
               {!showShareModal && (
                 <>
                   <form
-                    onSubmit={form.onSubmit((values) => {
+                    onSubmit={form.onSubmit(async (values) => {
                       console.log('onsubmit')
-                      onClick(values)
+                      await onClick(values)
                     }
                     )}
                   >
