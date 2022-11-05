@@ -6,7 +6,7 @@ import { Group, LoadingOverlay } from '@mantine/core'
 import { TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useAccount } from '@web3modal/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
 import { Profile } from '../../graphql/generated'
@@ -17,9 +17,9 @@ type RegisterArtistFormProps = {
   profiles: Profile[]
 }
 
-export const RegisterArtistForm: React.FC<RegisterArtistFormProps> = ({
+export const RegisterArtistForm = ({
   profiles,
-}) => {
+}: RegisterArtistFormProps) => {
   // const { setNftList } = useContext(AppContext)
 
   const targetProfiles = profiles?.[0]
