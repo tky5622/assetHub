@@ -1,32 +1,32 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { argsBespokeInit } from '../config';
-import { getAddressFromSigner } from '../ethers.service';
-import { EnabledModuleCurrenciesDocument } from '../graphql/generated';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { argsBespokeInit } from '../config'
+import { getAddressFromSigner } from '../ethers.service'
+import { EnabledModuleCurrenciesDocument } from '../graphql/generated'
 
 const enabledCurrenciesRequest = async () => {
   const result = await apolloClient.query({
     query: EnabledModuleCurrenciesDocument,
-  });
+  })
 
-  return result.data.enabledModuleCurrencies;
-};
+  return result.data.enabledModuleCurrencies
+}
 
 export const enabledCurrencies = async () => {
-  const address = getAddressFromSigner();
-  console.log('enabled currencies: address', address);
+  const address = getAddressFromSigner()
+  console.log('enabled currencies: address', address)
 
-  await login(address);
+  await login(address)
 
-  const result = await enabledCurrenciesRequest();
+  const result = await enabledCurrenciesRequest()
 
-  console.log('enabled currencies: result', result);
+  console.log('enabled currencies: result', result)
 
-  return result;
-};
+  return result
+}
 
-(async () => {
+;(async () => {
   if (argsBespokeInit()) {
-    await enabledCurrencies();
+    await enabledCurrencies()
   }
-})();
+})()

@@ -4,7 +4,7 @@ import {
   Group,
   Image,
   RingProgress,
-  Text
+  Text,
 } from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({

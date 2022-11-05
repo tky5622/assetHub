@@ -5,16 +5,20 @@ import { FC } from 'react'
 import { RegisterArtistForm } from './RegisterArtistForm'
 import { Profile } from '../../graphql/generated'
 
-type RegisterArtistProfileProps  = {
+type RegisterArtistProfileProps = {
   isRegistered: boolean
   setIsregistered: any
   profiles: Profile[]
 }
 
-export const RegisterArtistProfile: FC<RegisterArtistProfileProps> = ({ isRegistered, setIsregistered, profiles }) => {
+export const RegisterArtistProfile: FC<RegisterArtistProfileProps> = ({
+  isRegistered,
+  setIsregistered,
+  profiles,
+}) => {
   return (
     <Modal onClose={() => console.log('cannot close')} opened={!isRegistered}>
-      <RegisterArtistForm profiles={profiles}/>
+      <RegisterArtistForm profiles={profiles} />
     </Modal>
   )
 }

@@ -51,23 +51,19 @@ const mintNftHandler = async (values: any, setLoading: any, setIsOpen: any) => {
 }
 
 const useModelUrl = (setValues: any) => {
-
-  const setModelUrlByFile = (file:any) => {
-
+  const setModelUrlByFile = (file: any) => {
     const binaryData = []
     binaryData.push(file)
 
     const modelUrl = window.URL.createObjectURL(
       new Blob(binaryData, { type: 'model/gltf+json' })
     )
-    setValues({file: modelUrl})
+    setValues({ file: modelUrl })
     console.log(file, modelUrl, 'inside function')
-
   }
 
-  return { setModelUrlByFile}
+  return { setModelUrlByFile }
 }
-
 
 const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
   // const { setNftList } = useContext(AppContext)
@@ -75,7 +71,6 @@ const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
 
   const NFT_COLLECTION_MUMBAI_CONTRACT = 'YOUR_CONTRACT_ID'
   // const nft = useNFTCollection(NFT_COLLECTION_MUMBAI_CONTRACT)
-
 
   const form = useForm({
     initialValues: {
@@ -85,9 +80,7 @@ const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
     },
   })
 
-
   const { setModelUrlByFile } = useModelUrl(form.setValues)
-
 
   const onClose = () => {
     setIsOpen(false)

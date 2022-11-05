@@ -1,8 +1,8 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
-import { getAddressFromSigner } from '../ethers.service';
-import { TimelineDocument, TimelineRequest } from '../graphql/generated';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { PROFILE_ID } from '../config'
+import { getAddressFromSigner } from '../ethers.service'
+import { TimelineDocument, TimelineRequest } from '../graphql/generated'
 
 /**
  * THIS WILL BE REMOVED ON NOVEMBER 15TH!
@@ -15,28 +15,28 @@ const getTimelineRequest = async (request: TimelineRequest) => {
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data.timeline;
-};
+  return result.data.timeline
+}
 
 export const timeline = async () => {
-  const profileId = PROFILE_ID;
+  const profileId = PROFILE_ID
   if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this');
+    throw new Error('Must define PROFILE_ID in the .env to run this')
   }
 
-  const address = getAddressFromSigner();
-  console.log('timeline: address', address);
+  const address = getAddressFromSigner()
+  console.log('timeline: address', address)
 
-  await login(address);
+  await login(address)
 
-  const result = await getTimelineRequest({ profileId });
-  console.log('ping: result', result);
+  const result = await getTimelineRequest({ profileId })
+  console.log('ping: result', result)
 
-  return result;
-};
+  return result
+}
 
-(async () => {
-  await timeline();
-})();
+;(async () => {
+  await timeline()
+})()

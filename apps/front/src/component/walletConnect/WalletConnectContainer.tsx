@@ -6,14 +6,14 @@ export const WalletConnectContainer = () => {
   const { open } = useConnectModal()
   return (
     <div>
-        <Button
-          onClick={open}
-          variant="gradient"
-          gradient={{ from: 'orange', to: 'red' }}
-        >
-          {' '}
-          Connect{' '}
-        </Button>
+      <Button
+        onClick={open}
+        variant="gradient"
+        gradient={{ from: 'orange', to: 'red' }}
+      >
+        {' '}
+        Connect{' '}
+      </Button>
     </div>
   )
 }

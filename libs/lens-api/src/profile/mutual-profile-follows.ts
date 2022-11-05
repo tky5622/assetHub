@@ -1,30 +1,32 @@
-import { apolloClient } from '../apollo-client';
+import { apolloClient } from '../apollo-client'
 import {
   MutualFollowersProfilesDocument,
   MutualFollowersProfilesQueryRequest,
-} from '../graphql/generated';
+} from '../graphql/generated'
 
-export const mutualProfileFollowsRequest = async (request: MutualFollowersProfilesQueryRequest) => {
+export const mutualProfileFollowsRequest = async (
+  request: MutualFollowersProfilesQueryRequest
+) => {
   const result = await apolloClient.query({
     query: MutualFollowersProfilesDocument,
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data.mutualFollowersProfiles;
-};
+  return result.data.mutualFollowersProfiles
+}
 
 export const mutualProfileFollows = async () => {
   const result = await mutualProfileFollowsRequest({
     viewingProfileId: '0x01',
     yourProfileId: '0x02',
-  });
-  console.log('mutual profiles follow: result', result);
+  })
+  console.log('mutual profiles follow: result', result)
 
-  return result;
-};
+  return result
+}
 
-(async () => {
-  await mutualProfileFollows();
-})();
+;(async () => {
+  await mutualProfileFollows()
+})()

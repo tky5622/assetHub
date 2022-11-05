@@ -1,9 +1,16 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { argsBespokeInit } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateFollowTypedDataDocument, FollowRequest } from '../graphql/generated';
-import { lensHub } from '../lens-hub';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { argsBespokeInit } from '../config'
+import {
+  getAddressFromSigner,
+  signedTypeData,
+  splitSignature,
+} from '../ethers.service'
+import {
+  CreateFollowTypedDataDocument,
+  FollowRequest,
+} from '../graphql/generated'
+import { lensHub } from '../lens-hub'
 
 export const createFollowTypedData = async (request: FollowRequest) => {
   const result = await apolloClient.mutate({
@@ -11,16 +18,16 @@ export const createFollowTypedData = async (request: FollowRequest) => {
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data!.createFollowTypedData;
-};
+  return result.data!.createFollowTypedData
+}
 
 export const follow = async (profileId: string = '0x11') => {
-  const address = getAddressFromSigner();
-  console.log('follow: address', address);
+  const address = getAddressFromSigner()
+  console.log('follow: address', address)
 
-  await login(address);
+  await login(address)
 
   const result = await createFollowTypedData({
     follow: [
@@ -28,16 +35,20 @@ export const follow = async (profileId: string = '0x11') => {
         profile: profileId,
       },
     ],
-  });
-  console.log('follow: result', result);
+  })
+  console.log('follow: result', result)
 
-  const typedData = result.typedData;
-  console.log('follow: typedData', typedData);
+  const typedData = result.typedData
+  console.log('follow: typedData', typedData)
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('follow: signature', signature);
+  const signature = await signedTypeData(
+    typedData.domain,
+    typedData.types,
+    typedData.value
+  )
+  console.log('follow: signature', signature)
 
-  const { v, r, s } = splitSignature(signature);
+  const { v, r, s } = splitSignature(signature)
 
   const tx = await lensHub.followWithSig({
     follower: getAddressFromSigner(),
@@ -49,13 +60,13 @@ export const follow = async (profileId: string = '0x11') => {
       s,
       deadline: typedData.value.deadline,
     },
-  });
-  console.log('follow: tx hash', tx.hash);
-  return tx.hash;
-};
+  })
+  console.log('follow: tx hash', tx.hash)
+  return tx.hash
+}
 
-(async () => {
+;(async () => {
   if (argsBespokeInit()) {
-    await follow();
+    await follow()
   }
-})();
+})()

@@ -1,18 +1,16 @@
 'use client'
-import { Html, OrbitControls, useGLTF, useProgress } from "@react-three/drei"
-import { Canvas } from "@react-three/fiber"
-import { FC, Suspense } from "react"
-import { GLTF as StdlibGLTF } from "three-stdlib"
+import { Html, OrbitControls, useGLTF, useProgress } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
+import { FC, Suspense } from 'react'
+import { GLTF as StdlibGLTF } from 'three-stdlib'
 
 interface ModelProps {
-  progress: number,
+  progress: number
   modelUrl: any
 }
 
-const Model: FC<ModelProps> = ({progress, modelUrl}) => {
-  const gltf: StdlibGLTF = useGLTF(
-    modelUrl,
-  )
+const Model: FC<ModelProps> = ({ progress, modelUrl }) => {
+  const gltf: StdlibGLTF = useGLTF(modelUrl)
 
   return <primitive object={gltf?.scene} />
 }
@@ -23,7 +21,7 @@ type GltfCanvasProps = {
 
 export const GltfCanvas: FC<GltfCanvasProps> = ({ modelUrl }) => {
   const { progress } = useProgress()
-  console.log(modelUrl, "modelUI")
+  console.log(modelUrl, 'modelUI')
 
   return (
     <Canvas
@@ -31,11 +29,11 @@ export const GltfCanvas: FC<GltfCanvasProps> = ({ modelUrl }) => {
       camera={{ fov: 20, near: 0.1, far: 300, position: [0, 1, -10] }}
       flat
     >
-      <directionalLight position={[1, 1, -1]} color={"0xFFFFFF"} />
+      <directionalLight position={[1, 1, -1]} color={'0xFFFFFF'} />
       <Suspense fallback={<Html center>{progress} % loaded</Html>}>
-        <Model progress={progress} modelUrl={modelUrl}/>
+        <Model progress={progress} modelUrl={modelUrl} />
       </Suspense>
-      <color attach="background" args={["#f7f7f7"]} />
+      <color attach="background" args={['#f7f7f7']} />
       <OrbitControls
         enableZoom={false}
         enablePan={false}
@@ -45,5 +43,3 @@ export const GltfCanvas: FC<GltfCanvasProps> = ({ modelUrl }) => {
     </Canvas>
   )
 }
-
-

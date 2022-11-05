@@ -13,7 +13,7 @@ const Artist: NextPage = () => {
       </Head>
 
       <main>
-          <ArtistProfile />
+        <ArtistProfile />
       </main>
 
       <footer></footer>

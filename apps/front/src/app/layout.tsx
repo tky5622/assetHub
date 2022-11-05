@@ -29,10 +29,8 @@ const RootLayout: React.FC<PropsWithChildren> = ({ children }) => {
           > */}
           <RecoilProvider>
             <ApolloProvider client={layoutApolloClient}>
-            <Layout>
-              {children}
-            </Layout>
-          </ApolloProvider>
+              <Layout>{children}</Layout>
+            </ApolloProvider>
           </RecoilProvider>
           {/* </ColorSchemeProvider> */}
         </RootStyleRegistry>

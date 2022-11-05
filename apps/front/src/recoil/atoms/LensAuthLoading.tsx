@@ -1,8 +1,7 @@
 'use client'
-import { atom } from "recoil";
-
+import { atom } from 'recoil'
 
 export const LensAuthLoadingState = atom({
-  key: "lens-auth-loading",
+  key: 'lens-auth-loading',
   default: false,
-});
+})

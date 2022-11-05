@@ -1,12 +1,12 @@
 'use client'
-import { useCallback } from 'react';
+import { useCallback } from 'react'
 // import { useCallback, useEffect, useState } from 'react';
-import {  RecoilRoot, SetRecoilState } from 'recoil';
+import { RecoilRoot, SetRecoilState } from 'recoil'
 // import RecoilizeDebugger from 'recoilize';
 // import dynamic from 'next/dynamic';
-import { DebugObserver  } from './DebugObserver'
-import { LensProfileIdState } from './atoms/LensProfile';
-import { LensSignupModalState } from './atoms/LensSignupModal';
+import { DebugObserver } from './DebugObserver'
+import { LensProfileIdState } from './atoms/LensProfile'
+import { LensSignupModalState } from './atoms/LensSignupModal'
 
 // import * as i18n from './atoms/i18n';
 // const RecoilizeDebugger = dynamic(
@@ -16,18 +16,15 @@ import { LensSignupModalState } from './atoms/LensSignupModal';
 //   { ssr: false }
 // );
 
-
-
-
 export default function RecoilProvider({
   children,
 }: {
-  children: JSX.Element,
+  children: JSX.Element
 }) {
   const initializeState = useCallback(({ set }: { set: SetRecoilState }) => {
-    set(LensSignupModalState, false);
+    set(LensSignupModalState, false)
     set(LensProfileIdState, '')
-  }, []);
+  }, [])
   // const [root, setRoot] = useState(null)
 
   // useEffect(() => {
@@ -45,13 +42,9 @@ export default function RecoilProvider({
   //   { ssr: false }
   // );
 
-
-
-
-
   return (
     <RecoilRoot initializeState={initializeState}>
-      <DebugObserver/>
+      <DebugObserver />
       {/* <RecoilizeDebugger root={root}/> */}
       {children}
     </RecoilRoot>

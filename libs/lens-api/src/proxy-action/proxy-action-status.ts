@@ -1,5 +1,5 @@
-import { apolloClient } from '../apollo-client';
-import { ProxyActionStatusDocument } from '../graphql/generated';
+import { apolloClient } from '../apollo-client'
+import { ProxyActionStatusDocument } from '../graphql/generated'
 
 export const proxyActionStatusRequest = async (proxyActionId: string) => {
   const result = await apolloClient.query({
@@ -7,7 +7,7 @@ export const proxyActionStatusRequest = async (proxyActionId: string) => {
     variables: {
       proxyActionId,
     },
-  });
+  })
 
-  return result.data.proxyActionStatus;
-};
+  return result.data.proxyActionStatus
+}

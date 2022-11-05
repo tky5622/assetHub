@@ -1,11 +1,10 @@
-
-"use client";
+'use client'
 
 /* eslint-disable react/react-in-jsx-scope */
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import { NftDetails } from '../../../component/nft/NftDetails';
-import TabContainer from '../../../component/nft/TabContainer';
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import { NftDetails } from '../../../component/nft/NftDetails'
+import TabContainer from '../../../component/nft/TabContainer'
 const Project: NextPage = () => {
   return (
     <div>
@@ -15,8 +14,8 @@ const Project: NextPage = () => {
       </Head>
 
       <main>
-          <NftDetails />
-          <TabContainer />
+        <NftDetails />
+        <TabContainer />
       </main>
 
       <footer></footer>

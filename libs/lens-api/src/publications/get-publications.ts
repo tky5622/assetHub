@@ -1,10 +1,10 @@
-import { apolloClient } from '../apollo-client';
-import { PROFILE_ID } from '../config';
+import { apolloClient } from '../apollo-client'
+import { PROFILE_ID } from '../config'
 import {
   PublicationsDocument,
   PublicationsQueryRequest,
   PublicationTypes,
-} from '../graphql/generated';
+} from '../graphql/generated'
 
 const getPublicationsRequest = async (request: PublicationsQueryRequest) => {
   const result = await apolloClient.query({
@@ -12,26 +12,30 @@ const getPublicationsRequest = async (request: PublicationsQueryRequest) => {
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data.publications;
-};
+  return result.data.publications
+}
 
 export const getPublications = async () => {
-  const profileId = PROFILE_ID;
+  const profileId = PROFILE_ID
   if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this');
+    throw new Error('Must define PROFILE_ID in the .env to run this')
   }
 
   const result = await getPublicationsRequest({
     profileId,
-    publicationTypes: [PublicationTypes.Post, PublicationTypes.Comment, PublicationTypes.Mirror],
-  });
-  console.log('publications: result', result.items);
+    publicationTypes: [
+      PublicationTypes.Post,
+      PublicationTypes.Comment,
+      PublicationTypes.Mirror,
+    ],
+  })
+  console.log('publications: result', result.items)
 
-  return result;
-};
+  return result
+}
 
-(async () => {
-  await getPublications();
-})();
+;(async () => {
+  await getPublications()
+})()

@@ -1,43 +1,53 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import {
+  getAddressFromSigner,
+  signedTypeData,
+  splitSignature,
+} from '../ethers.service'
 import {
   CreateToggleFollowRequest,
   CreateToggleFollowTypedDataDocument,
-} from '../graphql/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { lensPeriphery } from '../lens-hub';
+} from '../graphql/generated'
+import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed'
+import { lensPeriphery } from '../lens-hub'
 
-const createToggleFollowTypedData = async (request: CreateToggleFollowRequest) => {
+const createToggleFollowTypedData = async (
+  request: CreateToggleFollowRequest
+) => {
   const result = await apolloClient.mutate({
     mutation: CreateToggleFollowTypedDataDocument,
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data!.createToggleFollowTypedData;
-};
+  return result.data!.createToggleFollowTypedData
+}
 
 export const toggleFollow = async (profileId: string = '0x032f1a') => {
-  const address = getAddressFromSigner();
-  console.log('follow: address', address);
+  const address = getAddressFromSigner()
+  console.log('follow: address', address)
 
-  await login(address);
+  await login(address)
   // yoginth - 0x0f
-  const profileIds: string[] = ['0x0f']; // Ensure you follow this profileID
-  const enables: boolean[] = [false];
+  const profileIds: string[] = ['0x0f'] // Ensure you follow this profileID
+  const enables: boolean[] = [false]
 
-  const result = await createToggleFollowTypedData({ profileIds, enables });
-  console.log('follow: result', result);
+  const result = await createToggleFollowTypedData({ profileIds, enables })
+  console.log('follow: result', result)
 
-  const typedData = result.typedData;
-  console.log('follow: typedData', typedData);
+  const typedData = result.typedData
+  console.log('follow: typedData', typedData)
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('follow: signature', signature);
+  const signature = await signedTypeData(
+    typedData.domain,
+    typedData.types,
+    typedData.value
+  )
+  console.log('follow: signature', signature)
 
-  const { v, r, s } = splitSignature(signature);
+  const { v, r, s } = splitSignature(signature)
 
   //   return tx.hash;
 
@@ -51,19 +61,19 @@ export const toggleFollow = async (profileId: string = '0x032f1a') => {
       s,
       deadline: typedData.value.deadline,
     },
-  });
-  console.log('follow: tx hash', tx.hash);
+  })
+  console.log('follow: tx hash', tx.hash)
 
-  console.log('follow: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
+  console.log('follow: poll until indexed')
+  const indexedResult = await pollUntilIndexed({ txHash: tx.hash })
 
-  console.log('follow: profile has been indexed', result);
+  console.log('follow: profile has been indexed', result)
 
-  const logs = indexedResult!.txReceipt!.logs;
+  const logs = indexedResult!.txReceipt!.logs
 
-  console.log('follow: logs', logs);
-};
+  console.log('follow: logs', logs)
+}
 
-(async () => {
-  await toggleFollow();
-})();
+;(async () => {
+  await toggleFollow()
+})()

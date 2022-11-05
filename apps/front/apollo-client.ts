@@ -6,11 +6,11 @@ import {
   DefaultOptions,
   from,
   HttpLink,
-  InMemoryCache
-} from '@apollo/client/core';
-import { onError } from '@apollo/client/link/error';
-import fetch from 'cross-fetch';
-import { LENS_API } from './src/constant/lensTokens';
+  InMemoryCache,
+} from '@apollo/client/core'
+import { onError } from '@apollo/client/link/error'
+import fetch from 'cross-fetch'
+import { LENS_API } from './src/constant/lensTokens'
 
 const defaultOptions: DefaultOptions = {
   watchQuery: {
@@ -21,44 +21,48 @@ const defaultOptions: DefaultOptions = {
     fetchPolicy: 'no-cache',
     errorPolicy: 'all',
   },
-};
+}
 
 const httpLink = new HttpLink({
   uri: LENS_API,
   fetch,
-});
+})
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
-    );
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    )
 
-  if (networkError) console.log(`[Network error]: ${networkError}`);
-});
+  if (networkError) console.log(`[Network error]: ${networkError}`)
+})
 
 // example how you can pass in the x-access-token into requests using `ApolloLink`
 let authLink
 
-if(typeof window === 'undefined' ) {
-authLink = new ApolloLink((operation, forward) => {
-  const token =  localStorage ? localStorage.getItem('LensAccessToken') : undefined
+if (typeof window === 'undefined') {
+  authLink = new ApolloLink((operation, forward) => {
+    const token = localStorage
+      ? localStorage.getItem('LensAccessToken')
+      : undefined
     // const token = localStorage
     //   ? localStorage.getItem('LensAccessToken')
     //   : undefined
 
-  console.log('jwt token:', token);
+    console.log('jwt token:', token)
 
-  // Use the setContext method to set the HTTP headers.
-  operation.setContext({
-    headers: {
-      'x-access-token': token ? `Bearer ${token}` : '',
-    },
-  });
+    // Use the setContext method to set the HTTP headers.
+    operation.setContext({
+      headers: {
+        'x-access-token': token ? `Bearer ${token}` : '',
+      },
+    })
 
-  // Call the next link in the middleware chain.
-  return forward(operation);
-});
+    // Call the next link in the middleware chain.
+    return forward(operation)
+  })
 }
 
 // export const apolloClient = new ApolloClient({
@@ -68,7 +72,9 @@ authLink = new ApolloLink((operation, forward) => {
 //   defaultOptions: defaultOptions,
 // });
 
-const link = authLink ?  from([errorLink, httpLink, authLink]) :from([errorLink, httpLink])
+const link = authLink
+  ? from([errorLink, httpLink, authLink])
+  : from([errorLink, httpLink])
 
 export const layoutApolloClient = new ApolloClient({
   link: link,

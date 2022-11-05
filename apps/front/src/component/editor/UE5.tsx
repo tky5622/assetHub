@@ -6,18 +6,18 @@ import EditorTemplate from '../../../share/editorPage/EditorTemplate'
 const UE5: React.FC = () => {
   React.useEffect(() => {
     // TODO: refactor (this is for pixel streaming )
-    if(window) {
-    const script = document.createElement('script')
+    if (window) {
+      const script = document.createElement('script')
 
-    script.src = 'https://webrtc.github.io/adapter/adapter-latest.js'
-    script.async = true
+      script.src = 'https://webrtc.github.io/adapter/adapter-latest.js'
+      script.async = true
 
-    document.body.appendChild(script)
-    load()
+      document.body.appendChild(script)
+      load()
     }
     return () => {
-      if(document){
-      document.body.removeChild(script)
+      if (document) {
+        document.body.removeChild(script)
       }
     }
   }, [])

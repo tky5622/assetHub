@@ -1,37 +1,39 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { argsBespokeInit } from '../config';
-import { getAddressFromSigner } from '../ethers.service';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { argsBespokeInit } from '../config'
+import { getAddressFromSigner } from '../ethers.service'
 import {
   PendingApprovalFollowsDocument,
   PendingApprovalFollowsRequest,
-} from '../graphql/generated';
+} from '../graphql/generated'
 
-const pendingApprovalFollows = async (request: PendingApprovalFollowsRequest) => {
+const pendingApprovalFollows = async (
+  request: PendingApprovalFollowsRequest
+) => {
   const result = await apolloClient.query({
     query: PendingApprovalFollowsDocument,
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data.pendingApprovalFollows;
-};
+  return result.data.pendingApprovalFollows
+}
 
 export const pendingApprovals = async () => {
-  const address = getAddressFromSigner();
-  console.log('pending approvals: address', address);
+  const address = getAddressFromSigner()
+  console.log('pending approvals: address', address)
 
-  await login(address);
+  await login(address)
 
-  const result = await pendingApprovalFollows({ limit: 20 });
-  console.log('pending approvals: result', result);
+  const result = await pendingApprovalFollows({ limit: 20 })
+  console.log('pending approvals: result', result)
 
-  return result;
-};
+  return result
+}
 
-(async () => {
+;(async () => {
   if (argsBespokeInit()) {
-    await pendingApprovals();
+    await pendingApprovals()
   }
-})();
+})()

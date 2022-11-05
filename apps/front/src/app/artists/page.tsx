@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { NextPage } from 'next';
-import { ArtistList } from '../../component/artists/ArtistList';
+import { NextPage } from 'next'
+import { ArtistList } from '../../component/artists/ArtistList'
 
 const Artists: NextPage = () => {
   return (

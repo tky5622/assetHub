@@ -1,27 +1,29 @@
-import { apolloClient } from '../apollo-client';
+import { apolloClient } from '../apollo-client'
 import {
   ProfileFollowRevenueDocument,
   ProfileFollowRevenueQueryRequest,
-} from '../graphql/generated';
+} from '../graphql/generated'
 
-export const profileFollowRevenueRequest = async (request: ProfileFollowRevenueQueryRequest) => {
+export const profileFollowRevenueRequest = async (
+  request: ProfileFollowRevenueQueryRequest
+) => {
   const result = await apolloClient.query({
     query: ProfileFollowRevenueDocument,
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data.profileFollowRevenue;
-};
+  return result.data.profileFollowRevenue
+}
 
 export const profileFollowRevenue = async () => {
-  const result = await profileFollowRevenueRequest({ profileId: '0x15' });
-  console.log('profiles follow revenues: result', result);
+  const result = await profileFollowRevenueRequest({ profileId: '0x15' })
+  console.log('profiles follow revenues: result', result)
 
-  return result;
-};
+  return result
+}
 
-(async () => {
-  await profileFollowRevenue();
-})();
+;(async () => {
+  await profileFollowRevenue()
+})()

@@ -1,14 +1,13 @@
 /* eslint-disable react/display-name */
-import { Avatar, Group, Text, UnstyledButton } from '@mantine/core';
-import { forwardRef } from 'react';
+import { Avatar, Group, Text, UnstyledButton } from '@mantine/core'
+import { forwardRef } from 'react'
 
 interface UserIconProps extends React.ComponentPropsWithoutRef<'button'> {
-  image: string;
-  name: string;
-  email: string;
-  icon?: React.ReactNode;
+  image: string
+  name: string
+  email: string
+  icon?: React.ReactNode
 }
-
 
 export const UserIcon = forwardRef<HTMLButtonElement, UserIconProps>(
   ({ image, name, email, icon, ...others }: UserIconProps, ref) => (
@@ -17,7 +16,9 @@ export const UserIcon = forwardRef<HTMLButtonElement, UserIconProps>(
       sx={(theme) => ({
         '&:hover': {
           backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+            theme.colorScheme === 'dark'
+              ? theme.colors.dark[8]
+              : theme.colors.gray[0],
         },
       })}
       {...others}
@@ -33,4 +34,4 @@ export const UserIcon = forwardRef<HTMLButtonElement, UserIconProps>(
       </Group>
     </UnstyledButton>
   )
-);
+)

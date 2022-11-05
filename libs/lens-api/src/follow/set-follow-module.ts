@@ -1,34 +1,40 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { PROFILE_ID } from '../config'
+import {
+  getAddressFromSigner,
+  signedTypeData,
+  splitSignature,
+} from '../ethers.service'
 import {
   CreateSetFollowModuleRequest,
   CreateSetFollowModuleTypedDataDocument,
-} from '../graphql/generated';
-import { lensHub } from '../lens-hub';
+} from '../graphql/generated'
+import { lensHub } from '../lens-hub'
 
-const createSetFollowModuleTypedData = async (request: CreateSetFollowModuleRequest) => {
+const createSetFollowModuleTypedData = async (
+  request: CreateSetFollowModuleRequest
+) => {
   const result = await apolloClient.mutate({
     mutation: CreateSetFollowModuleTypedDataDocument,
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data!.createSetFollowModuleTypedData;
-};
+  return result.data!.createSetFollowModuleTypedData
+}
 
 export const setFollowModule = async () => {
-  const profileId = PROFILE_ID;
+  const profileId = PROFILE_ID
   if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this');
+    throw new Error('Must define PROFILE_ID in the .env to run this')
   }
 
-  const address = getAddressFromSigner();
-  console.log('set follow module: address', address);
+  const address = getAddressFromSigner()
+  console.log('set follow module: address', address)
 
-  await login(address);
+  await login(address)
 
   // hard coded to make the code example clear
   const setFollowModuleRequest = {
@@ -45,18 +51,22 @@ export const setFollowModule = async () => {
       // revertFollowModule: true,
       profileFollowModule: true,
     },
-  };
+  }
 
-  const result = await createSetFollowModuleTypedData(setFollowModuleRequest);
-  console.log('set follow module: result', result);
+  const result = await createSetFollowModuleTypedData(setFollowModuleRequest)
+  console.log('set follow module: result', result)
 
-  const typedData = result.typedData;
-  console.log('set follow module: typedData', typedData);
+  const typedData = result.typedData
+  console.log('set follow module: typedData', typedData)
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('set follow module: signature', signature);
+  const signature = await signedTypeData(
+    typedData.domain,
+    typedData.types,
+    typedData.value
+  )
+  console.log('set follow module: signature', signature)
 
-  const { v, r, s } = splitSignature(signature);
+  const { v, r, s } = splitSignature(signature)
 
   const tx = await lensHub.setFollowModuleWithSig({
     profileId: typedData.value.profileId,
@@ -68,10 +78,10 @@ export const setFollowModule = async () => {
       s,
       deadline: typedData.value.deadline,
     },
-  });
-  console.log('follow: tx hash', tx.hash);
-};
+  })
+  console.log('follow: tx hash', tx.hash)
+}
 
-(async () => {
-  await setFollowModule();
-})();
+;(async () => {
+  await setFollowModule()
+})()

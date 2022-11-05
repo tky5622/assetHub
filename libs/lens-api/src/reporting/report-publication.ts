@@ -1,12 +1,12 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { getAddressFromSigner } from '../ethers.service';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { getAddressFromSigner } from '../ethers.service'
 import {
   PublicationReportingReason,
   PublicationReportingSensitiveSubreason,
   ReportPublicationDocument,
   ReportPublicationRequest,
-} from '../graphql/generated';
+} from '../graphql/generated'
 
 const reportPublicationRequest = async (request: ReportPublicationRequest) => {
   const result = await apolloClient.mutate({
@@ -14,16 +14,16 @@ const reportPublicationRequest = async (request: ReportPublicationRequest) => {
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data!.reportPublication;
-};
+  return result.data!.reportPublication
+}
 
 export const reportPublication = async () => {
-  const address = getAddressFromSigner();
-  console.log('report publication: address', address);
+  const address = getAddressFromSigner()
+  console.log('report publication: address', address)
 
-  await login(address);
+  await login(address)
 
   await reportPublicationRequest({
     publicationId: '0x0f-0x01',
@@ -34,11 +34,11 @@ export const reportPublication = async () => {
       },
     },
     additionalComments: 'Testing report!',
-  });
+  })
 
-  console.log('report publication: success');
-};
+  console.log('report publication: success')
+}
 
-(async () => {
-  await reportPublication();
-})();
+;(async () => {
+  await reportPublication()
+})()

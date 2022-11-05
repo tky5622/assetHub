@@ -1,8 +1,15 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateCollectRequest, CreateCollectTypedDataDocument } from '../graphql/generated';
-import { lensHub } from '../lens-hub';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import {
+  getAddressFromSigner,
+  signedTypeData,
+  splitSignature,
+} from '../ethers.service'
+import {
+  CreateCollectRequest,
+  CreateCollectTypedDataDocument,
+} from '../graphql/generated'
+import { lensHub } from '../lens-hub'
 
 const createCollectTypedData = async (request: CreateCollectRequest) => {
   const result = await apolloClient.mutate({
@@ -10,16 +17,16 @@ const createCollectTypedData = async (request: CreateCollectRequest) => {
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data!.createCollectTypedData;
-};
+  return result.data!.createCollectTypedData
+}
 
 export const collect = async () => {
-  const address = getAddressFromSigner();
-  console.log('collect: address', address);
+  const address = getAddressFromSigner()
+  console.log('collect: address', address)
 
-  await login(address);
+  await login(address)
 
   // must follow to collect need to wait for it to be indexed!
   // await follow('0x032f1a');
@@ -29,18 +36,22 @@ export const collect = async () => {
   // this currency on the module
   const collectRequest = {
     publicationId: '0x06-0x01',
-  };
+  }
 
-  const result = await createCollectTypedData(collectRequest);
-  console.log('collect: createCollectTypedData', result);
+  const result = await createCollectTypedData(collectRequest)
+  console.log('collect: createCollectTypedData', result)
 
-  const typedData = result.typedData;
-  console.log('collect: typedData', typedData);
+  const typedData = result.typedData
+  console.log('collect: typedData', typedData)
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('collect: signature', signature);
+  const signature = await signedTypeData(
+    typedData.domain,
+    typedData.types,
+    typedData.value
+  )
+  console.log('collect: signature', signature)
 
-  const { v, r, s } = splitSignature(signature);
+  const { v, r, s } = splitSignature(signature)
 
   const tx = await lensHub.collectWithSig(
     {
@@ -56,10 +67,10 @@ export const collect = async () => {
       },
     },
     { gasLimit: 1000000 }
-  );
-  console.log('collect: tx hash', tx.hash);
-};
+  )
+  console.log('collect: tx hash', tx.hash)
+}
 
-(async () => {
-  await collect();
-})();
+;(async () => {
+  await collect()
+})()

@@ -1,49 +1,64 @@
-import { BigNumber, utils } from 'ethers';
-import { v4 as uuidv4 } from 'uuid';
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { argsBespokeInit, PROFILE_ID } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateCommentTypedDataDocument, CreatePublicCommentRequest } from '../graphql/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { Metadata, PublicationMainFocus } from '../interfaces/publication';
-import { uploadIpfs } from '../ipfs';
-import { lensHub } from '../lens-hub';
+import { BigNumber, utils } from 'ethers'
+import { v4 as uuidv4 } from 'uuid'
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { argsBespokeInit, PROFILE_ID } from '../config'
+import {
+  getAddressFromSigner,
+  signedTypeData,
+  splitSignature,
+} from '../ethers.service'
+import {
+  CreateCommentTypedDataDocument,
+  CreatePublicCommentRequest,
+} from '../graphql/generated'
+import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed'
+import { Metadata, PublicationMainFocus } from '../interfaces/publication'
+import { uploadIpfs } from '../ipfs'
+import { lensHub } from '../lens-hub'
 
-export const createCommentTypedData = async (request: CreatePublicCommentRequest) => {
+export const createCommentTypedData = async (
+  request: CreatePublicCommentRequest
+) => {
   const result = await apolloClient.mutate({
     mutation: CreateCommentTypedDataDocument,
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data!.createCommentTypedData;
-};
+  return result.data!.createCommentTypedData
+}
 
-export const signCreateCommentTypedData = async (request: CreatePublicCommentRequest) => {
-  const result = await createCommentTypedData(request);
-  console.log('create comment: createCommentTypedData', result);
+export const signCreateCommentTypedData = async (
+  request: CreatePublicCommentRequest
+) => {
+  const result = await createCommentTypedData(request)
+  console.log('create comment: createCommentTypedData', result)
 
-  const typedData = result.typedData;
-  console.log('create comment: typedData', typedData);
+  const typedData = result.typedData
+  console.log('create comment: typedData', typedData)
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('create comment: signature', signature);
+  const signature = await signedTypeData(
+    typedData.domain,
+    typedData.types,
+    typedData.value
+  )
+  console.log('create comment: signature', signature)
 
-  return { result, signature };
-};
+  return { result, signature }
+}
 
 const createComment = async () => {
-  const profileId = PROFILE_ID;
+  const profileId = PROFILE_ID
   if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this');
+    throw new Error('Must define PROFILE_ID in the .env to run this')
   }
 
-  const address = getAddressFromSigner();
-  console.log('create comment: address', address);
+  const address = getAddressFromSigner()
+  console.log('create comment: address', address)
 
-  await login(address);
+  await login(address)
 
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '2.0.0',
@@ -59,8 +74,8 @@ const createComment = async () => {
     attributes: [],
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
-  });
-  console.log('create comment: ipfs result', ipfsResult);
+  })
+  console.log('create comment: ipfs result', ipfsResult)
 
   // hard coded to make the code example clear
   const createCommentRequest = {
@@ -82,14 +97,14 @@ const createComment = async () => {
     referenceModule: {
       followerOnlyReferenceModule: false,
     },
-  };
+  }
 
-  const signedResult = await signCreateCommentTypedData(createCommentRequest);
-  console.log('create comment: signedResult', signedResult);
+  const signedResult = await signCreateCommentTypedData(createCommentRequest)
+  console.log('create comment: signedResult', signedResult)
 
-  const typedData = signedResult.result.typedData;
+  const typedData = signedResult.result.typedData
 
-  const { v, r, s } = splitSignature(signedResult.signature);
+  const { v, r, s } = splitSignature(signedResult.signature)
 
   const tx = await lensHub.commentWithSig(
     {
@@ -110,43 +125,46 @@ const createComment = async () => {
       },
     },
     { gasLimit: 500000 }
-  );
-  console.log('create comment: tx hash', tx.hash);
+  )
+  console.log('create comment: tx hash', tx.hash)
 
-  console.log('create comment: poll until indexed');
-  const indexedResult = await pollUntilIndexed(tx.hash);
+  console.log('create comment: poll until indexed')
+  const indexedResult = await pollUntilIndexed(tx.hash)
 
-  console.log('create comment: profile has been indexed');
+  console.log('create comment: profile has been indexed')
 
-  const logs = indexedResult.txReceipt!.logs;
+  const logs = indexedResult.txReceipt!.logs
 
-  console.log('create comment: logs', logs);
+  console.log('create comment: logs', logs)
 
   const topicId = utils.id(
     'CommentCreated(uint256,uint256,string,uint256,uint256,bytes,address,bytes,address,bytes,uint256)'
-  );
-  console.log('topicid we care about', topicId);
+  )
+  console.log('topicid we care about', topicId)
 
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
-  console.log('create comment: created log', profileCreatedLog);
+  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId)
+  console.log('create comment: created log', profileCreatedLog)
 
-  let profileCreatedEventLog = profileCreatedLog!.topics;
-  console.log('create comment: created event logs', profileCreatedEventLog);
+  let profileCreatedEventLog = profileCreatedLog!.topics
+  console.log('create comment: created event logs', profileCreatedEventLog)
 
-  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
+  const publicationId = utils.defaultAbiCoder.decode(
+    ['uint256'],
+    profileCreatedEventLog[2]
+  )[0]
 
   console.log(
     'create comment: contract publication id',
     BigNumber.from(publicationId).toHexString()
-  );
+  )
   console.log(
     'create comment: internal publication id',
     profileId + '-' + BigNumber.from(publicationId).toHexString()
-  );
-};
+  )
+}
 
-(async () => {
+;(async () => {
   if (argsBespokeInit()) {
-    await createComment();
+    await createComment()
   }
-})();
+})()

@@ -1,17 +1,15 @@
-import { GenericMetadata, MetadataDisplayType } from './generic';
+import { GenericMetadata, MetadataDisplayType } from './generic'
 
 export interface AttributeData {
-  displayType?: MetadataDisplayType;
-  traitType?: string;
-  value: string;
-  key: string;
+  displayType?: MetadataDisplayType
+  traitType?: string
+  value: string
+  key: string
 }
 
 export interface ProfileMetadata extends GenericMetadata {
-  name?: string;
-  bio?: string;
-  cover_picture?: string;
-  attributes: AttributeData[];
+  name?: string
+  bio?: string
+  cover_picture?: string
+  attributes: AttributeData[]
 }
-
-

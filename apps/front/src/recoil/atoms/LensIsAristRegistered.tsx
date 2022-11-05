@@ -1,8 +1,7 @@
 'use client'
-import { atom } from "recoil";
-
+import { atom } from 'recoil'
 
 export const LensIsAritistRegisterdState = atom({
-  key: "aritist-registered",
+  key: 'aritist-registered',
   default: true,
-});
+})

@@ -1,12 +1,9 @@
-"use client";
+'use client'
 
-import {
-  ScrollArea, Table
-} from '@mantine/core';
-import { useRouter } from 'next/router';
-import { useFollowers } from '../../hooks/useLens/useLens';
-import { UserTableContent } from './UserTableContent';
-
+import { ScrollArea, Table } from '@mantine/core'
+import { useRouter } from 'next/router'
+import { useFollowers } from '../../hooks/useLens/useLens'
+import { UserTableContent } from './UserTableContent'
 
 interface UsersTableProps {
   data: {
@@ -21,7 +18,7 @@ interface UsersTableProps {
 export function UsersRolesTable() {
   const router = useRouter()
   const id = router?.query?.id
-  const {data, loading, error } = useFollowers(id)
+  const { data, loading, error } = useFollowers(id)
   const followers = data?.followers.items
   console.log(followers, 'followers')
   return (
@@ -35,7 +32,9 @@ export function UsersRolesTable() {
             <th>Status</th>
           </tr>
         </thead>
-        <tbody><UserTableContent followers={followers}/></tbody>
+        <tbody>
+          <UserTableContent followers={followers} />
+        </tbody>
       </Table>
     </ScrollArea>
   )

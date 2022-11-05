@@ -1,14 +1,21 @@
-import { BigNumber, utils } from 'ethers';
-import { v4 as uuidv4 } from 'uuid';
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { argsBespokeInit, PROFILE_ID } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { Metadata, PublicationMainFocus } from '../interfaces/publication';
-import { uploadIpfs } from '../ipfs';
-import { lensHub } from '../lens-hub';
+import { BigNumber, utils } from 'ethers'
+import { v4 as uuidv4 } from 'uuid'
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { argsBespokeInit, PROFILE_ID } from '../config'
+import {
+  getAddressFromSigner,
+  signedTypeData,
+  splitSignature,
+} from '../ethers.service'
+import {
+  CreatePostTypedDataDocument,
+  CreatePublicPostRequest,
+} from '../graphql/generated'
+import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed'
+import { Metadata, PublicationMainFocus } from '../interfaces/publication'
+import { uploadIpfs } from '../ipfs'
+import { lensHub } from '../lens-hub'
 
 export const createPostTypedData = async (request: CreatePublicPostRequest) => {
   const result = await apolloClient.mutate({
@@ -16,34 +23,40 @@ export const createPostTypedData = async (request: CreatePublicPostRequest) => {
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data!.createPostTypedData;
-};
+  return result.data!.createPostTypedData
+}
 
-export const signCreatePostTypedData = async (request: CreatePublicPostRequest) => {
-  const result = await createPostTypedData(request);
-  console.log('create post: createPostTypedData', result);
+export const signCreatePostTypedData = async (
+  request: CreatePublicPostRequest
+) => {
+  const result = await createPostTypedData(request)
+  console.log('create post: createPostTypedData', result)
 
-  const typedData = result.typedData;
-  console.log('create post: typedData', typedData);
+  const typedData = result.typedData
+  console.log('create post: typedData', typedData)
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('create post: signature', signature);
+  const signature = await signedTypeData(
+    typedData.domain,
+    typedData.types,
+    typedData.value
+  )
+  console.log('create post: signature', signature)
 
-  return { result, signature };
-};
+  return { result, signature }
+}
 
 const createPost = async () => {
-  const profileId = PROFILE_ID;
+  const profileId = PROFILE_ID
   if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this');
+    throw new Error('Must define PROFILE_ID in the .env to run this')
   }
 
-  const address = getAddressFromSigner();
-  console.log('create post: address', address);
+  const address = getAddressFromSigner()
+  console.log('create post: address', address)
 
-  await login(address);
+  await login(address)
 
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '2.0.0',
@@ -59,8 +72,8 @@ const createPost = async () => {
     attributes: [],
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
-  });
-  console.log('create post: ipfs result', ipfsResult);
+  })
+  console.log('create post: ipfs result', ipfsResult)
 
   // hard coded to make the code example clear
   const createPostRequest = {
@@ -92,14 +105,14 @@ const createPost = async () => {
     referenceModule: {
       followerOnlyReferenceModule: false,
     },
-  };
+  }
 
-  const signedResult = await signCreatePostTypedData(createPostRequest);
-  console.log('create post: signedResult', signedResult);
+  const signedResult = await signCreatePostTypedData(createPostRequest)
+  console.log('create post: signedResult', signedResult)
 
-  const typedData = signedResult.result.typedData;
+  const typedData = signedResult.result.typedData
 
-  const { v, r, s } = splitSignature(signedResult.signature);
+  const { v, r, s } = splitSignature(signedResult.signature)
 
   const tx = await lensHub.postWithSig({
     profileId: typedData.value.profileId,
@@ -114,40 +127,46 @@ const createPost = async () => {
       s,
       deadline: typedData.value.deadline,
     },
-  });
-  console.log('create post: tx hash', tx.hash);
+  })
+  console.log('create post: tx hash', tx.hash)
 
-  console.log('create post: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
+  console.log('create post: poll until indexed')
+  const indexedResult = await pollUntilIndexed({ txHash: tx.hash })
 
-  console.log('create post: profile has been indexed');
+  console.log('create post: profile has been indexed')
 
-  const logs = indexedResult.txReceipt!.logs;
+  const logs = indexedResult.txReceipt!.logs
 
-  console.log('create post: logs', logs);
+  console.log('create post: logs', logs)
 
   const topicId = utils.id(
     'PostCreated(uint256,uint256,string,address,bytes,address,bytes,uint256)'
-  );
-  console.log('topicid we care about', topicId);
+  )
+  console.log('topicid we care about', topicId)
 
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
-  console.log('create post: created log', profileCreatedLog);
+  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId)
+  console.log('create post: created log', profileCreatedLog)
 
-  let profileCreatedEventLog = profileCreatedLog!.topics;
-  console.log('create post: created event logs', profileCreatedEventLog);
+  let profileCreatedEventLog = profileCreatedLog!.topics
+  console.log('create post: created event logs', profileCreatedEventLog)
 
-  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
+  const publicationId = utils.defaultAbiCoder.decode(
+    ['uint256'],
+    profileCreatedEventLog[2]
+  )[0]
 
-  console.log('create post: contract publication id', BigNumber.from(publicationId).toHexString());
+  console.log(
+    'create post: contract publication id',
+    BigNumber.from(publicationId).toHexString()
+  )
   console.log(
     'create post: internal publication id',
     profileId + '-' + BigNumber.from(publicationId).toHexString()
-  );
-};
+  )
+}
 
-(async () => {
+;(async () => {
   if (argsBespokeInit()) {
-    await createPost();
+    await createPost()
   }
-})();
+})()

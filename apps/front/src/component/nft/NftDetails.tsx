@@ -5,7 +5,7 @@ import {
   createStyles,
   Group,
   Text,
-  Title
+  Title,
 } from '@mantine/core'
 // import image from './image.svg';
 

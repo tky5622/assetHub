@@ -1,34 +1,29 @@
-import { layoutApolloClient } from '../../apollo-client';
+import { layoutApolloClient } from '../../apollo-client'
 import {
   CreatePublicSetProfileMetadataUriRequest,
-  CreateSetProfileMetadataTypedDataDocument
-} from '../graphql/generated';
-import {
-  signedTypeData,
-  splitSignature
-} from './ethers.service';
-import { pollUntilIndexed } from './has-transaction-been-indexed';
-import { uploadIpfs } from './ipfs';
-import { lensPeripheryGenerator } from './lens-hub';
-import { ProfileMetadata } from './profile-metadata';
+  CreateSetProfileMetadataTypedDataDocument,
+} from '../graphql/generated'
+import { signedTypeData, splitSignature } from './ethers.service'
+import { pollUntilIndexed } from './has-transaction-been-indexed'
+import { uploadIpfs } from './ipfs'
+import { lensPeripheryGenerator } from './lens-hub'
+import { ProfileMetadata } from './profile-metadata'
 
-  //   {
-  //   name: 'LensProtocol.eth',
-  //   bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.',
-  //   cover_picture:
-  //     'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',
-  //   attributes: [
-  //     {
-  //       traitType: 'string',
-  //       value: 'yes this is custom',
-  //       key: 'custom_field',
-  //     },
-  //   ],
-  //   version: '1.0.0',
-  //   metadata_id: uuidv4(),
-  // }
-
-
+//   {
+//   name: 'LensProtocol.eth',
+//   bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.',
+//   cover_picture:
+//     'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',
+//   attributes: [
+//     {
+//       traitType: 'string',
+//       value: 'yes this is custom',
+//       key: 'custom_field',
+//     },
+//   ],
+//   version: '1.0.0',
+//   metadata_id: uuidv4(),
+// }
 
 export const createSetProfileMetadataTypedData = async (
   request: CreatePublicSetProfileMetadataUriRequest,
@@ -63,7 +58,7 @@ export const signCreateSetProfileMetadataTypedData = async (
   const signature = await signedTypeData(
     typedData?.domain,
     typedData?.types,
-    typedData?.value,
+    typedData?.value
   )
   console.log('create profile metadata: signature', signature)
 

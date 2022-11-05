@@ -1,16 +1,16 @@
 'use client'
 
-import React from 'react';
-import { useRecoilSnapshot } from 'recoil';
+import React from 'react'
+import { useRecoilSnapshot } from 'recoil'
 
 export const DebugObserver = () => {
-  const snapshot = useRecoilSnapshot();
+  const snapshot = useRecoilSnapshot()
   React.useEffect(() => {
-    console.debug('The following atoms were modified:');
+    console.debug('The following atoms were modified:')
     for (const node of snapshot.getNodes_UNSTABLE({ isModified: true })) {
-      console.debug(node.key, snapshot.getLoadable(node));
+      console.debug(node.key, snapshot.getLoadable(node))
     }
-  }, [snapshot]);
+  }, [snapshot])
 
-  return null;
+  return null
 }

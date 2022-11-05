@@ -1,8 +1,8 @@
-import { apolloClient } from '../apollo-client';
+import { apolloClient } from '../apollo-client'
 import {
   ProfilePublicationsForSaleDocument,
   ProfilePublicationsForSaleRequest,
-} from '../graphql/generated';
+} from '../graphql/generated'
 
 export const profilePublicationsForSaleRequest = async (
   request: ProfilePublicationsForSaleRequest
@@ -12,18 +12,18 @@ export const profilePublicationsForSaleRequest = async (
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data.profilePublicationsForSale;
-};
+  return result.data.profilePublicationsForSale
+}
 
 export const profilePublicationsForSale = async () => {
-  const result = await profilePublicationsForSaleRequest({ profileId: '0x01' });
-  console.log('publications for sale: result', result);
+  const result = await profilePublicationsForSaleRequest({ profileId: '0x01' })
+  console.log('publications for sale: result', result)
 
-  return result;
-};
+  return result
+}
 
-(async () => {
-  await profilePublicationsForSale();
-})();
+;(async () => {
+  await profilePublicationsForSale()
+})()

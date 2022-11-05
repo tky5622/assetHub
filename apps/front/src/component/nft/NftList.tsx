@@ -7,7 +7,7 @@ import {
   Grid,
   Image,
   Text,
-  useMantineTheme
+  useMantineTheme,
 } from '@mantine/core'
 import { Publication } from '@use-lens/react-apollo'
 
@@ -64,18 +64,18 @@ export function NftList({ publications }: NftListProps) {
                 </Badge>
               )}
             </div>
-              <Text
-                size="sm"
-                style={{
-                  color: secondaryColor,
-                  height: 140,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'pre-wrap',
-                }}
-              >
-                {publication.metadata.description}
-              </Text>
+            <Text
+              size="sm"
+              style={{
+                color: secondaryColor,
+                height: 140,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'pre-wrap',
+              }}
+            >
+              {publication.metadata.description}
+            </Text>
 
             {/* <Hr /> */}
 

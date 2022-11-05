@@ -1,20 +1,20 @@
-import {
-  Avatar,
-  Badge,
-  Group, Text
-} from '@mantine/core';
-import { Maybe } from '@use-lens/react-apollo';
-import React from 'react';
+import { Avatar, Badge, Group, Text } from '@mantine/core'
+import { Maybe } from '@use-lens/react-apollo'
+import React from 'react'
 
 type UserTableRow = {
-  name?: Maybe<string>,
-  bio?: Maybe<string>,
-  totalPublications?: number,
-  icon?: string,
+  name?: Maybe<string>
+  bio?: Maybe<string>
+  totalPublications?: number
+  icon?: string
 }
 
-export const UserTableRow: React.FC<UserTableRow> = ({ name, bio, totalPublications, icon }) => {
-
+export const UserTableRow: React.FC<UserTableRow> = ({
+  name,
+  bio,
+  totalPublications,
+  icon,
+}) => {
   return (
     <>
       <td>
@@ -44,8 +44,6 @@ export const UserTableRow: React.FC<UserTableRow> = ({ name, bio, totalPublicati
           </Badge>
         )}
       </td>
-
     </>
   )
-
 }

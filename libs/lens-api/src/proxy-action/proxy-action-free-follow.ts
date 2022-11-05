@@ -1,13 +1,13 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { getAddressFromSigner } from '../ethers.service';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { getAddressFromSigner } from '../ethers.service'
 import {
   ProxyActionDocument,
   ProxyActionRequest,
   ProxyActionStatusTypes,
-} from '../graphql/generated';
-import { sleep } from '../helpers';
-import { proxyActionStatusRequest } from './proxy-action-status';
+} from '../graphql/generated'
+import { sleep } from '../helpers'
+import { proxyActionStatusRequest } from './proxy-action-status'
 
 const proxyActionFreeFollowRequest = async (request: ProxyActionRequest) => {
   const result = await apolloClient.query({
@@ -15,16 +15,16 @@ const proxyActionFreeFollowRequest = async (request: ProxyActionRequest) => {
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data.proxyAction;
-};
+  return result.data.proxyAction
+}
 
 export const proxyActionFreeFollow = async () => {
-  const address = getAddressFromSigner();
-  console.log('proxy action free follow: address', address);
+  const address = getAddressFromSigner()
+  console.log('proxy action free follow: address', address)
 
-  await login(address);
+  await login(address)
 
   const result = await proxyActionFreeFollowRequest({
     follow: {
@@ -32,28 +32,28 @@ export const proxyActionFreeFollow = async () => {
         profileId: '0x01',
       },
     },
-  });
-  console.log('proxy action free follow: result', result);
+  })
+  console.log('proxy action free follow: result', result)
 
   while (true) {
-    const statusResult = await proxyActionStatusRequest(result);
-    console.log('proxy action free follow: status', statusResult);
+    const statusResult = await proxyActionStatusRequest(result)
+    console.log('proxy action free follow: status', statusResult)
     if (statusResult.__typename === 'ProxyActionStatusResult') {
       if (statusResult.status === ProxyActionStatusTypes.Complete) {
-        console.log('proxy action free follow: complete', statusResult);
-        break;
+        console.log('proxy action free follow: complete', statusResult)
+        break
       }
     }
     if (statusResult.__typename === 'ProxyActionError') {
-      console.log('proxy action free follow: failed', statusResult);
-      break;
+      console.log('proxy action free follow: failed', statusResult)
+      break
     }
-    await sleep(1000);
+    await sleep(1000)
   }
 
-  return result;
-};
+  return result
+}
 
-(async () => {
-  await proxyActionFreeFollow();
-})();
+;(async () => {
+  await proxyActionFreeFollow()
+})()

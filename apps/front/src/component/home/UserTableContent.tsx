@@ -7,27 +7,27 @@ type UserTableContentType = {
 }
 
 export const UserTableContent = ({ followers }: UserTableContentType) => {
-
   return (
     <>
-    {followers?.map((follower, i) => {
-      const followerContent = follower.wallet.defaultProfile
-      const name = followerContent?.name
-      const bio = followerContent?.bio
-      const totalPublications = followerContent?.stats.totalPublications
-      const picture = followerContent?.picture
-      const image = useExtractUrl(picture)
+      {followers?.map((follower, i) => {
+        const followerContent = follower.wallet.defaultProfile
+        const name = followerContent?.name
+        const bio = followerContent?.bio
+        const totalPublications = followerContent?.stats.totalPublications
+        const picture = followerContent?.picture
+        const image = useExtractUrl(picture)
 
-      return(
-      <tr key={i}>
-          <UserTableRow name={name } bio={bio} totalPublications={totalPublications } icon={image}/>
-      </tr>
-      )}
-
-      )}
+        return (
+          <tr key={i}>
+            <UserTableRow
+              name={name}
+              bio={bio}
+              totalPublications={totalPublications}
+              icon={image}
+            />
+          </tr>
+        )
+      })}
     </>
   )
-
-
-
 }

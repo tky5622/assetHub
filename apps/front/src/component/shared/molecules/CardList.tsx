@@ -6,10 +6,10 @@ import {
   Paper,
   Text,
   Title,
-  useMantineTheme
+  useMantineTheme,
 } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 const useStyles = createStyles((theme) => ({
   card: {
     height: 440,

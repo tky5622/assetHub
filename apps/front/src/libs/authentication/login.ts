@@ -1,13 +1,13 @@
 import { layoutApolloClient } from '../../../apollo-client'
 // import { argsBespokeInit } from '../../config/config';
 // import { getAddressFromSigner, signText } from '../../config/ethers.service';
-import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens';
+import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
 import {
   AuthenticateDocument,
   ChallengeDocument,
   ChallengeRequest,
-  SignedAuthChallenge
-} from '../../graphql/generated';
+  SignedAuthChallenge,
+} from '../../graphql/generated'
 // import { getAuthenticationToken, setAuthenticationToken } from '../state';
 
 export const generateChallenge = async (request: ChallengeRequest) => {
@@ -18,8 +18,8 @@ export const generateChallenge = async (request: ChallengeRequest) => {
     },
   })
 
-  return result.data.challenge;
-};
+  return result.data.challenge
+}
 
 const authenticate = async (request: SignedAuthChallenge) => {
   const result = await layoutApolloClient.mutate({
@@ -29,28 +29,27 @@ const authenticate = async (request: SignedAuthChallenge) => {
     },
   })
 
-  return result.data!.authenticate;
-};
+  return result.data!.authenticate
+}
 
 export const login = async (address: string) => {
   const authToken = localStorage.getItem(LENS_ACCESS_TOKEN)
   if (authToken) {
-    console.log('login: already logged in');
-    return;
+    console.log('login: already logged in')
+    return
   }
 
-  console.log('login: address', address);
+  console.log('login: address', address)
 
   // we request a challenge from the server
-  const challengeResponse = await generateChallenge({ address });
+  const challengeResponse = await generateChallenge({ address })
 
   // sign the text with the wallet
-  const signature = await signText(challengeResponse.text);
+  const signature = await signText(challengeResponse.text)
 
-  const authenticatedResult = await authenticate({ address, signature });
-  console.log('login: result', authenticatedResult);
-  localStorage.setItem(LENS_ACCESS_TOKEN, authenticatedResult.accessToken);
+  const authenticatedResult = await authenticate({ address, signature })
+  console.log('login: result', authenticatedResult)
+  localStorage.setItem(LENS_ACCESS_TOKEN, authenticatedResult.accessToken)
 
-  return authenticatedResult;
-};
-
+  return authenticatedResult
+}

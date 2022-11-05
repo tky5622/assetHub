@@ -1,9 +1,9 @@
-import { apolloClient } from '../apollo-client';
+import { apolloClient } from '../apollo-client'
 import {
   ExploreProfilesDocument,
   ExploreProfilesRequest,
   ProfileSortCriteria,
-} from '../graphql/generated';
+} from '../graphql/generated'
 
 // sort out types by generating them!
 export const exploreProfiles = async (request: ExploreProfilesRequest) => {
@@ -12,21 +12,21 @@ export const exploreProfiles = async (request: ExploreProfilesRequest) => {
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data.exploreProfiles;
-};
+  return result.data.exploreProfiles
+}
 
 export const explore = async () => {
   const result = await exploreProfiles({
     sortCriteria: ProfileSortCriteria.MostFollowers,
-  });
+  })
 
-  console.log('explore: result', result);
+  console.log('explore: result', result)
 
-  return result;
-};
+  return result
+}
 
-(async () => {
-  await explore();
-})();
+;(async () => {
+  await explore()
+})()

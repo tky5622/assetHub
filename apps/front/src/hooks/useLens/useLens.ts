@@ -1,8 +1,18 @@
 import { useMutation, useQuery } from '@apollo/client'
-import { Follower, Maybe, ProfileMedia, Publication, Scalars } from '@use-lens/react-apollo'
+import {
+  Follower,
+  Maybe,
+  ProfileMedia,
+  Publication,
+  Scalars,
+} from '@use-lens/react-apollo'
 // useRefreshMutation
 import React from 'react'
-import { LENS_ACCESS_TOKEN, LENS_REFRESH_TOKEN, LENS_TOKEN_EXPIRE } from '../../constant/lensTokens'
+import {
+  LENS_ACCESS_TOKEN,
+  LENS_REFRESH_TOKEN,
+  LENS_TOKEN_EXPIRE,
+} from '../../constant/lensTokens'
 import { FOLLOWER_QUERY } from '../../graphql/lens.followers.query'
 import { refreshTokenMutaiton } from '../../graphql/mutations/lens.auth.refresh.mutation'
 import { PUBLICATION_QUERY } from '../../graphql/queries/lens.publicaition.query'
@@ -15,7 +25,9 @@ import { profileQueryById } from '../../graphql/queries/lens.profile-by-id.query
 import { useRecoilState } from 'recoil'
 import { layoutApolloClient } from '../../../apollo-client'
 import {
-  DefaultProfileDocument, DefaultProfileRequest, ProfilesDocument
+  DefaultProfileDocument,
+  DefaultProfileRequest,
+  ProfilesDocument,
 } from '../../graphql/generated'
 import { refreshAuth } from '../../libs/authentication/refresh'
 import { createProfile } from '../../libs/create-profile'
@@ -37,17 +49,16 @@ import { Profile } from '../../graphql/generated'
 export const useGetProfileByAddress = (address: string) => {
   const userProfile = useQuery(ProfilesDocument, {
     variables: {
-      request :{
-      ownedBy: [address],
-    }},
+      request: {
+        ownedBy: [address],
+      },
+    },
   })
   // console.log(userProfileId, 'usetProfileId')
   console.log(userProfile, 'userProfile By owned By')
   const userProfileData = userProfile
   return userProfileData?.data?.profiles?.items as unknown as Profile[]
 }
-
-
 
 export const useGetProfileByProfileId = (userProfileId: string) => {
   console.log(userProfileId, 'userProfileId')
@@ -79,22 +90,17 @@ export const getDefaultProfileRequest = async (
     query: DefaultProfileDocument,
     variables: {
       request,
-    }
+    },
   })
   return result.data.defaultProfile
 }
-
-
-
-
-
 
 export const useLensAuth = (address: string) => {
   const [userProfileId, setUserProfileId] = useRecoilState(LensProfileIdState)
   const [authLoading, setAuthLoading] = useRecoilState(LensAuthLoadingState)
 
   // challenge
-  const { data, loading,error } = useQuery(AuthChallengeQuery, {
+  const { data, loading, error } = useQuery(AuthChallengeQuery, {
     variables: {
       request: {
         address: address,
@@ -132,12 +138,13 @@ export const useLensAuth = (address: string) => {
     // set Tokens from Lens API
     console.log(authResult, 'authResult')
     localStorage.setItem(
-      LENS_ACCESS_TOKEN, authResult.data.authenticate.accessToken
+      LENS_ACCESS_TOKEN,
+      authResult.data.authenticate.accessToken
     )
-localStorage.setItem(
-  LENS_REFRESH_TOKEN,
-  authResult.data.authenticate.refreshToken
-)
+    localStorage.setItem(
+      LENS_REFRESH_TOKEN,
+      authResult.data.authenticate.refreshToken
+    )
     // SetRefreshToken(authResult.data.authenticate.refreshToken)
 
     // refresh Token before creating profile
@@ -167,78 +174,83 @@ localStorage.setItem(
     setAuthLoading(false)
 
     console.log(profileId, 'create profile, //check what stored')
-  }, [address, authFunc, data?.challenge.text, setAuthLoading, setUserProfileId, signer.data])
+  }, [
+    address,
+    authFunc,
+    data?.challenge.text,
+    setAuthLoading,
+    setUserProfileId,
+    signer.data,
+  ])
 
   return { onClickCreateProfile, userProfileId }
 }
 
-
-
-
 export function trimString(string: string, length: number) {
   if (!string) return null
-  return string.length < length ? string : string.substr(0, length-1) + "..."
+  return string.length < length ? string : string.substr(0, length - 1) + '...'
 }
 
-export function parseJwt (token: string) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
+export function parseJwt(token: string) {
+  const base64Url = token.split('.')[1]
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      })
+      .join('')
+  )
 
-  return JSON.parse(jsonPayload);
-};
+  return JSON.parse(jsonPayload)
+}
 
 export const useRefreshAuthToken = () => {
-
   // const [refreshMutation, { data, loading, error }] = useRefreshMutation();
   const [refMutation] = useMutation(refreshTokenMutaiton)
 
   const refreshTokenHandler = React.useCallback(async () => {
-      const CurrentRefreshToken = localStorage.getItem(LENS_REFRESH_TOKEN)
-      const CurrentAccessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
+    const CurrentRefreshToken = localStorage.getItem(LENS_REFRESH_TOKEN)
+    const CurrentAccessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
 
-      console.log(CurrentRefreshToken, 'CurrentRefreshToken')
-      if (!CurrentRefreshToken) return
-  try {
-    const authData = await refMutation({
-      variables: {
-        request: {
-          refreshToken: CurrentRefreshToken,
+    console.log(CurrentRefreshToken, 'CurrentRefreshToken')
+    if (!CurrentRefreshToken) return
+    try {
+      const authData = await refMutation({
+        variables: {
+          request: {
+            refreshToken: CurrentRefreshToken,
+          },
         },
-      },
-      context: {
-        headers: {
-          Authorization: `Bearer ${CurrentAccessToken}`,
+        context: {
+          headers: {
+            Authorization: `Bearer ${CurrentAccessToken}`,
+          },
         },
-      },
-    })
-    console.log(authData, 'authData')
+      })
+      console.log(authData, 'authData')
 
-    if (!authData.data) return
+      if (!authData.data) return
 
-    const { accessToken, refreshToken } = authData.data.refresh
-    console.log(accessToken, refreshToken, 'newTokens')
-    const exp = parseJwt(refreshToken).exp
+      const { accessToken, refreshToken } = authData.data.refresh
+      console.log(accessToken, refreshToken, 'newTokens')
+      const exp = parseJwt(refreshToken).exp
 
-    localStorage.setItem(LENS_ACCESS_TOKEN,accessToken)
-    localStorage.setItem(LENS_REFRESH_TOKEN,refreshToken)
-    localStorage.setItem(LENS_TOKEN_EXPIRE, exp)
+      localStorage.setItem(LENS_ACCESS_TOKEN, accessToken)
+      localStorage.setItem(LENS_REFRESH_TOKEN, refreshToken)
+      localStorage.setItem(LENS_TOKEN_EXPIRE, exp)
 
-    return {
-      accessToken
+      return {
+        accessToken,
+      }
+    } catch (err) {
+      console.log('error:', err)
     }
-  } catch (err) {
-    console.log('error:', err)
-  }
   }, [refMutation])
 
   return { refreshTokenHandler }
-
 }
-
-
 
 export const useExtractUrl = (picture?: Maybe<ProfileMedia>) => {
   const url = React.useMemo(() => {
@@ -259,17 +271,18 @@ export type PublicationQuery = {
   }
 }
 
-
 export const usePublications = (profileId: Scalars['ProfileId']) => {
-  const {data, loading , error } = useQuery<PublicationQuery>(PUBLICATION_QUERY, {
-    variables: {
-      id: profileId,
-    },
-  })
+  const { data, loading, error } = useQuery<PublicationQuery>(
+    PUBLICATION_QUERY,
+    {
+      variables: {
+        id: profileId,
+      },
+    }
+  )
 
-  return { data, loading , error }
+  return { data, loading, error }
 }
-
 
 export type FollowersQuery = {
   followers: {
@@ -277,13 +290,11 @@ export type FollowersQuery = {
   }
 }
 
-
-export const useFollowers = (profileId: Scalars['ProfileId'] ) => {
+export const useFollowers = (profileId: Scalars['ProfileId']) => {
   const { data, loading, error } = useQuery<FollowersQuery>(FOLLOWER_QUERY, {
-        variables: {
+    variables: {
       id: profileId,
     },
-  }
-  )
+  })
   return { data, loading, error }
 }

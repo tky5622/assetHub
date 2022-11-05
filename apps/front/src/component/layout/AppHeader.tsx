@@ -6,7 +6,7 @@ import {
   createStyles,
   Group,
   Header,
-  Menu
+  Menu,
 } from '@mantine/core'
 import { MantineLogo } from '@mantine/ds'
 import { useDisclosure } from '@mantine/hooks'
@@ -95,7 +95,6 @@ export function AppHeader() {
       </Link>
     ))
 
-
     if (menuItems) {
       return (
         <Menu key={link.label} trigger="hover" exitTransitionDuration={0}>
@@ -142,13 +141,15 @@ export function AppHeader() {
             <MantineLogo size={28} />
           </Link>
         </Group>
-        <Group spacing={5} className={classes.links}>\
-          {items}
+        <Group spacing={5} className={classes.links}>
+          \{items}
         </Group>
 
-        {isConnected ?
-          <UserMenu address={address}/> :
-        <WalletConnectContainer/>}
+        {isConnected ? (
+          <UserMenu address={address} />
+        ) : (
+          <WalletConnectContainer />
+        )}
       </Container>
     </Header>
   )

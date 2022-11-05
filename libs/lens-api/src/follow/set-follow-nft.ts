@@ -1,34 +1,40 @@
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { apolloClient } from '../apollo-client'
+import { login } from '../authentication/login'
+import { PROFILE_ID } from '../config'
+import {
+  getAddressFromSigner,
+  signedTypeData,
+  splitSignature,
+} from '../ethers.service'
 import {
   CreateSetFollowNftUriRequest,
   CreateSetFollowNftUriTypedDataDocument,
-} from '../graphql/generated';
-import { lensHub } from '../lens-hub';
+} from '../graphql/generated'
+import { lensHub } from '../lens-hub'
 
-const createSetFollowNFTUriTypedData = async (request: CreateSetFollowNftUriRequest) => {
+const createSetFollowNFTUriTypedData = async (
+  request: CreateSetFollowNftUriRequest
+) => {
   const result = await apolloClient.mutate({
     mutation: CreateSetFollowNftUriTypedDataDocument,
     variables: {
       request,
     },
-  });
+  })
 
-  return result.data!.createSetFollowNFTUriTypedData;
-};
+  return result.data!.createSetFollowNFTUriTypedData
+}
 
 export const setFollowNftUri = async () => {
-  const profileId = PROFILE_ID;
+  const profileId = PROFILE_ID
   if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this');
+    throw new Error('Must define PROFILE_ID in the .env to run this')
   }
 
-  const address = getAddressFromSigner();
-  console.log('set follow nft uri: address', address);
+  const address = getAddressFromSigner()
+  console.log('set follow nft uri: address', address)
 
-  await login(address);
+  await login(address)
 
   // hard coded to make the code example clear
   const setFollowNftUriRequest = {
@@ -39,18 +45,22 @@ export const setFollowNftUri = async () => {
     // but you can set this to anything you want! It must conform to opensea
     // metadata standard else it will not render on there!
     // followNFTURI: 'ipfs://LmTqN4LZ2G4QRrsS2y2QFMUH5K7dT2ix6P6TuL3pq9CShx',
-  };
+  }
 
-  const result = await createSetFollowNFTUriTypedData(setFollowNftUriRequest);
-  console.log('set follow nft uri: result', result);
+  const result = await createSetFollowNFTUriTypedData(setFollowNftUriRequest)
+  console.log('set follow nft uri: result', result)
 
-  const typedData = result.typedData;
-  console.log('set follow nft uri: typedData', typedData);
+  const typedData = result.typedData
+  console.log('set follow nft uri: typedData', typedData)
 
-  const signature = await signedTypeData(typedData.domain, typedData!.types, typedData.value);
-  console.log('set follow nft uri: signature', signature);
+  const signature = await signedTypeData(
+    typedData.domain,
+    typedData!.types,
+    typedData.value
+  )
+  console.log('set follow nft uri: signature', signature)
 
-  const { v, r, s } = splitSignature(signature);
+  const { v, r, s } = splitSignature(signature)
 
   const tx = await lensHub.setFollowNFTURIWithSig({
     profileId: typedData.value.profileId,
@@ -61,10 +71,10 @@ export const setFollowNftUri = async () => {
       s,
       deadline: typedData.value.deadline,
     },
-  });
-  console.log('set follow nft uri: hash', tx.hash);
-};
+  })
+  console.log('set follow nft uri: hash', tx.hash)
+}
 
-(async () => {
-  await setFollowNftUri();
-})();
+;(async () => {
+  await setFollowNftUri()
+})()

@@ -1,87 +1,87 @@
 import { gql } from '@apollo/client'
 
 export const getDefaultProfile = gql`
-query DefaultProfile($address: EthereumAddress!) {
-  defaultProfile(request: { ethereumAddress: $address}) {
-    id
-    name
-    bio
-    isDefault
-    attributes {
-      displayType
-      traitType
-      key
-      value
-    }
-    followNftAddress
-    metadata
-    handle
-    picture {
-      ... on NftImage {
-        contractAddress
-        tokenId
-        uri
-        chainId
-        verified
+  query DefaultProfile($address: EthereumAddress!) {
+    defaultProfile(request: { ethereumAddress: $address }) {
+      id
+      name
+      bio
+      isDefault
+      attributes {
+        displayType
+        traitType
+        key
+        value
       }
-      ... on MediaSet {
-        original {
-          url
-          mimeType
+      followNftAddress
+      metadata
+      handle
+      picture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
         }
-      }
-    }
-    coverPicture {
-      ... on NftImage {
-        contractAddress
-        tokenId
-        uri
-        chainId
-        verified
-      }
-      ... on MediaSet {
-        original {
-          url
-          mimeType
-        }
-      }
-    }
-    ownedBy
-    dispatcher {
-      address
-      canUseRelay
-    }
-    stats {
-      totalFollowers
-      totalFollowing
-      totalPosts
-      totalComments
-      totalMirrors
-      totalPublications
-      totalCollects
-    }
-    followModule {
-      ... on FeeFollowModuleSettings {
-        type
-        contractAddress
-        amount {
-          asset {
-            name
-            symbol
-            decimals
-            address
+        ... on MediaSet {
+          original {
+            url
+            mimeType
           }
-          value
         }
-        recipient
       }
-      ... on ProfileFollowModuleSettings {
-       type
+      coverPicture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
+          }
+        }
       }
-      ... on RevertFollowModuleSettings {
-       type
+      ownedBy
+      dispatcher {
+        address
+        canUseRelay
+      }
+      stats {
+        totalFollowers
+        totalFollowing
+        totalPosts
+        totalComments
+        totalMirrors
+        totalPublications
+        totalCollects
+      }
+      followModule {
+        ... on FeeFollowModuleSettings {
+          type
+          contractAddress
+          amount {
+            asset {
+              name
+              symbol
+              decimals
+              address
+            }
+            value
+          }
+          recipient
+        }
+        ... on ProfileFollowModuleSettings {
+          type
+        }
+        ... on RevertFollowModuleSettings {
+          type
+        }
       }
     }
   }
-}
 `
