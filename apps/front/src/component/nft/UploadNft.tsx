@@ -1,3 +1,4 @@
+'use client'
 // import { Button } from '@mantine/core'
 import { useState } from 'react'
 import RoundButton from '../shared/RoundButton'

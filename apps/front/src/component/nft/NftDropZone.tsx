@@ -1,3 +1,5 @@
+'use client'
+
 /* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-unknown-property */
@@ -80,7 +82,7 @@ export function NftDropZone({type, id, onChangeForm, file }: NftDropZoneProps & 
       </Group>
     </Dropzone>
       <div style={{ height: 300 }}>
-        {file && <GltfCanvas modelUrl={file} />}
+        {file && <GltfCanvas modelUrl={file} progress={0} />}
       </div>
     </>
   )

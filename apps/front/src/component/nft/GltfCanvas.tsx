@@ -1,3 +1,4 @@
+'use client'
 import { Html, OrbitControls, useGLTF, useProgress } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 import { FC, Suspense } from "react"
@@ -11,14 +12,18 @@ interface ModelProps {
 const Model: FC<ModelProps> = ({progress, modelUrl}) => {
   const gltf: StdlibGLTF = useGLTF(
     modelUrl,
-    true
   )
 
-  return <primitive object={gltf.scene} />
+  return <primitive object={gltf?.scene} />
 }
 
-export const GltfCanvas: FC = ({ modelUrl }: any) => {
+type GltfCanvasProps = {
+  modelUrl: string
+}
+
+export const GltfCanvas: FC<GltfCanvasProps> = ({ modelUrl }) => {
   const { progress } = useProgress()
+  console.log(modelUrl, "modelUI")
 
   return (
     <Canvas

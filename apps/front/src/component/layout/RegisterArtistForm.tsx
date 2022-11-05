@@ -13,6 +13,7 @@ import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
 import { Profile } from '../../graphql/generated'
 import { ProfileMetadata } from '../../libs/profile-metadata'
 import RoundButton from '../shared/RoundButton'
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -41,7 +42,7 @@ export const RegisterArtistForm: React.FC<RegisterArtistFormProps>  = ({ profile
       },
     ],
     version: '1.0.0',
-    metadata_id: 'testtest',
+    metadata_id: uuidv4(),
     },
   })
 
