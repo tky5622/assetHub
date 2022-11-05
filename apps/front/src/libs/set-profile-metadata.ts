@@ -13,6 +13,24 @@ import { ProfileMetadata } from './profile-metadata'
 import { uploadIpfs } from './ipfs'
 import { lensPeripheryGenerator } from './lens-hub'
 
+  //   {
+  //   name: 'LensProtocol.eth',
+  //   bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.',
+  //   cover_picture:
+  //     'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',
+  //   attributes: [
+  //     {
+  //       traitType: 'string',
+  //       value: 'yes this is custom',
+  //       key: 'custom_field',
+  //     },
+  //   ],
+  //   version: '1.0.0',
+  //   metadata_id: uuidv4(),
+  // }
+
+
+
 export const createSetProfileMetadataTypedData = async (
   request: CreatePublicSetProfileMetadataUriRequest
 ) => {
@@ -23,7 +41,7 @@ export const createSetProfileMetadataTypedData = async (
     },
   })
 
-  return result.data!.createSetProfileMetadataTypedData
+  return result.data?.createSetProfileMetadataTypedData
 }
 
 export const signCreateSetProfileMetadataTypedData = async (
@@ -33,13 +51,13 @@ export const signCreateSetProfileMetadataTypedData = async (
   const result = await createSetProfileMetadataTypedData(request)
   console.log('create profile metadata: createCommentTypedData', result)
 
-  const typedData = result.typedData
+  const typedData = result?.typedData
   console.log('create profile metadata: typedData', typedData)
 
   const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value,
+    typedData?.domain,
+    typedData?.types,
+    typedData?.value,
     signer
   )
   console.log('create profile metadata: signature', signature)
@@ -47,29 +65,13 @@ export const signCreateSetProfileMetadataTypedData = async (
   return { result, signature }
 }
 
-const setProfileMetadata = async (signer: any) => {
-  const profileId = 'test'
-  if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this')
-  }
-  const address = ''
-
-
-  const ipfsResult = await uploadIpfs<ProfileMetadata>({
-    name: 'LensProtocol.eth',
-    bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.',
-    cover_picture:
-      'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',
-    attributes: [
-      {
-        traitType: 'string',
-        value: 'yes this is custom',
-        key: 'custom_field',
-      },
-    ],
-    version: '1.0.0',
-    metadata_id: uuidv4(),
-  })
+export const setProfileMetadata = async (
+  address: string,
+  signer: any,
+  profileMetaDataObject: ProfileMetadata,
+  profileId: string
+) => {
+  const ipfsResult = await uploadIpfs<ProfileMetadata>(profileMetaDataObject)
   console.log('create profile metadata: ipfs result', ipfsResult)
 
   // hard coded to make the code example clear
@@ -80,11 +82,11 @@ const setProfileMetadata = async (signer: any) => {
 
   const signedResult = await signCreateSetProfileMetadataTypedData(
     createProfileMetadataRequest,
-    signer,
+    signer
   )
   console.log('create comment: signedResult', signedResult)
 
-  const typedData = signedResult.result.typedData
+  const typedData = signedResult?.result?.typedData
 
   const { v, r, s } = splitSignature(signedResult.signature)
   const lensPeriphery = lensPeripheryGenerator('')
@@ -96,7 +98,7 @@ const setProfileMetadata = async (signer: any) => {
       v,
       r,
       s,
-      deadline: typedData.value.deadline,
+      deadline: typedData?.value.deadline,
     },
   })
   console.log('create profile metadata: tx hash', tx.hash)
@@ -106,7 +108,7 @@ const setProfileMetadata = async (signer: any) => {
 
   console.log('create profile metadata: profile has been indexed')
 
-  const logs = indexedResult.txReceipt!.logs
+  const logs = indexedResult.txReceipt?.logs
 
   console.log('create profile metadata: logs', logs)
 }
