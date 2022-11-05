@@ -17,6 +17,9 @@ import WalletConnectModal from '../walletConnect/WalletConnectModal'
 import AppHeader from './AppHeader'
 import { FooterLinks } from './Footer'
 import { SignupLensModal } from './Modal/SignupLensModal'
+import { useRecoilState} from 'recoil'
+import { LensIsAritistRegisterdState } from '../../recoil/atoms/LensIsAristRegistered'
+import { RegisterArtistProfile } from '../layout/RegisterArtistProfile'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -76,6 +79,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       },[])
 
   const profiles = useGetProfileByAddress(address)
+  const [isRegistered, setIsregistered] = useRecoilState(LensIsAritistRegisterdState)
 
   React.useEffect(() => {
     const checkIsArtist = (item?: Profile ) => {
@@ -85,9 +89,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       })
     }
   }
-    console.log(profiles?.some(checkIsArtist))
+    setIsregistered(profiles?.some(checkIsArtist))
 
-  }, [profiles])
+  }, [profiles, setIsregistered])
 
 
   // console.log(profile, 'default profile')
@@ -143,8 +147,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     >
       <WalletConnectModal />
       <SignupLensModal/>
-        {address &&
-      <Test/>
+
+      {!isRegistered &&
+          <RegisterArtistProfile isRegistered={isRegistered} setIsregistered={setIsregistered}/>
         }
       {children}
       <FooterLinks />
@@ -156,8 +161,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 export default Layout
 
 
-const Test = () => {
-  const { data } = useDefaultProfile()
-  console.log(data, 'datatata')
-  return(<></>)
-}
+// const Test = () => {
+//   const { data } = useDefaultProfile()
+//   console.log(data, 'datatata')
+//   return(<></>)
+// }
