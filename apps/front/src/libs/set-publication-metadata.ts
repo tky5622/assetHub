@@ -1,13 +1,19 @@
 import { BigNumber, utils } from 'ethers';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { layoutApolloClient } from '../../apollo-client';
 // import { login } from '../authentication/login';
-import { argsBespokeInit } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
 import { pollUntilIndexed } from './has-transaction-been-indexed';
-import { Metadata, PublicationMainFocus } from './publication-metadata';
-import { lensHub } from '../lens-hub';
+// import { Metadata, PublicationMainFocus } from './publication-metadata';
+import { lensHubGenerator } from './lens-hub'
+import { TypedDataDomain } from '@ethersproject/abstract-signer'
+import { omit } from './helpers'
+
+
+export const splitSignature = (signature: string) => {
+  return utils.splitSignature(signature)
+}
+
 
 export const createPostTypedData = async (request: CreatePublicPostRequest) => {
   const result = await layoutApolloClient.mutate({
@@ -20,23 +26,38 @@ export const createPostTypedData = async (request: CreatePublicPostRequest) => {
   return result.data!.createPostTypedData;
 };
 
-export const signCreatePostTypedData = async (request: CreatePublicPostRequest) => {
+export const signedTypeData = (
+  domain: TypedDataDomain,
+  types: Record<string, any>,
+  value: Record<string, any>,
+  signer: any
+) => {
+  // remove the __typedname from the signature!
+  return signer._signTypedData(
+    omit(domain, '__typename'),
+    omit(types, '__typename'),
+    omit(value, '__typename')
+  )
+}
+
+
+export const signCreatePostTypedData = async (request: CreatePublicPostRequest, signer: any) => {
   const result = await createPostTypedData(request);
   console.log('create post: createPostTypedData', result);
 
   const typedData = result.typedData;
   console.log('create post: typedData', typedData);
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value, signer);
   console.log('create post: signature', signature);
 
   return { result, signature };
 };
 
-export const createPost = async (profileId: string, ipfsResult: any, accessToken: string) => {
+export const createPost = async (profileId: string, path: any, accessToken: string, signer: any) => {
   const createPostRequest = {
     profileId,
-    contentURI: 'ipfs://' + ipfsResult.path,
+    contentURI: 'ipfs://' + path,
     collectModule: {
       // feeCollectModule: {
       //   amount: {
@@ -64,15 +85,17 @@ export const createPost = async (profileId: string, ipfsResult: any, accessToken
       followerOnlyReferenceModule: false,
     },
   }
+  console.log(createPostRequest, profileId, path, accessToken, 'createPost values')
 
-  const signedResult = await signCreatePostTypedData(createPostRequest)
+
+  const signedResult = await signCreatePostTypedData(createPostRequest, signer)
   console.log('create post: signedResult', signedResult)
 
   const typedData = signedResult.result.typedData
 
   const { v, r, s } = splitSignature(signedResult.signature)
 
-  const tx = await lensHub.postWithSig({
+  const tx = await lensHubGenerator(signer).postWithSig({
     profileId: typedData.value.profileId,
     contentURI: typedData.value.contentURI,
     collectModule: typedData.value.collectModule,

@@ -1,19 +1,20 @@
 'use client'
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Group, LoadingOverlay, Modal } from '@mantine/core'
-import React, { useState } from 'react'
-import { TextInput } from '@mantine/core'
+import { LoadingOverlay, Modal, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import React, { useState } from 'react'
 // import { ethers } from 'ethers'
 // import { address } from '../../abi/contractAddress'
 // import ABI from '../../abi/nft.json'
+import { useSigner } from '@web3modal/react'
+import { useRecoilValue } from 'recoil'
+import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
+import { createPost } from '../../libs/set-publication-metadata'
+import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
 import LitShare from '../litShare/LitShare'
 import RoundButton from '../shared/RoundButton'
 import NftDropZone from './NftDropZone'
-import { createPost } from '../../libs/set-publication-metadata'
-
-
 // const mintNftHandler = async (values: any, setLoading: any, setIsOpen: any) => {
 //   console.log(values, 'mintNftHandler')
 //   try {
@@ -47,17 +48,40 @@ import { createPost } from '../../libs/set-publication-metadata'
 
 
 const usePostPublication = (values: any, setIsOpen: any) => {
+  const signer = useSigner()
+  const profileId = useRecoilValue(LensProfileIdState)
+  const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
 
-  const mintNftHandler = (profileId: string, ipfsResult: any, accessToken: string) => {
-    createPost(profileId, ipfsResult, accessToken)
-  }
+  const mintNftHandler = React.useCallback((profileId: string, ipfsResult: string, accessToken: string) => {
+    createPost(profileId, ipfsResult, accessToken, signer)
+  },[signer])
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const onClick = React.useCallback((values: any) => {
+  const onClick = React.useCallback(async(values: any) => {
     console.log('ss')
-    mintNftHandler(values, setIsLoading, setIsOpen)
-  },[setIsOpen])
+    setIsLoading(true)
+    const result = await fetch('/api/upload-publication-ipfs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    }).catch((err) => {
+      console.error(err)
+      setIsLoading(false)
+    })
+    setIsLoading(false)
+    console.log('result')
+    console.log(result?.body, 'result body')
+    const uri = await result?.json()
+    console.log(uri, 'console.log uri')
+
+
+    mintNftHandler(profileId, uri.path, accessToken || '')
+    // setIsLoading,
+    // setIsOpen
+  },[accessToken, mintNftHandler, profileId])
 
   return {onClick, isLoading}
 }
@@ -114,8 +138,10 @@ const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
               {!showShareModal && (
                 <>
                   <form
-                    onSubmit={form.onSubmit((values) =>
+                    onSubmit={form.onSubmit((values) => {
+                      console.log('onsubmit')
                       onClick(values)
+                    }
                     )}
                   >
                     <TextInput
@@ -136,17 +162,15 @@ const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
                       onChangeForm={setModelUrlByFile}
                       {...form.getInputProps('file')}
                     />
-                  </form>
-                  <Group>
-                    <RoundButton onClick={onClose}>Close</RoundButton>
                     <RoundButton
                       // isLoading={isLoading}
                       type={'submit'}
-                      // onClick={onClick}
+                    // onClick={onClick}
                     >
                       Upload
                     </RoundButton>
-                  </Group>
+
+                  </form>
                 </>
               )}
             </Modal>

@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PublicationMainFocus } from '../../graphql/generated'
+import { v4 as uuidv4 } from 'uuid';
+import { PublicationMainFocus } from '../../graphql/generated';
 import { uploadIpfs } from '../../libs/ipfs';
-import { Metadata } from '../../libs/publication-metadata'
-import { v4 as uuidv4 } from 'uuid'
+import { Metadata } from '../../libs/publication-metadata';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log(req.body, 'body')
@@ -21,10 +21,14 @@ const test = {
     attributes: [],
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
-  }
+  } as any
   console.log(test, 'test')
 
-  const uri = await uploadIpfs<Metadata>(req.body.publicationMetaData)
-  res.status(200).json({ uri: uri })
+  const uri = await uploadIpfs<Metadata>(test)
+  console.log(uri, 'uplopd IPGS')
+  res.status(200).json({
+    uri: uri,
+    path: uri.path
+  })
 }
 
