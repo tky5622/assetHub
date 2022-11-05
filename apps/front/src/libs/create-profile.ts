@@ -1,21 +1,21 @@
 import { BigNumber, utils } from 'ethers';
-import { apolloClient } from '../../apollo-client';
+import { layoutApolloClient } from '../../apollo-client'
 import { CreateProfileDocument, CreateProfileRequest } from '../graphql/generated';
 import { login } from './authentication/login';
 import { pollUntilIndexed } from './has-transaction-been-indexed';
 
 const createProfileRequest = async (request: CreateProfileRequest, token: string) => {
-  const result = await apolloClient.mutate({
+  const result = await layoutApolloClient.mutate({
     mutation: CreateProfileDocument,
     variables: {
       request,
     },
     context: {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
-  });
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  })
   console.log(result.data!.createProfile, 'ccreate profile request')
 
   return result.data!.createProfile;

@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { Profile, Publication, Scalars } from '@use-lens/react-apollo'
+import { Profile, Publication } from '@use-lens/react-apollo'
 import { usePathname } from 'next/navigation'
 import { profileQueryById } from '../../graphql/queries/lens.profile-by-id.query'
 import { PUBLICATION_QUERY } from '../../graphql/queries/lens.publicaition.query'
@@ -21,17 +21,17 @@ type PublicationQuery = {
 export function ArtistProfile() {
   // const router = useRouter()
   const test = usePathname().split('/')
-  const profileId = test[2] as Scalars['ProfileId']
-  console.log(test, profileId, 'eeeeeeeeeeeeeeeeee')
+  // const profileId = test[2] as Scalars['ProfileId']
+  // console.log(test, profileId, 'eeeeeeeeeeeeeeeeee')
   const { loading, data } = useQuery<Profiles>(profileQueryById, {
     variables: {
-      id: profileId,
+      id: '0x50ba',
     },
   })
 
   const publication = useQuery<PublicationQuery>(PUBLICATION_QUERY, {
     variables: {
-      id: profileId,
+      id: '0x50ba',
     },
   })
 

@@ -13,24 +13,78 @@ import { AuthChallengeQuery } from '../../graphql/queries/lens.auth.query'
 import { profileQueryById } from '../../graphql/queries/lens.profile-by-id.query'
 // import { CreateProfile } from '@use-lens/react-apollo'
 import { useRecoilState } from 'recoil'
-import { useLocalStorage } from 'usehooks-ts'
+import { layoutApolloClient } from '../../../apollo-client'
+import {
+  DefaultProfileDocument, DefaultProfileRequest, ProfilesDocument
+} from '../../graphql/generated'
 import { refreshAuth } from '../../libs/authentication/refresh'
 import { createProfile } from '../../libs/create-profile'
-import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
 import { LensAuthLoadingState } from '../../recoil/atoms/LensAuthLoading'
+import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
+import { Profile } from '../../graphql/generated'
 
-export const useGetProfile = (userProfileId: string) => {
+// const getProfilesRequest = async (request: ProfileQueryRequest) => {
+//   const result = await apolloClient.query({
+//     query: ProfilesDocument,
+//     variables: {
+//       request,
+//     },
+//   })
+
+//   return result.data.profiles
+// }
+
+export const useGetProfileByAddress = (address: string) => {
+  const userProfile = useQuery(ProfilesDocument, {
+    variables: {
+      request :{
+      ownedBy: [address],
+    }},
+  })
+  // console.log(userProfileId, 'usetProfileId')
+  console.log(userProfile, 'userProfile By owned By')
+  const userProfileData = userProfile
+  return userProfileData?.data?.profiles?.items as unknown as Profile[]
+}
+
+
+
+export const useGetProfileByProfileId = (userProfileId: string) => {
+  console.log(userProfileId, 'userProfileId')
   const userProfile = useQuery(profileQueryById, {
     variables: {
       profileId: userProfileId,
     },
   })
   console.log(userProfileId, 'usetProfileId')
-
-  console.log(userProfile, 'defaultprofile')
-  const userProfileData = userProfile?.data
+  console.log(userProfile, 'userProfile By Id')
+  const userProfileData = userProfile
   return userProfileData
 }
+
+export const useDefaultProfileQuery = (request: DefaultProfileRequest) => {
+  const defaultProfile = useQuery(DefaultProfileDocument, {
+    variables: {
+      request,
+    },
+  })
+  return { defaultProfile }
+}
+
+export const getDefaultProfileRequest = async (
+  request: DefaultProfileRequest,
+  token?: string
+) => {
+  const result = await layoutApolloClient.query({
+    query: DefaultProfileDocument,
+    variables: {
+      request,
+    }
+  })
+  return result.data.defaultProfile
+}
+
+
 
 
 
@@ -40,7 +94,7 @@ export const useLensAuth = (address: string) => {
   const [authLoading, setAuthLoading] = useRecoilState(LensAuthLoadingState)
 
   // challenge
-  const { data, loading, error } = useQuery(AuthChallengeQuery, {
+  const { data, loading,error } = useQuery(AuthChallengeQuery, {
     variables: {
       request: {
         address: address,
@@ -54,11 +108,11 @@ export const useLensAuth = (address: string) => {
   // const sign = useSignMessage(data?.challenge.text)
 
   const [authFunc] = useMutation(AuthMutation)
-  const [accessToken, SetAccessToken] = useLocalStorage('LensAccessToken', '')
-  const [refreshToken, SetRefreshToken] = useLocalStorage(
-    'LensRefreshToken',
-    ''
-  )
+  // const [accessToken, SetAccessToken] = useLocalStorage(LENS_ACCESS_TOKEN, null)
+  // const [refreshToken, SetRefreshToken] = useLocalStorage(
+  //   LENS_REFRESH_TOKEN,
+  //   null
+  // )
 
   const onClickCreateProfile = React.useCallback(async () => {
     // sign message with challenge text
@@ -77,14 +131,29 @@ export const useLensAuth = (address: string) => {
 
     // set Tokens from Lens API
     console.log(authResult, 'authResult')
-    SetAccessToken(authResult.data.authenticate.accessToken)
-    SetRefreshToken(authResult.data.authenticate.refreshToken)
+    localStorage.setItem(
+      LENS_ACCESS_TOKEN, authResult.data.authenticate.accessToken
+    )
+localStorage.setItem(
+  LENS_REFRESH_TOKEN,
+  authResult.data.authenticate.refreshToken
+)
+    // SetRefreshToken(authResult.data.authenticate.refreshToken)
 
     // refresh Token before creating profile
+    const refreshToken = localStorage.getItem(LENS_REFRESH_TOKEN)
+    console.log(
+      authResult.data.authenticate.refreshToken == refreshToken,
+      authResult.data.authenticate.refreshToken,
+      refreshToken
+    )
     console.log('try refresh')
-    const refreshResult = await refreshAuth({
-      refreshToken: authResult.data.authenticate.refreshToken,
-    })
+    const refreshResult = await refreshAuth(
+      {
+        refreshToken: refreshToken,
+      },
+      authResult.data.authenticate.accessToken
+    )
 
     // create profile
     console.log(console.log('refresh: result', refreshResult))
@@ -98,7 +167,7 @@ export const useLensAuth = (address: string) => {
     setAuthLoading(false)
 
     console.log(profileId, 'create profile, //check what stored')
-  }, [SetAccessToken, SetRefreshToken, address, authFunc, data?.challenge.text, setAuthLoading, setUserProfileId, signer.data])
+  }, [address, authFunc, data?.challenge.text, setAuthLoading, setUserProfileId, signer.data])
 
   return { onClickCreateProfile, userProfileId }
 }

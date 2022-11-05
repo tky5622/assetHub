@@ -1,4 +1,4 @@
-import { apolloClient } from '../../apollo-client';
+import { layoutApolloClient } from '../../apollo-client'
 // import { login } from './authentication/login';
 // import { argsBespokeInit } from '../config/config';
 // import { getAddressFromSigner } from '../config/ethers.service';
@@ -6,18 +6,18 @@ import { apolloClient } from '../../apollo-client';
 import { HasTxHashBeenIndexedDocument, HasTxHashBeenIndexedRequest } from '../graphql/generated';
 
 const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest, token: string) => {
-  const result = await apolloClient.query({
+  const result = await layoutApolloClient.query({
     query: HasTxHashBeenIndexedDocument,
     variables: {
       request,
     },
     fetchPolicy: 'network-only',
     context: {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
-  });
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  })
 
   return result?.data?.hasTxHashBeenIndexed;
 };

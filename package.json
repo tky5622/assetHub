@@ -57,6 +57,7 @@
     "@mantine/hooks": "^5.5.2",
     "@mantine/next": "^5.5.2",
     "@mantine/notifications": "^5.7.0",
+    "@n1ru4l/use-async-effect": "1.4.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/graphql": "^10.1.3",

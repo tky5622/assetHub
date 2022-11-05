@@ -3,7 +3,7 @@ import { RefreshDocument, RefreshRequest } from '../../graphql/generated';
 import { login } from './login';
 
 export const refreshAuth = async (request: RefreshRequest, accessToken?: any) => {
-  console.log(accessToken)
+  console.log(accessToken, 'accessToken')
   const result = await layoutApolloClient.mutate({
     mutation: RefreshDocument,
     variables: {

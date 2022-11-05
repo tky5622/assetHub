@@ -1,4 +1,4 @@
-import { apolloClient } from '../../../apollo-client';
+import { layoutApolloClient } from '../../../apollo-client'
 // import { argsBespokeInit } from '../../config/config';
 // import { getAddressFromSigner, signText } from '../../config/ethers.service';
 import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens';
@@ -11,23 +11,23 @@ import {
 // import { getAuthenticationToken, setAuthenticationToken } from '../state';
 
 export const generateChallenge = async (request: ChallengeRequest) => {
-  const result = await apolloClient.query({
+  const result = await layoutApolloClient.query({
     query: ChallengeDocument,
     variables: {
       request,
     },
-  });
+  })
 
   return result.data.challenge;
 };
 
 const authenticate = async (request: SignedAuthChallenge) => {
-  const result = await apolloClient.mutate({
+  const result = await layoutApolloClient.mutate({
     mutation: AuthenticateDocument,
     variables: {
       request,
     },
-  });
+  })
 
   return result.data!.authenticate;
 };

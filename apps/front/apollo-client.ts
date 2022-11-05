@@ -53,16 +53,16 @@ const authLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-export const apolloClient = new ApolloClient({
-  link: from([errorLink, httpLink]),
-  // link: from([errorLink, authLink, httpLink]),
-  cache: new InMemoryCache(),
-  defaultOptions: defaultOptions,
-});
+// export const apolloClient = new ApolloClient({
+//   // link: from([errorLink, httpLink]),
+//   link: from([errorLink, authLink, httpLink]),
+//   cache: new InMemoryCache(),
+//   defaultOptions: defaultOptions,
+// });
 
 export const layoutApolloClient = new ApolloClient({
   // link: from([errorLink, httpLink]),
-  link: from([errorLink, httpLink]),
+  link: from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache(),
   // defaultOptions: defaultOptions,
-});
+})
