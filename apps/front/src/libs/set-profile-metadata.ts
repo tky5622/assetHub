@@ -85,7 +85,7 @@ export const setProfileMetadata = async (
   const typedData = signedResult?.result?.typedData
 
   const { v, r, s } = splitSignature(signedResult.signature)
-  const lensPeriphery = lensPeripheryGenerator('')
+  const lensPeriphery = lensPeripheryGenerator()
 
   const tx = await lensPeriphery.setProfileMetadataURIWithSig({
     profileId: createProfileMetadataRequest.profileId,

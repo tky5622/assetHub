@@ -7,20 +7,27 @@ export const LENS_API = 'https://api-mumbai.lens.dev'
 
 
 import fs from 'fs';
+import getConfig from 'next/config';
 import path from 'path';
+  const { serverRuntimeConfig } = getConfig()
+  const dirRelativeToPublicFolder = 'abis'
+  console.log(process.cwd(), 'rocess cwd')
 
+  const dir = path.join(process.cwd(), './apps/front/src', dirRelativeToPublicFolder)
+
+console.log(path.join('dir'), 'path')
 const fileLensHub = fs.readFileSync(
-  path.join(__dirname, 'abis/lens-hub-contract-abi.json'),
+  path.join(dir, './lens-hub-contract-abi.json'),
   'utf8'
 );
 const fileLensPeriphery = fs.readFileSync(
-  path.join(__dirname, 'abis/lens-periphery-data-provider.json'),
+  path.join(dir, './lens-periphery-data-provider.json'),
   'utf8'
-);
+)
 const fileFollowNFT = fs.readFileSync(
-  path.join(__dirname, 'abis/lens-follow-nft-contract-abi.json'),
+  path.join(dir, './lens-follow-nft-contract-abi.json'),
   'utf8'
-);
+)
 
   const getParamOrExit = (name: string) => {
     const param = process.env[name];

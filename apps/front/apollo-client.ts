@@ -10,7 +10,7 @@ import {
 } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import fetch from 'cross-fetch';
-import { LENS_API } from './src/config/config';
+import { LENS_API } from './src/constant/lensTokens';
 
 const defaultOptions: DefaultOptions = {
   watchQuery: {
@@ -39,7 +39,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // example how you can pass in the x-access-token into requests using `ApolloLink`
 const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('LensAccessToken');
+  // const token =  localStorage ? localStorage.getItem('LensAccessToken') : undefined
+    const token = undefined
+
   console.log('jwt token:', token);
 
   // Use the setContext method to set the HTTP headers.
