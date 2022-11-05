@@ -46,7 +46,6 @@ export const createSetProfileMetadataTypedData = async (
 
 export const signCreateSetProfileMetadataTypedData = async (
   request: CreatePublicSetProfileMetadataUriRequest,
-  signer: any
 ) => {
   const result = await createSetProfileMetadataTypedData(request)
   console.log('create profile metadata: createCommentTypedData', result)
@@ -58,7 +57,6 @@ export const signCreateSetProfileMetadataTypedData = async (
     typedData?.domain,
     typedData?.types,
     typedData?.value,
-    signer
   )
   console.log('create profile metadata: signature', signature)
 
@@ -67,7 +65,6 @@ export const signCreateSetProfileMetadataTypedData = async (
 
 export const setProfileMetadata = async (
   address: string,
-  signer: any,
   profileMetaDataObject: ProfileMetadata,
   profileId: string
 ) => {
@@ -82,7 +79,6 @@ export const setProfileMetadata = async (
 
   const signedResult = await signCreateSetProfileMetadataTypedData(
     createProfileMetadataRequest,
-    signer
   )
   console.log('create comment: signedResult', signedResult)
 

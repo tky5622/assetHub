@@ -4,7 +4,7 @@ import {
   LENS_HUB_CONTRACT,
   LENS_PERIPHERY_ABI,
   LENS_PERIPHERY_CONTRACT,
-} from '../constant/LensContract'
+} from '../config/config'
 // import { getSigner } from './ethers.service'
 
 // lens contract info can all be found on the deployed

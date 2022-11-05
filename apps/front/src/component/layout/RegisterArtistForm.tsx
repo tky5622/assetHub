@@ -8,19 +8,28 @@ import { useState } from 'react'
 import { TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useAccount, useSigner } from '@web3modal/react'
-import { useRecoilValue } from 'recoil'
+import React from 'react'
+import { Profile } from '../../graphql/generated'
 import { ProfileMetadata } from '../../libs/profile-metadata'
-import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
 import RoundButton from '../shared/RoundButton'
 
-export const RegisterArtistForm: any = () => {
+
+
+type RegisterArtistFormProps = {
+  profiles: Profile[]
+}
+
+
+export const RegisterArtistForm: React.FC<RegisterArtistFormProps>  = ({ profiles}) => {
   // const { setNftList } = useContext(AppContext)
+
+  const targetProfiles = profiles?.[0]
 
   // 後でAPIから取得する方式に変更
   const form = useForm<ProfileMetadata>({
     initialValues: {
-    name: 'LensProtocol.eth',
-    bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.',
+    name: targetProfiles?.name || '',
+    bio: targetProfiles?.bio || '',
     cover_picture:
       'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',
     attributes: [
@@ -38,9 +47,8 @@ export const RegisterArtistForm: any = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const { address } = useAccount()
-  const obj = useSigner()
-  const signer = obj.data
-  const profileId = useRecoilValue(LensProfileIdState)
+  // const profileId = useRecoilValue(LensProfileIdState)
+  const profileId = targetProfiles?.id
 
 
   const onSubmit =  async (values: ProfileMetadata) => {

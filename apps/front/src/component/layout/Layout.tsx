@@ -20,6 +20,7 @@ import { SignupLensModal } from './Modal/SignupLensModal'
 import { useRecoilState} from 'recoil'
 import { LensIsAritistRegisterdState } from '../../recoil/atoms/LensIsAristRegistered'
 import { RegisterArtistProfile } from '../layout/RegisterArtistProfile'
+import { LensUserProfilesState  } from '../../recoil/atoms/LensUserProfiles'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -78,6 +79,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       },[])
 
   const profiles = useGetProfileByAddress(address)
+  const [userProfiles, setUserProfiles] = useRecoilState(LensUserProfilesState)
+  setUserProfiles(profiles)
   const [isRegistered, setIsregistered] = useRecoilState(LensIsAritistRegisterdState)
 
   React.useEffect(() => {
@@ -144,7 +147,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <SignupLensModal/>
 
       {!isRegistered &&
-          <RegisterArtistProfile isRegistered={isRegistered} setIsregistered={setIsregistered}/>
+          <RegisterArtistProfile profiles={profiles}isRegistered={isRegistered} setIsregistered={setIsregistered}/>
         }
       {children}
       <FooterLinks />
