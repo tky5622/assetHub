@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 // import { address } from '../../abi/contractAddress'
 // import ABI from '../../abi/nft.json'
 import { useSigner, useSignTypedData } from '@web3modal/react'
+import { usePathname } from 'next/navigation'
 import { useRecoilValue } from 'recoil'
 import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
 import { createPost } from '../../libs/set-publication-metadata'
@@ -15,6 +16,7 @@ import { LensUserProfilesState } from '../../recoil/atoms/LensUserProfiles'
 import LitShare from '../litShare/LitShare'
 import RoundButton from '../shared/RoundButton'
 import NftDropZone from './NftDropZone'
+
 // const mintNftHandler = async (values: any, setLoading: any, setIsOpen: any) => {
 //   console.log(values, 'mintNftHandler')
 //   try {
@@ -52,7 +54,8 @@ const usePostPublication = (values: any, setIsOpen: any) => {
   const signer = useSigner()
   const profiles = useRecoilValue(LensUserProfilesState)
   const { signTypedData }= useSignTypedData({test: 'test'})
-
+  const pathname = usePathname().split('/')
+  const projectId = pathname[2]
 
   const mintNftHandler = React.useCallback(async (profileId: string, ipfsResult: string, accessToken: string) => {
     await createPost(profileId, ipfsResult, accessToken, signer.data, signTypedData)
@@ -64,6 +67,7 @@ const usePostPublication = (values: any, setIsOpen: any) => {
     console.log('ss')
     const profileId = profiles[0]?.id
     const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
+    values.projectId = projectId
 
     setIsLoading(true)
     const result = await fetch('/api/upload-publication-ipfs', {
@@ -81,19 +85,16 @@ const usePostPublication = (values: any, setIsOpen: any) => {
     console.log(result?.body, 'result body')
     const uri = await result?.json()
     console.log(uri, 'console.log uri')
-
-
     if (accessToken){
     await mintNftHandler(profileId, uri?.path, accessToken)
     }
 
     // setIsLoading,
     // setIsOpen
-  },[mintNftHandler, profiles])
+  },[mintNftHandler, profiles, projectId])
 
   return {onClick, isLoading}
 }
-
 
 
 const useModelUrl = (setValues: any) => {
@@ -177,7 +178,6 @@ const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
                     >
                       Upload
                     </RoundButton>
-
                   </form>
                 </>
               )}

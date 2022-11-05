@@ -1,40 +1,38 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Follower,
   Maybe,
   ProfileMedia,
   Publication,
-  Scalars,
-} from '@use-lens/react-apollo'
+  Scalars
+} from '@use-lens/react-apollo';
 // useRefreshMutation
-import React from 'react'
+import { useSigner } from '@web3modal/react';
+import React from 'react';
 import {
   LENS_ACCESS_TOKEN,
   LENS_REFRESH_TOKEN,
-  LENS_TOKEN_EXPIRE,
-} from '../../constant/lensTokens'
-import { FOLLOWER_QUERY } from '../../graphql/lens.followers.query'
-import { refreshTokenMutaiton } from '../../graphql/mutations/lens.auth.refresh.mutation'
-import { PUBLICATION_QUERY } from '../../graphql/queries/lens.publicaition.query'
-
-import { useSigner } from '@web3modal/react'
-import { AuthMutation } from '../../graphql/mutations/lens.auth.mutation'
-import { AuthChallengeQuery } from '../../graphql/queries/lens.auth.query'
-import { profileQueryById } from '../../graphql/queries/lens.profile-by-id.query'
+  LENS_TOKEN_EXPIRE
+} from '../../constant/lensTokens';
+import { FOLLOWER_QUERY } from '../../graphql/lens.followers.query';
+import { AuthMutation } from '../../graphql/mutations/lens.auth.mutation';
+import { refreshTokenMutaiton } from '../../graphql/mutations/lens.auth.refresh.mutation';
+import { AuthChallengeQuery } from '../../graphql/queries/lens.auth.query';
+import { profileQueryById } from '../../graphql/queries/lens.profile-by-id.query';
+import { PUBLICATION_QUERY } from '../../graphql/queries/lens.publicaition.query';
+import { PUBLICATION_BY_PROJECT_QUERY } from '../../graphql/queries/lens.publications-by-project.query';
 // import { CreateProfile } from '@use-lens/react-apollo'
-import { useRecoilState } from 'recoil'
-import { layoutApolloClient } from '../../../apollo-client'
+import { useRecoilState } from 'recoil';
+import { layoutApolloClient } from '../../../apollo-client';
+import { createProjectIdQuery } from '../../constant/LensContract';
 import {
   DefaultProfileDocument,
-  DefaultProfileRequest,
-  ProfilesDocument,
-} from '../../graphql/generated'
-import { refreshAuth } from '../../libs/authentication/refresh'
-import { createProfile } from '../../libs/create-profile'
-import { LensAuthLoadingState } from '../../recoil/atoms/LensAuthLoading'
-import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
-import { Profile } from '../../graphql/generated'
-
+  DefaultProfileRequest, Profile, ProfilesDocument, PublicationsQueryRequest
+} from '../../graphql/generated';
+import { refreshAuth } from '../../libs/authentication/refresh';
+import { createProfile } from '../../libs/create-profile';
+import { LensAuthLoadingState } from '../../recoil/atoms/LensAuthLoading';
+import { LensProfileIdState } from '../../recoil/atoms/LensProfile';
 // const getProfilesRequest = async (request: ProfileQueryRequest) => {
 //   const result = await apolloClient.query({
 //     query: ProfilesDocument,
@@ -55,7 +53,6 @@ export const useGetProfileByAddress = (address: string) => {
     },
   })
   // console.log(userProfileId, 'usetProfileId')
-  console.log(userProfile, 'userProfile By owned By')
   const userProfileData = userProfile
   return userProfileData?.data?.profiles?.items as unknown as Profile[]
 }
@@ -67,8 +64,6 @@ export const useGetProfileByProfileId = (userProfileId: string) => {
       profileId: userProfileId,
     },
   })
-  console.log(userProfileId, 'usetProfileId')
-  console.log(userProfile, 'userProfile By Id')
   const userProfileData = userProfile
   return userProfileData
 }
@@ -269,6 +264,29 @@ export type PublicationQuery = {
   publications: {
     items: Publication[]
   }
+}
+
+
+export const usePublicationsByProject = (projectId: string) => {
+  console.log(projectId, 'projectId')
+  const { data, loading, error } = useQuery<PublicationsQueryRequest>(
+    PUBLICATION_BY_PROJECT_QUERY,
+    {
+      variables: {
+        request: {
+          publicationTypes: ['POST'],
+          metadata: {
+            tags: {
+              oneOf: [createProjectIdQuery(projectId)],
+            },
+          },
+        } as PublicationsQueryRequest,
+      },
+    }
+  )
+
+  return { data, loading, error }
+
 }
 
 export const usePublications = (profileId: Scalars['ProfileId']) => {

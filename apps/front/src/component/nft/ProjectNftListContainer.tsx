@@ -1,18 +1,19 @@
 'use client'
 
-import { Scalars } from '@use-lens/react-apollo'
-import { useRouter } from 'next/router'
-import { usePublications } from '../../hooks/useLens/useLens'
+// import { Scalars } from '@use-lens/react-apollo'
+import { usePathname } from 'next/navigation'
+import { usePublicationsByProject } from '../../hooks/useLens/useLens'
 import { NftList } from './NftList'
 import UploadNFTButton from './UploadNft'
 
+
 export const ProjectNftListContainer = () => {
-  const router = useRouter()
-  const profileId = router?.query?.id as Scalars['ProfileId']
-  console.log(profileId)
   // const id = '0x01'
-  const { data, loading, error } = usePublications(profileId)
-  console.log(data?.publications.items, 'loading')
+  const pathname = usePathname().split('/')
+  const projectId = pathname[2]
+
+  const { data, loading, error } = usePublicationsByProject(projectId)
+  console.log(data, 'loading')
   return (
     <>
       <UploadNFTButton />

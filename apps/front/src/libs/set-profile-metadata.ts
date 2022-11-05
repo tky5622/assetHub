@@ -3,7 +3,7 @@ import {
   CreatePublicSetProfileMetadataUriRequest,
   CreateSetProfileMetadataTypedDataDocument,
 } from '../graphql/generated'
-import { signedTypeData, splitSignature } from './ethers.service'
+import { signedTypeData, splitSignature, getSigner } from './ethers.service'
 import { pollUntilIndexed } from './has-transaction-been-indexed'
 import { uploadIpfs } from './ipfs'
 import { lensPeripheryGenerator } from './lens-hub'
@@ -89,7 +89,7 @@ export const setProfileMetadata = async (
   const typedData = signedResult?.result?.typedData
 
   const { v, r, s } = splitSignature(signedResult.signature)
-  const lensPeriphery = lensPeripheryGenerator()
+  const lensPeriphery = lensPeripheryGenerator(getSigner())
 
   const tx = await lensPeriphery.setProfileMetadataURIWithSig({
     profileId: createProfileMetadataRequest.profileId,
