@@ -1,17 +1,16 @@
 import { layoutApolloClient } from '../../apollo-client';
-import { v4 as uuidv4 } from 'uuid'
-import {
-  signedTypeData,
-  splitSignature,
-} from './ethers.service'
 import {
   CreatePublicSetProfileMetadataUriRequest,
-  CreateSetProfileMetadataTypedDataDocument,
-} from '../graphql/generated'
-import { pollUntilIndexed } from './has-transaction-been-indexed'
-import { ProfileMetadata } from './profile-metadata'
-import { uploadIpfs } from './ipfs'
-import { lensPeripheryGenerator } from './lens-hub'
+  CreateSetProfileMetadataTypedDataDocument
+} from '../graphql/generated';
+import {
+  signedTypeData,
+  splitSignature
+} from './ethers.service';
+import { pollUntilIndexed } from './has-transaction-been-indexed';
+import { uploadIpfs } from './ipfs';
+import { lensPeripheryGenerator } from './lens-hub';
+import { ProfileMetadata } from './profile-metadata';
 
   //   {
   //   name: 'LensProtocol.eth',
@@ -32,12 +31,19 @@ import { lensPeripheryGenerator } from './lens-hub'
 
 
 export const createSetProfileMetadataTypedData = async (
-  request: CreatePublicSetProfileMetadataUriRequest
+  request: CreatePublicSetProfileMetadataUriRequest,
+  accessToken: string
 ) => {
+  console.log(accessToken, 'check access Token here')
   const result = await layoutApolloClient.mutate({
     mutation: CreateSetProfileMetadataTypedDataDocument,
     variables: {
       request,
+    },
+    context: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
   })
 
@@ -46,8 +52,9 @@ export const createSetProfileMetadataTypedData = async (
 
 export const signCreateSetProfileMetadataTypedData = async (
   request: CreatePublicSetProfileMetadataUriRequest,
+  accessToken: string
 ) => {
-  const result = await createSetProfileMetadataTypedData(request)
+  const result = await createSetProfileMetadataTypedData(request, accessToken)
   console.log('create profile metadata: createCommentTypedData', result)
 
   const typedData = result?.typedData
@@ -66,7 +73,8 @@ export const signCreateSetProfileMetadataTypedData = async (
 export const setProfileMetadata = async (
   address: string,
   profileMetaDataObject: ProfileMetadata,
-  profileId: string
+  profileId: string,
+  accessToken: string
 ) => {
   const ipfsResult = await uploadIpfs<ProfileMetadata>(profileMetaDataObject)
   console.log('create profile metadata: ipfs result', ipfsResult)
@@ -79,6 +87,7 @@ export const setProfileMetadata = async (
 
   const signedResult = await signCreateSetProfileMetadataTypedData(
     createProfileMetadataRequest,
+    accessToken
   )
   console.log('create comment: signedResult', signedResult)
 
@@ -100,7 +109,7 @@ export const setProfileMetadata = async (
   console.log('create profile metadata: tx hash', tx.hash)
 
   console.log('create profile metadata: poll until indexed')
-  const indexedResult = await pollUntilIndexed({ txHash: tx.hash })
+  const indexedResult = await pollUntilIndexed({ txHash: tx.hash }, accessToken)
 
   console.log('create profile metadata: profile has been indexed')
 

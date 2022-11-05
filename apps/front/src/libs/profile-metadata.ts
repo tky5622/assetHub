@@ -6,6 +6,7 @@ export interface AttributeData {
 }
 
 export interface ProfileMetadata extends GenericMetadata {
+  accessToken: string | null
   profileId: string
   address: string
   name?: string

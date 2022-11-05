@@ -7,8 +7,9 @@ import { useState } from 'react'
 
 import { TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { useAccount, useSigner } from '@web3modal/react'
+import { useAccount } from '@web3modal/react'
 import React from 'react'
+import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
 import { Profile } from '../../graphql/generated'
 import { ProfileMetadata } from '../../libs/profile-metadata'
 import RoundButton from '../shared/RoundButton'
@@ -39,7 +40,7 @@ export const RegisterArtistForm: React.FC<RegisterArtistFormProps>  = ({ profile
         key: 'artistProfile',
       },
     ],
-    version: '2.0.0',
+    version: '1.0.0',
     metadata_id: 'testtest',
     },
   })
@@ -49,6 +50,7 @@ export const RegisterArtistForm: React.FC<RegisterArtistFormProps>  = ({ profile
   const { address } = useAccount()
   // const profileId = useRecoilValue(LensProfileIdState)
   const profileId = targetProfiles?.id
+  const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
 
 
   const onSubmit =  async (values: ProfileMetadata) => {
@@ -56,16 +58,20 @@ export const RegisterArtistForm: React.FC<RegisterArtistFormProps>  = ({ profile
     // await setProfileMetadata(address, signer, values, profileId)
     values.address = address
     values.profileId = profileId
+    values.accessToken = accessToken
     console.log(JSON.stringify(values))
 
-    fetch('/api/ipfs', {
+    const result = await fetch('/api/ipfs', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(values),
+    }).catch((err) => {
+      console.error(err)
+      setIsLoading(false)
     })
-
+    setIsLoading(false)
   }
 
   return (

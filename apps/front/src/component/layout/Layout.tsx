@@ -7,20 +7,19 @@
 import { AppShell, Notification } from '@mantine/core'
 import { useAccount } from '@web3modal/react'
 import React from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { LENS_ACCESS_TOKEN, LENS_REFRESH_TOKEN } from '../../constant/lensTokens'
 import { Profile } from '../../graphql/generated'
-import { useDefaultProfileQuery, useGetProfileByAddress } from '../../hooks/useLens/useLens'
+import { useGetProfileByAddress } from '../../hooks/useLens/useLens'
 import { refreshAuth } from '../../libs/authentication/refresh'
 import { LensAuthLoadingState } from '../../recoil/atoms/LensAuthLoading'
+import { LensIsAritistRegisterdState } from '../../recoil/atoms/LensIsAristRegistered'
+import { LensUserProfilesState } from '../../recoil/atoms/LensUserProfiles'
+import { RegisterArtistProfile } from '../layout/RegisterArtistProfile'
 import WalletConnectModal from '../walletConnect/WalletConnectModal'
 import AppHeader from './AppHeader'
 import { FooterLinks } from './Footer'
 import { SignupLensModal } from './Modal/SignupLensModal'
-import { useRecoilState} from 'recoil'
-import { LensIsAritistRegisterdState } from '../../recoil/atoms/LensIsAristRegistered'
-import { RegisterArtistProfile } from '../layout/RegisterArtistProfile'
-import { LensUserProfilesState  } from '../../recoil/atoms/LensUserProfiles'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -91,9 +90,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       })
     }
   }
+    if (profiles?.length !== 0 && accessToken){
     setIsregistered(profiles?.some(checkIsArtist))
+    }
 
-  }, [profiles, setIsregistered])
+  }, [accessToken, profiles, setIsregistered])
 
 
   // console.log(profile, 'default profile')

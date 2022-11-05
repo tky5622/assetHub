@@ -38,9 +38,14 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 // example how you can pass in the x-access-token into requests using `ApolloLink`
-const authLink = new ApolloLink((operation, forward) => {
-  // const token =  localStorage ? localStorage.getItem('LensAccessToken') : undefined
-    const token = undefined
+let authLink
+
+if(typeof window === 'undefined' ) {
+authLink = new ApolloLink((operation, forward) => {
+  const token =  localStorage ? localStorage.getItem('LensAccessToken') : undefined
+    // const token = localStorage
+    //   ? localStorage.getItem('LensAccessToken')
+    //   : undefined
 
   console.log('jwt token:', token);
 
@@ -54,6 +59,7 @@ const authLink = new ApolloLink((operation, forward) => {
   // Call the next link in the middleware chain.
   return forward(operation);
 });
+}
 
 // export const apolloClient = new ApolloClient({
 //   // link: from([errorLink, httpLink]),
@@ -62,9 +68,10 @@ const authLink = new ApolloLink((operation, forward) => {
 //   defaultOptions: defaultOptions,
 // });
 
+const link = authLink ?  from([errorLink, httpLink, authLink]) :from([errorLink, httpLink])
+
 export const layoutApolloClient = new ApolloClient({
-  // link: from([errorLink, httpLink]),
-  link: from([errorLink, authLink, httpLink]),
+  link: link,
   cache: new InMemoryCache(),
   // defaultOptions: defaultOptions,
 })

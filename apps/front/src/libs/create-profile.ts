@@ -1,5 +1,5 @@
 import { BigNumber, utils } from 'ethers';
-import { layoutApolloClient } from '../../apollo-client'
+import { layoutApolloClient } from '../../apollo-client';
 import { CreateProfileDocument, CreateProfileRequest } from '../graphql/generated';
 import { login } from './authentication/login';
 import { pollUntilIndexed } from './has-transaction-been-indexed';
@@ -38,7 +38,10 @@ export const createProfile = async (address: string, token: string) => {
   }
 
   console.log('create profile: poll until indexed');
-  const result = await pollUntilIndexed({ txHash: createProfileResult.txHash }, token);
+  const result = await pollUntilIndexed(
+    { txHash: createProfileResult.txHash },
+    token
+  )
 
   console.log('create profile: profile has been indexed', result);
 

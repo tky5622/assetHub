@@ -5,21 +5,26 @@ import { getAddressFromSigner } from '../ethers.service';
 import { follow } from '../follow/follow';
 import { HasTxHashBeenIndexedDocument, HasTxHashBeenIndexedRequest } from '../graphql/generated';
 
-const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest) => {
+const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest, token?: string) => {
   const result = await apolloClient.query({
     query: HasTxHashBeenIndexedDocument,
     variables: {
       request,
     },
     fetchPolicy: 'network-only',
-  });
+    context: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  })
 
   return result.data.hasTxHashBeenIndexed;
 };
 
-export const pollUntilIndexed = async (input: { txHash: string } | { txId: string }) => {
+export const pollUntilIndexed = async (input: { txHash: string } | { txId: string }, token?: string) => {
   while (true) {
-    const response = await hasTxBeenIndexed(input);
+    const response = await hasTxBeenIndexed(input, token);
     console.log('pool until indexed: result', response);
 
     if (response.__typename === 'TransactionIndexedResult') {
