@@ -3,12 +3,10 @@
 import { Group, LoadingOverlay } from '@mantine/core'
 
 // import { useAddress, useNFTCollection } from '@thirdweb-dev/react'
-import { useState } from 'react'
-
+import React, { useState } from 'react'
 import { TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useAccount } from '@web3modal/react'
-import React from 'react'
 import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
 import { Profile } from '../../graphql/generated'
 import { ProfileMetadata } from '../../libs/profile-metadata'
@@ -22,7 +20,7 @@ type RegisterArtistFormProps = {
 }
 
 
-export const RegisterArtistForm: React.FC<RegisterArtistFormProps>  = ({ profiles}) => {
+export const RegisterArtistForm: React.FC<RegisterArtistFormProps>  = ({profiles}) => {
   // const { setNftList } = useContext(AppContext)
 
   const targetProfiles = profiles?.[0]
