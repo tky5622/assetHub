@@ -13,7 +13,6 @@ export const RegisterArtistProfile: FC<RegisterArtistProfileProps>= ({ isRegiste
   return (
     <Modal onClose={() => console.log('cannot close')} opened={!isRegistered}>
       <RegisterArtistForm />
-      <Button>create profile</Button>
     </Modal>
   )
 }

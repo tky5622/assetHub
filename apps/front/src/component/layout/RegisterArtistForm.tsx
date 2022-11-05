@@ -7,12 +7,11 @@ import { useState } from 'react'
 
 import { TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { ProfileMetadata } from '../../libs/profile-metadata'
-import RoundButton from '../shared/RoundButton'
-import { setProfileMetadata  } from '../../libs/set-profile-metadata'
-import { useAccount, useSigner} from '@web3modal/react'
+import { useAccount, useSigner } from '@web3modal/react'
 import { useRecoilValue } from 'recoil'
+import { ProfileMetadata } from '../../libs/profile-metadata'
 import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
+import RoundButton from '../shared/RoundButton'
 
 export const RegisterArtistForm: any = () => {
   // const { setNftList } = useContext(AppContext)
@@ -44,15 +43,28 @@ export const RegisterArtistForm: any = () => {
   const profileId = useRecoilValue(LensProfileIdState)
 
 
-  const onSubmit = (values: ProfileMetadata) => {
-    setProfileMetadata(address, signer, values, profileId)
+  const onSubmit =  async (values: ProfileMetadata) => {
+    setIsLoading(true)
+    // await setProfileMetadata(address, signer, values, profileId)
+    values.address = address
+    values.profileId = profileId
+    console.log(JSON.stringify(values))
+
+    fetch('/api/ipfs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+
   }
 
   return (
     <>
               <LoadingOverlay visible={isLoading} overlayBlur={2} />
                   <form
-                    onSubmit={form.onSubmit((values) => onSubmit(values))}
+                    onSubmit={form.onSubmit(async(values) => await onSubmit(values))}
                   >
                     <TextInput
                       id="name"
@@ -66,15 +78,15 @@ export const RegisterArtistForm: any = () => {
                       type="text"
                      {...form.getInputProps('bio')}
                     />
+        <RoundButton
+          isLoading={isLoading}
+          type='submit'
+        >
+          Upload
+        </RoundButton>
+
                   </form>
                   <Group>
-                    <RoundButton >Close</RoundButton>
-                    <RoundButton
-                      // isLoading={isLoading}
-                      type={'submit'}
-                    >
-                      Upload
-                    </RoundButton>
                   </Group>
                 </>
     )
