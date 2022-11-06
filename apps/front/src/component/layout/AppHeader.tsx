@@ -17,9 +17,9 @@ import { UserMenu } from './UserMenu'
 
 const HEADER_HEIGHT = 60
 
-type AppHeaderProps = {
-  // children: React.ReactNode
-}
+// type AppHeaderProps = {
+//   // children: React.ReactNode
+// }
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -83,12 +83,19 @@ const links = [
   },
 ]
 
+type LinksType = {
+  link: string,
+  label: string,
+  links?: LinksType[]
+}
+
+
 export function AppHeader() {
   const { classes } = useStyles()
   const [opened, { toggle }] = useDisclosure(false)
   const { isConnected, address } = useAccount()
 
-  const items = links.map((link) => {
+  const items = links.map((link: LinksType) => {
     const menuItems = link.links?.map((item) => (
       <Link key={item.link} href={link.link}>
         <Menu.Item>{item.label}</Menu.Item>
