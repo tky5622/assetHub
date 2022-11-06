@@ -4,7 +4,6 @@
 // import { usePathname } from 'next/navigation'
 import { usePublications } from '../../hooks/useLens/useLens'
 import { NftList } from './NftList'
-import UploadNFTButton from './UploadNft'
 
 export const ProjectNftListContainer = () => {
   // const id = '0x01'
@@ -15,7 +14,6 @@ export const ProjectNftListContainer = () => {
   console.log(data, 'loading')
   return (
     <>
-      <UploadNFTButton />
       {loading ? (
         'loading'
       ) : (

@@ -5,9 +5,11 @@ import {
   createStyles,
   Group,
   Text,
-  Title,
+  Title
 } from '@mantine/core'
 // import image from './image.svg';
+import UploadNFTButton from './UploadNft'
+
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -79,26 +81,24 @@ export function NftDetails() {
           />
           <div className={classes.content}>
             <Title className={classes.title}>
-              A <span className={classes.highlight}>modern</span> React <br />{' '}
-              components library
+              Fantasy World Builders DAO  <br />{' '}
             </Title>
             <Text color="dimmed" mt="md">
-              Build fully functional accessible web applications faster than
-              ever – Mantine includes more than 120 customizable components and
-              hooks to cover you in any situation
+              We are a community creating a wonderful fantasy world. We are looking for dragons, wizards, castles floating in the air, and other authentic content.
             </Text>
 
             <Group mt={30}>
               <Button radius="xl" size="md" className={classes.control}>
-                Get started
+                Join DAO with your asset
               </Button>
+              <UploadNFTButton />
               <Button
                 variant="default"
                 radius="xl"
                 size="md"
                 className={classes.control}
               >
-                Source code
+                Buy Access Pass
               </Button>
             </Group>
           </div>
