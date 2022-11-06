@@ -8,6 +8,7 @@ import {
   Title
 } from '@mantine/core'
 // import image from './image.svg';
+//
 import React from 'react'
 import UploadNftModal from './UploadNftModal'
 
