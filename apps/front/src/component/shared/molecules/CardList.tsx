@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client'
 import { Carousel } from '@mantine/carousel'
 import {
@@ -9,7 +10,7 @@ import {
   useMantineTheme
 } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 const useStyles = createStyles((theme) => ({
   card: {
     height: 440,
@@ -78,13 +79,13 @@ const data = [
   {
     image:
       'https://cdn.discordapp.com/attachments/1017794189452390440/1033661301207085056/image0.jpg',
-    title: 'Best forests to visit in North America',
+    title: 'Fantasy world builders DAO',
     category: 'nature',
   },
   {
     image:
       'https://cdn.discordapp.com/attachments/1017794189452390440/1033661033279131698/image0.jpg',
-    title: 'Hawaii beaches review: better than you think',
+    title: `creator's DAO for otherside`,
     category: 'beach',
   },
   {
@@ -123,6 +124,12 @@ export function CardsCarousel() {
   ))
 
   return (
+    <>
+    <Text weight={600}>
+    Creator's DAO List
+    </Text>
+    <br/>
+
     <Carousel
       slideSize="50%"
       breakpoints={[{ maxWidth: 'sm', slideSize: '100%', slideGap: 2 }]}
@@ -132,5 +139,6 @@ export function CardsCarousel() {
     >
       {slides}
     </Carousel>
+    </>
   )
 }
