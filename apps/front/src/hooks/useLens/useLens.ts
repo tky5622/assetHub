@@ -1,10 +1,11 @@
+'use client'
 import { useMutation, useQuery } from '@apollo/client'
 import {
   Follower,
   Maybe,
   ProfileMedia,
   Publication,
-  Scalars,
+  Scalars
 } from '@use-lens/react-apollo'
 // useRefreshMutation
 import { useSigner } from '@web3modal/react'
@@ -12,16 +13,16 @@ import React from 'react'
 import {
   LENS_ACCESS_TOKEN,
   LENS_REFRESH_TOKEN,
-  LENS_TOKEN_EXPIRE,
+  LENS_TOKEN_EXPIRE
 } from '../../constant/lensTokens'
 import { FOLLOWER_QUERY } from '../../graphql/lens.followers.query'
 import { AuthMutation } from '../../graphql/mutations/lens.auth.mutation'
 import { refreshTokenMutaiton } from '../../graphql/mutations/lens.auth.refresh.mutation'
 import { AuthChallengeQuery } from '../../graphql/queries/lens.auth.query'
 import { profileQueryById } from '../../graphql/queries/lens.profile-by-id.query'
+import { QUERY_BY_PUBLICATION_ID } from '../../graphql/queries/lens.publicaition-by-id.query'
 import { PUBLICATION_QUERY } from '../../graphql/queries/lens.publicaition.query'
 import { PUBLICATION_BY_PROJECT_QUERY } from '../../graphql/queries/lens.publications-by-project.query'
-import { QUERY_BY_PUBLICATION_ID } from '../../graphql/queries/lens.publicaition-by-id.query'
 // import { CreateProfile } from '@use-lens/react-apollo'
 import { useRecoilState } from 'recoil'
 import { layoutApolloClient } from '../../../apollo-client'
@@ -31,7 +32,7 @@ import {
   DefaultProfileRequest,
   Profile,
   ProfilesDocument,
-  PublicationsQueryRequest,
+  PublicationsQueryRequest
 } from '../../graphql/generated'
 import { refreshAuth } from '../../libs/authentication/refresh'
 import { createProfile } from '../../libs/create-profile'
@@ -121,6 +122,7 @@ export const useLensAuth = (address: string) => {
 
   const onClickCreateProfile = React.useCallback(async () => {
     // sign message with challenge text
+    if(localStorage){
     const sign = await signer.data?.signMessage(data?.challenge.text)
     setAuthLoading(true)
     console.log(sign, 'test signt wait ')
@@ -173,6 +175,7 @@ export const useLensAuth = (address: string) => {
     setAuthLoading(false)
 
     console.log(profileId, 'create profile, //check what stored')
+    }
   }, [
     address,
     authFunc,
@@ -210,6 +213,7 @@ export const useRefreshAuthToken = () => {
   const [refMutation] = useMutation(refreshTokenMutaiton)
 
   const refreshTokenHandler = React.useCallback(async () => {
+    if (!localStorage) return
     const CurrentRefreshToken = localStorage.getItem(LENS_REFRESH_TOKEN)
     const CurrentAccessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
 

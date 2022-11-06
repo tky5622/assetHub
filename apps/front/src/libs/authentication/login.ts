@@ -1,3 +1,5 @@
+'use client'
+
 import { layoutApolloClient } from '../../../apollo-client'
 // import { argsBespokeInit } from '../../config/config';
 // import { getAddressFromSigner, signText } from '../../config/ethers.service';
@@ -33,6 +35,7 @@ const authenticate = async (request: SignedAuthChallenge) => {
 }
 
 export const login = async (address: string) => {
+  if(localStorage){
   const authToken = localStorage.getItem(LENS_ACCESS_TOKEN)
   if (authToken) {
     console.log('login: already logged in')
@@ -48,10 +51,10 @@ export const login = async (address: string) => {
   const signature = ''
   // const signature = await signText(challengeResponse.text)
 
-
   const authenticatedResult = await authenticate({ address, signature })
   console.log('login: result', authenticatedResult)
   localStorage.setItem(LENS_ACCESS_TOKEN, authenticatedResult.accessToken)
 
   return authenticatedResult
+}
 }

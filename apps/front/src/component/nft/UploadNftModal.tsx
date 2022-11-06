@@ -51,6 +51,7 @@ const usePostPublication = (values: any, setIsOpen: any) => {
 
   const onClick = React.useCallback(
     async (values: any) => {
+      if(localStorage){
       console.log('ss')
       const profileId = profiles[0]?.id
       const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
@@ -78,7 +79,7 @@ const usePostPublication = (values: any, setIsOpen: any) => {
 
       // setIsLoading,
       // setIsOpen
-    },
+    }},
     [mintNftHandler, profiles, projectId]
   )
 

@@ -54,8 +54,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // }, [])
   const { address, isConnected } = useAccount()
   // const { address } = useAccount()
-  const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
-  const refreshToken = localStorage.getItem(LENS_REFRESH_TOKEN)
   // const { getDefaultProfile } = useDefaultProfile()
   // const [userProfileId, setUserProfileId] = useRecoilState(LensProfileIdState)
   // const userProfileData = useGetProfile(userProfileId)
@@ -63,6 +61,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   React.useEffect(() => {
     const runRefresh = async () => {
+      if(!localStorage) return
+      const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
+      const refreshToken = localStorage.getItem(LENS_REFRESH_TOKEN)
+
       if (refreshToken) {
         const test = await refreshAuth(
           {
@@ -90,16 +92,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   React.useEffect(() => {
     const checkIsArtist = (item?: Profile) => {
+
       if (item?.__typename == 'Profile') {
         return item?.attributes?.some((attribute) => {
           return attribute.key === 'artistProfile'
         })
       }
     }
+    if (!localStorage) return
+    const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
+
     if (profiles?.length !== 0 && accessToken) {
       setIsregistered(profiles?.some(checkIsArtist))
     }
-  }, [accessToken, profiles, setIsregistered])
+  }, [profiles, setIsregistered])
 
   // console.log(profile, 'default profile')
   // const { defaultProfile } = useDefaultProfileQuery({ ethereumAddress: address })

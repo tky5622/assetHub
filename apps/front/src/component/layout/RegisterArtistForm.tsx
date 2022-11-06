@@ -48,9 +48,10 @@ export const RegisterArtistForm = ({ profiles }: RegisterArtistFormProps) => {
   const { address } = useAccount()
   // const profileId = useRecoilValue(LensProfileIdState)
   const profileId = targetProfiles?.id
-  const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
 
   const onSubmit = async (values: ProfileMetadata) => {
+    if(!localStorage) return
+    const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
     setIsLoading(true)
     // await setProfileMetadata(address, signer, values, profileId)
     values.address = address
