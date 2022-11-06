@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { layoutApolloClient } from '../../apollo-client'
 import {
   CreatePublicSetProfileMetadataUriRequest,
@@ -56,6 +57,7 @@ export const signCreateSetProfileMetadataTypedData = async (
   console.log('create profile metadata: typedData', typedData)
 
   const signature = await signedTypeData(
+    // @ts-ignore
     typedData?.domain,
     typedData?.types,
     typedData?.value

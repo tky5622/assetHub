@@ -8,8 +8,12 @@ import {
 } from '../graphql/generated'
 import { pollUntilIndexed } from './has-transaction-been-indexed'
 // import { Metadata, PublicationMainFocus } from './publication-metadata';
-import { TypedDataDomain } from '@ethersproject/abstract-signer'
-import { Signer, TypedDataSigner } from 'ethers'
+import {
+  TypedDataDomain,
+  TypedDataSigner,
+} from '@ethersproject/abstract-signer'
+import { Signer } from 'ethers'
+
 import { omit } from './helpers'
 import { lensHubGenerator } from './lens-hub'
 
@@ -37,12 +41,11 @@ export const createPostTypedData = async (
 
   return result.data?.createPostTypedData
 }
-
 export const signedTypeData = async (
   domain: TypedDataDomain,
   types: Record<string, any>,
   value: Record<string, any>,
-  signTypedData: TypedDataSigner
+  signTypedData: any
 ) => {
   // remove the __typedname from the signature!
   console.log(signTypedData, 'before signTypedData Signer')
@@ -82,6 +85,8 @@ export const signCreatePostTypedData = async (
   console.log('create post: typedData', typedData, result)
 
   const signature = await signedTypeData(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     typedData?.domain,
     typedData?.types,
     typedData?.value,
@@ -97,7 +102,7 @@ export const createPost = async (
   path: string,
   accessToken: string,
   signer: Signer,
-  signTypedData: TypedDataSigner
+  signTypedData: any
 ) => {
   const createPostRequest = {
     profileId,

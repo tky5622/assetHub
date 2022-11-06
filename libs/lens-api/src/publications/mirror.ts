@@ -105,7 +105,7 @@ const createMirror = async () => {
   const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId)
   console.log('create mirror: created log', profileCreatedLog)
 
-  let profileCreatedEventLog = profileCreatedLog!.topics
+  const profileCreatedEventLog = profileCreatedLog!.topics
   console.log('create mirror: created event logs', profileCreatedEventLog)
 
   const publicationId = utils.defaultAbiCoder.decode(
