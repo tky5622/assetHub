@@ -3,7 +3,7 @@
 import { Tabs } from '@mantine/core'
 import { UsersRolesTable } from '../home/TopUserList'
 import { ProjectNftListContainer } from './ProjectNftListContainer'
-
+import { UnlockContainer } from './UnlockContainer'
 function TabContainer() {
   return (
     <Tabs defaultValue="assethub" inverted>
@@ -29,7 +29,9 @@ function TabContainer() {
         <UsersRolesTable />
       </Tabs.Panel>
       <Tabs.Panel value="store">
-        <UsersRolesTable />
+        <>
+          <UnlockContainer/>
+        </>
       </Tabs.Panel>
     </Tabs>
   )
