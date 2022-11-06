@@ -108,7 +108,6 @@ export const setProfileImageUriNFT = async () => {
   })
   console.log('set profile image uri normal: tx hash', tx.hash)
 }
-
 ;(async () => {
   await setProfileImageUriNFT()
 })()

@@ -63,7 +63,6 @@ export const unfollow = async () => {
   const tx = await followNftContract.burnWithSig(typedData.value.tokenId, sig)
   console.log('follow: tx hash', tx.hash)
 }
-
 ;(async () => {
   await unfollow()
 })()

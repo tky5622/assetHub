@@ -36,7 +36,6 @@ export const timeline = async () => {
 
   return result
 }
-
 ;(async () => {
   await timeline()
 })()

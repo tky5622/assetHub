@@ -23,7 +23,6 @@ export const whoCollected = async () => {
 
   return result
 }
-
 ;(async () => {
   await whoCollected()
 })()

@@ -24,7 +24,6 @@ export const enabledCurrencies = async () => {
 
   return result
 }
-
 ;(async () => {
   if (argsBespokeInit()) {
     await enabledCurrencies()

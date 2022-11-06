@@ -53,7 +53,6 @@ export const proxyActionFreeCollect = async () => {
 
   return result
 }
-
 ;(async () => {
   await proxyActionFreeCollect()
 })()

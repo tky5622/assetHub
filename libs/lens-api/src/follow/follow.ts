@@ -64,7 +64,6 @@ export const follow = async (profileId: string = '0x11') => {
   console.log('follow: tx hash', tx.hash)
   return tx.hash
 }
-
 ;(async () => {
   if (argsBespokeInit()) {
     await follow()

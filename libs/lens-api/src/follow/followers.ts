@@ -24,7 +24,6 @@ export const followers = async () => {
 
   return result
 }
-
 ;(async () => {
   await followers()
 })()

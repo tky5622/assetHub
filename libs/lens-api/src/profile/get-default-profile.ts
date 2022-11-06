@@ -26,7 +26,6 @@ export const getDefaultProfile = async () => {
 
   return result
 }
-
 ;(async () => {
   await getDefaultProfile()
 })()

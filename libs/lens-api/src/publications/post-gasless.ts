@@ -168,7 +168,6 @@ export const createPostGasless = async () => {
 
   return result
 }
-
 ;(async () => {
   await createPostGasless()
 })()

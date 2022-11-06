@@ -17,9 +17,7 @@ type RegisterArtistFormProps = {
   profiles: Profile[]
 }
 
-export const RegisterArtistForm = ({
-  profiles,
-}: RegisterArtistFormProps) => {
+export const RegisterArtistForm = ({ profiles }: RegisterArtistFormProps) => {
   // const { setNftList } = useContext(AppContext)
 
   const targetProfiles = profiles?.[0]
@@ -42,7 +40,7 @@ export const RegisterArtistForm = ({
       metadata_id: uuidv4(),
       accessToken: '',
       profileId: '',
-      address: ''
+      address: '',
     },
   })
 

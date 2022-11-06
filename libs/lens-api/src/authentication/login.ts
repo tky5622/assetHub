@@ -51,7 +51,6 @@ export const login = async (address = getAddressFromSigner()) => {
 
   return authenticatedResult
 }
-
 ;(async () => {
   if (argsBespokeInit()) {
     await login()

@@ -31,7 +31,6 @@ export const usersNfts = async () => {
 
   return result
 }
-
 ;(async () => {
   await usersNfts()
 })()

@@ -6,7 +6,6 @@ import { usePublications } from '../../hooks/useLens/useLens'
 import { NftList } from './NftList'
 import UploadNFTButton from './UploadNft'
 
-
 export const ProjectNftListContainer = () => {
   // const id = '0x01'
   // const pathname = usePathname().split('/')

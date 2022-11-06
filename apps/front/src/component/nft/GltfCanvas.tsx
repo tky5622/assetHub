@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 'use client'
 import { Html, OrbitControls, useGLTF, useProgress } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'

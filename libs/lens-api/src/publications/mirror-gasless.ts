@@ -126,7 +126,6 @@ export const createMirror = async () => {
 
   return result
 }
-
 ;(async () => {
   await createMirror()
 })()

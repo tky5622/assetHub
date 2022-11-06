@@ -27,7 +27,6 @@ export const refresh = async () => {
 
   return refreshResult
 }
-
 ;(async () => {
   await refresh()
 })()

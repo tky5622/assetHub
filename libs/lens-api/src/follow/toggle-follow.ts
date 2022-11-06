@@ -73,7 +73,6 @@ export const toggleFollow = async (profileId: string = '0x032f1a') => {
 
   console.log('follow: logs', logs)
 }
-
 ;(async () => {
   await toggleFollow()
 })()

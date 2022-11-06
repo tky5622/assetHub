@@ -23,7 +23,6 @@ export const publicationRevenue = async () => {
 
   return result
 }
-
 ;(async () => {
   await publicationRevenue()
 })()

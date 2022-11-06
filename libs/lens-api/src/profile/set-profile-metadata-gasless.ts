@@ -132,7 +132,6 @@ export const setProfileMetadata = async () => {
 
   return result
 }
-
 ;(async () => {
   await setProfileMetadata()
 })()

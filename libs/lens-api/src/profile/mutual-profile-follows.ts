@@ -26,7 +26,6 @@ export const mutualProfileFollows = async () => {
 
   return result
 }
-
 ;(async () => {
   await mutualProfileFollows()
 })()

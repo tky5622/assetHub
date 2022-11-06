@@ -31,7 +31,6 @@ export const profiles = async () => {
 
   return profilesFromProfileIds
 }
-
 ;(async () => {
   if (argsBespokeInit()) {
     await profiles()

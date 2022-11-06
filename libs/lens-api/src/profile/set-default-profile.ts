@@ -71,7 +71,6 @@ export const setDefaultProfile = async () => {
 
   return result
 }
-
 ;(async () => {
   await setDefaultProfile()
 })()

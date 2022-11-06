@@ -19,49 +19,60 @@ import NftDropZone from './NftDropZone'
 const usePostPublication = (values: any, setIsOpen: any) => {
   const signer = useSigner()
   const profiles = useRecoilValue(LensUserProfilesState)
-  const { signTypedData }= useSignTypedData({test: 'test'})
+  const { signTypedData } = useSignTypedData({ test: 'test' })
   const pathname = usePathname().split('/')
   const projectId = pathname[2]
 
-  const mintNftHandler = React.useCallback(async (profileId: string, ipfsResult: string, accessToken: string) => {
-    await createPost(profileId, ipfsResult, accessToken, signer?.data, signTypedData)
-  },[signTypedData, signer])
+  const mintNftHandler = React.useCallback(
+    async (profileId: string, ipfsResult: string, accessToken: string) => {
+      await createPost(
+        profileId,
+        ipfsResult,
+        accessToken,
+        signer?.data,
+        signTypedData
+      )
+    },
+    [signTypedData, signer]
+  )
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const onClick = React.useCallback(async(values: any) => {
-    console.log('ss')
-    const profileId = profiles[0]?.id
-    const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
-    values.projectId = projectId
+  const onClick = React.useCallback(
+    async (values: any) => {
+      console.log('ss')
+      const profileId = profiles[0]?.id
+      const accessToken = localStorage.getItem(LENS_ACCESS_TOKEN)
+      values.projectId = projectId
 
-    setIsLoading(true)
-    const result = await fetch('/api/upload-publication-ipfs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    }).catch((err) => {
-      console.error(err)
+      setIsLoading(true)
+      const result = await fetch('/api/upload-publication-ipfs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      }).catch((err) => {
+        console.error(err)
+        setIsLoading(false)
+      })
       setIsLoading(false)
-    })
-    setIsLoading(false)
-    console.log('result')
-    console.log(result?.body, 'result body')
-    const uri = await result?.json()
-    console.log(uri, 'console.log uri')
-    if (accessToken){
-    await mintNftHandler(profileId, uri?.path, accessToken)
-    }
+      console.log('result')
+      console.log(result?.body, 'result body')
+      const uri = await result?.json()
+      console.log(uri, 'console.log uri')
+      if (accessToken) {
+        await mintNftHandler(profileId, uri?.path, accessToken)
+      }
 
-    // setIsLoading,
-    // setIsOpen
-  },[mintNftHandler, profiles, projectId])
+      // setIsLoading,
+      // setIsOpen
+    },
+    [mintNftHandler, profiles, projectId]
+  )
 
-  return {onClick, isLoading}
+  return { onClick, isLoading }
 }
-
 
 const useModelUrl = (setValues: any) => {
   const setModelUrlByFile = (file: any) => {
@@ -116,8 +127,7 @@ const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
                     onSubmit={form.onSubmit(async (values) => {
                       console.log('onsubmit')
                       await onClick(values)
-                    }
-                    )}
+                    })}
                   >
                     <TextInput
                       id="name"
@@ -140,7 +150,7 @@ const UploadNftModal: any = ({ isOpen, setIsOpen }: any) => {
                     <RoundButton
                       // isLoading={isLoading}
                       type={'submit'}
-                    // onClick={onClick}
+                      // onClick={onClick}
                     >
                       Upload
                     </RoundButton>

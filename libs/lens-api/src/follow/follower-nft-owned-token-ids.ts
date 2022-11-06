@@ -27,7 +27,6 @@ export const followerNFTTokenIds = async () => {
 
   return result
 }
-
 ;(async () => {
   await followerNFTTokenIds()
 })()

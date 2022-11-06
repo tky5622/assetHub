@@ -66,7 +66,6 @@ export const disableDispatcher = async () => {
   })
   console.log('disable dispatcher: tx hash', tx.hash)
 }
-
 ;(async () => {
   await disableDispatcher()
 })()

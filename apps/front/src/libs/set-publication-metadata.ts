@@ -1,20 +1,21 @@
-import { BigNumber, utils } from 'ethers';
+import { BigNumber, utils } from 'ethers'
 // import { v4 as uuidv4 } from 'uuid';
-import { layoutApolloClient } from '../../apollo-client';
+import { layoutApolloClient } from '../../apollo-client'
 // import { login } from '../authentication/login';
-import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
-import { pollUntilIndexed } from './has-transaction-been-indexed';
+import {
+  CreatePostTypedDataDocument,
+  CreatePublicPostRequest,
+} from '../graphql/generated'
+import { pollUntilIndexed } from './has-transaction-been-indexed'
 // import { Metadata, PublicationMainFocus } from './publication-metadata';
-import { TypedDataDomain } from '@ethersproject/abstract-signer';
-import { Signer, TypedDataSigner } from 'ethers';
-import { omit } from './helpers';
-import { lensHubGenerator } from './lens-hub';
-
+import { TypedDataDomain } from '@ethersproject/abstract-signer'
+import { Signer, TypedDataSigner } from 'ethers'
+import { omit } from './helpers'
+import { lensHubGenerator } from './lens-hub'
 
 export const splitSignature = (signature: string) => {
   return utils.splitSignature(signature)
 }
-
 
 export const createPostTypedData = async (
   request: CreatePublicPostRequest,
@@ -52,12 +53,11 @@ export const signedTypeData = async (
   //   omit(value, '__typename')
   // )
 
-    const signedData3 = await signTypedData({
-      domain: omit(domain, '__typename'),
-      types: omit(types, '__typename'),
-      value: omit(value, '__typename')
-    }
-    )
+  const signedData3 = await signTypedData({
+    domain: omit(domain, '__typename'),
+    types: omit(types, '__typename'),
+    value: omit(value, '__typename'),
+  })
 
   // const signedData2 = await signTypedData({
   //     domain,
@@ -69,7 +69,6 @@ export const signedTypeData = async (
   console.log(signedData3, signedData3, 'signedData result')
   return signedData3
 }
-
 
 export const signCreatePostTypedData = async (
   request: CreatePublicPostRequest,

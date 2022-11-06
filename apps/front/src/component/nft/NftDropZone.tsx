@@ -84,7 +84,7 @@ export function NftDropZone({
         </Group>
       </Dropzone>
       <div style={{ height: 300 }}>
-        {file && <GltfCanvas modelUrl={file} progress={0} />}
+        {file && <GltfCanvas modelUrl={file} />}
       </div>
     </>
   )

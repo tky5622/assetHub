@@ -59,7 +59,6 @@ export const burnProfile = async () => {
 
   console.log('burn profile: tx hash', tx.hash)
 }
-
 ;(async () => {
   await burnProfile()
 })()

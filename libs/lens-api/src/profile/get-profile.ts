@@ -39,7 +39,6 @@ export const profile = async (request?: SingleProfileQueryRequest) => {
 
   return profile
 }
-
 ;(async () => {
   if (argsBespokeInit()) {
     await profile()

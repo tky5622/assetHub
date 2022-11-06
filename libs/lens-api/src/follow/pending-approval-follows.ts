@@ -31,7 +31,6 @@ export const pendingApprovals = async () => {
 
   return result
 }
-
 ;(async () => {
   if (argsBespokeInit()) {
     await pendingApprovals()

@@ -70,7 +70,6 @@ export const collect = async () => {
   )
   console.log('collect: tx hash', tx.hash)
 }
-
 ;(async () => {
   await collect()
 })()

@@ -29,7 +29,6 @@ export const deletePublication = async () => {
 
   console.log('delete publication: success')
 }
-
 ;(async () => {
   await deletePublication()
 })()

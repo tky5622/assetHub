@@ -22,7 +22,6 @@ export const following = async () => {
 
   return result
 }
-
 ;(async () => {
   await following()
 })()

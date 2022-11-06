@@ -46,7 +46,6 @@ export const approveModule = async () => {
 
   console.log('approve module: txHash mined', tx.hash)
 }
-
 ;(async () => {
   if (argsBespokeInit()) {
     await approveModule()

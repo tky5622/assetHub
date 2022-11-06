@@ -26,7 +26,6 @@ export const explore = async () => {
 
   return result.data
 }
-
 ;(async () => {
   await explore()
 })()

@@ -63,7 +63,6 @@ export const createProfile = async () => {
 
   console.log('profile id', BigNumber.from(profileId).toHexString())
 }
-
 ;(async () => {
   await createProfile()
 })()

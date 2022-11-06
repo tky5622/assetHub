@@ -9,7 +9,6 @@ import React from 'react'
 import { NftDetails } from '../../../component/nft/NftDetails'
 import TabContainer from '../../../component/nft/TabContainer'
 
-
 const func1 = `(function (d, s) {
   var js = d.createElement(s),
     sc = d.getElementsByTagName(s)[0];
@@ -32,20 +31,19 @@ const func2 = `
           }
 `
 
-
 const Project: NextPage = () => {
-  const [unlockState, setUnlockState ] = React.useState()
+  const [unlockState, setUnlockState] = React.useState()
   const unlockHandler = React.useCallback((e: any) => {
     setUnlockState(e.detail)
-  },[])
+  }, [])
 
   const checkout = React.useCallback(() => {
     window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
   }, [])
 
-  React.useEffect (() => {
-    window.addEventListener("unlockProtocol", unlockHandler)
-  },[unlockHandler])
+  React.useEffect(() => {
+    window.addEventListener('unlockProtocol', unlockHandler)
+  }, [unlockHandler])
 
   return (
     <div>
@@ -56,9 +54,9 @@ const Project: NextPage = () => {
 
       <main>
         <Script id={'func1_da'} dangerouslySetInnerHTML={{ __html: func1 }} />
-        <Script id={'func2_da'}  dangerouslySetInnerHTML={{ __html: func2 }} />
-        <Script id={'func1'} >{func1}</Script>
-        <Script id={'func2'} >{func2}</Script>
+        <Script id={'func2_da'} dangerouslySetInnerHTML={{ __html: func2 }} />
+        <Script id={'func1'}>{func1}</Script>
+        <Script id={'func2'}>{func2}</Script>
 
         {unlockState}
         <Button onClick={checkout}></Button>

@@ -25,7 +25,6 @@ export const recommendedProfiles = async () => {
 
   return result
 }
-
 ;(async () => {
   await recommendedProfiles()
 })()

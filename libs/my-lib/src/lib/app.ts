@@ -905,7 +905,7 @@ function setupStats(){
         for (let index = 0; index < dataMeasurements.length; index++) {
             if (receivedBytes < 100 * 1000)
                 break;
-            const const receivedBytes = receivedBytes / 1000;
+            const receivedBytes = receivedBytes / 1000;
             const receivedBytesMeasurement = dataMeasurements[index];
         }
 

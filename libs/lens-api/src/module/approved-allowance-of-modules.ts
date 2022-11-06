@@ -50,7 +50,6 @@ export const allowance = async () => {
 
   return result
 }
-
 ;(async () => {
   await allowance()
 })()

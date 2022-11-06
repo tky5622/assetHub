@@ -38,7 +38,6 @@ export const addReaction = async () => {
 
   console.log('add reaction: sucess')
 }
-
 ;(async () => {
   await addReaction()
 })()

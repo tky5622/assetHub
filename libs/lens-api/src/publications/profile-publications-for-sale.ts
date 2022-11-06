@@ -23,7 +23,6 @@ export const profilePublicationsForSale = async () => {
 
   return result
 }
-
 ;(async () => {
   await profilePublicationsForSale()
 })()

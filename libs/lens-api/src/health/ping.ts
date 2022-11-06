@@ -15,7 +15,6 @@ export const ping = async () => {
   console.log('ping: result', result)
   return result
 }
-
 ;(async () => {
   await ping()
 })()

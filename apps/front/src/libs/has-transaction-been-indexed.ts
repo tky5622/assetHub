@@ -6,7 +6,7 @@ import { layoutApolloClient } from '../../apollo-client'
 // import { follow } from '../follow/follow';
 import {
   HasTxHashBeenIndexedDocument,
-  HasTxHashBeenIndexedRequest
+  HasTxHashBeenIndexedRequest,
 } from '../graphql/generated'
 
 const hasTxBeenIndexed = async (

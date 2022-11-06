@@ -31,7 +31,6 @@ export const profileFeed = async () => {
 
   return result
 }
-
 ;(async () => {
   await profileFeed()
 })()

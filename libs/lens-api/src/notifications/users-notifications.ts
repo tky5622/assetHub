@@ -35,7 +35,6 @@ export const notifications = async () => {
 
   return result
 }
-
 ;(async () => {
   await notifications()
 })()

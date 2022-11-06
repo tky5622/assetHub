@@ -38,7 +38,6 @@ export const reportPublication = async () => {
 
   console.log('report publication: success')
 }
-
 ;(async () => {
   await reportPublication()
 })()

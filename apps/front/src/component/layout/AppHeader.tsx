@@ -6,7 +6,7 @@ import {
   createStyles,
   Group,
   Header,
-  Menu
+  Menu,
 } from '@mantine/core'
 import { MantineLogo } from '@mantine/ds'
 import { useDisclosure } from '@mantine/hooks'
@@ -84,11 +84,10 @@ const links = [
 ]
 
 type LinksType = {
-  link: string,
-  label: string,
+  link: string
+  label: string
   links?: LinksType[]
 }
-
 
 export function AppHeader() {
   const { classes } = useStyles()

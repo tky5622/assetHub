@@ -24,7 +24,6 @@ export const enabledModules = async () => {
 
   return result
 }
-
 ;(async () => {
   if (argsBespokeInit()) {
     await enabledModules()

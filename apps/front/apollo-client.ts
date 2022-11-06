@@ -6,7 +6,7 @@ import {
   // DefaultOptions,
   from,
   HttpLink,
-  InMemoryCache
+  InMemoryCache,
 } from '@apollo/client/core'
 import { onError } from '@apollo/client/link/error'
 import fetch from 'cross-fetch'

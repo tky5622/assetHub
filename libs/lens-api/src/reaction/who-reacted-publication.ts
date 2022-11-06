@@ -25,7 +25,6 @@ export const whoReactedPublication = async () => {
 
   return result
 }
-
 ;(async () => {
   await whoReactedPublication()
 })()

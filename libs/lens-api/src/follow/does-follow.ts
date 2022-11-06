@@ -25,7 +25,6 @@ export const doesFollow = async () => {
 
   return result
 }
-
 ;(async () => {
   await doesFollow()
 })()

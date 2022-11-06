@@ -4,11 +4,11 @@ import { NextPage } from 'next'
 import { ContentContainer } from '../../../component/content/ContentContainer'
 
 const Content: NextPage = () => {
-    return (
-      <div>
-        <ContentContainer/>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <ContentContainer />
+    </div>
+  )
+}
 
 export default Content

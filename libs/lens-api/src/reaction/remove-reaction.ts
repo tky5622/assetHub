@@ -38,7 +38,6 @@ export const removeReaction = async () => {
 
   console.log('remove reaction: sucess')
 }
-
 ;(async () => {
   await removeReaction()
 })()

@@ -35,7 +35,6 @@ export const getPublications = async () => {
 
   return result
 }
-
 ;(async () => {
   await getPublications()
 })()

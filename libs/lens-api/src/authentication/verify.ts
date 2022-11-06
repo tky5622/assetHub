@@ -27,7 +27,6 @@ export const verifyRequest = async () => {
 
   return result
 }
-
 ;(async () => {
   await verifyRequest()
 })()

@@ -21,7 +21,6 @@ export const getPublication = async () => {
 
   return result
 }
-
 ;(async () => {
   await getPublication()
 })()

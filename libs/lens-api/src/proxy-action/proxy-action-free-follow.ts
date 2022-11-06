@@ -53,7 +53,6 @@ export const proxyActionFreeFollow = async () => {
 
   return result
 }
-
 ;(async () => {
   await proxyActionFreeFollow()
 })()

@@ -1,7 +1,7 @@
 // import { createStyles } from '@mantine/core';
-import { usePathname } from 'next/navigation';
-import { usePublicationByPubId } from '../../hooks/useLens/useLens';
-import { ContentCard } from './ContentCard';
+import { usePathname } from 'next/navigation'
+import { usePublicationByPubId } from '../../hooks/useLens/useLens'
+import { ContentCard } from './ContentCard'
 
 export const ContentContainer = () => {
   const pathname = usePathname().split('/')
@@ -10,8 +10,13 @@ export const ContentContainer = () => {
   console.log(data, 'data')
   console.log(data?.publication, 'publication')
 
-
   return (
-    <ContentCard image={''} title={''} description={''} country={''} badges={[{emoji: '', label: ''}]} />
-  );
+    <ContentCard
+      image={''}
+      title={''}
+      description={''}
+      country={''}
+      badges={[{ emoji: '', label: '' }]}
+    />
+  )
 }

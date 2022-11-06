@@ -23,7 +23,6 @@ export const profileFollowRevenue = async () => {
 
   return result
 }
-
 ;(async () => {
   await profileFollowRevenue()
 })()

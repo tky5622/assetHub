@@ -81,7 +81,6 @@ export const setFollowModule = async () => {
   })
   console.log('follow: tx hash', tx.hash)
 }
-
 ;(async () => {
   await setFollowModule()
 })()

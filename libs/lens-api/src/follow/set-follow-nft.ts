@@ -74,7 +74,6 @@ export const setFollowNftUri = async () => {
   })
   console.log('set follow nft uri: hash', tx.hash)
 }
-
 ;(async () => {
   await setFollowNftUri()
 })()

@@ -25,7 +25,6 @@ export const search = async () => {
 
   return result
 }
-
 ;(async () => {
   await search()
 })()
