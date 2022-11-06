@@ -261,11 +261,16 @@ export const useExtractUrl = (picture?: Maybe<ProfileMedia>) => {
   return url
 }
 
-export type PublicationQuery = {
+export type PublicationsQuery = {
   publications: {
     items: Publication[]
   }
 }
+
+export type PublicationQuery = {
+  publication : Publication
+}
+
 
 
 export const usePublicationsByProject = (projectId: string) => {
@@ -302,7 +307,7 @@ export const usePublicationByPubId = (publicationId: string) => {
 }
 
 export const usePublications = (profileId: Scalars['ProfileId']) => {
-  const { data, loading, error } = useQuery<PublicationQuery>(
+  const { data, loading, error } = useQuery<PublicationsQuery>(
     PUBLICATION_QUERY,
     {
       variables: {

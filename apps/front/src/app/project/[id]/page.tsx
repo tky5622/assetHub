@@ -19,10 +19,10 @@ const func1 = `(function (d, s) {
 
 const func2 = `
             var unlockProtocolConfig = {
-              "network": 100, // Network ID (1 is for mainnet, 4 for rinkeby, 100 for xDai, etc)
+              "network": 80001, // Network ID (1 is for mainnet, 4 for rinkeby, 100 for xDai, etc)
               "locks": {
-              "0xac1fceC2e4064CCd83ac8C9B0c9B8d944AB0D246": {
-                  "name": "Unlock Members"
+              "0xcbef4c0e59a224b56d408ce72c59f0d275e7adae": {
+                  "name": "menberShip"
                  }
              },
               "icon": "https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg",
