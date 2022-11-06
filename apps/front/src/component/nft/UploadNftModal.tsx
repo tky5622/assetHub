@@ -19,12 +19,22 @@ import NftDropZone from './NftDropZone'
 const usePostPublication = (values: any, setIsOpen: any) => {
   const signer = useSigner()
   const profiles = useRecoilValue(LensUserProfilesState)
-  const { signTypedData } = useSignTypedData({ test: 'test' })
+  const { signTypedData } = useSignTypedData({
+    domain: {
+      name: ''
+    },
+    types: [
+      // test: '',
+      // type: '',
+    ] as any,
+    value:[]
+  })
   const pathname = usePathname().split('/')
   const projectId = pathname[2]
 
   const mintNftHandler = React.useCallback(
     async (profileId: string, ipfsResult: string, accessToken: string) => {
+      if (signer?.data){
       await createPost(
         profileId,
         ipfsResult,
@@ -32,6 +42,7 @@ const usePostPublication = (values: any, setIsOpen: any) => {
         signer?.data,
         signTypedData
       )
+      }
     },
     [signTypedData, signer]
   )

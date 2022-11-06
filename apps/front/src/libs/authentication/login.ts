@@ -6,7 +6,7 @@ import {
   AuthenticateDocument,
   ChallengeDocument,
   ChallengeRequest,
-  SignedAuthChallenge,
+  SignedAuthChallenge
 } from '../../graphql/generated'
 // import { getAuthenticationToken, setAuthenticationToken } from '../state';
 
@@ -44,8 +44,10 @@ export const login = async (address: string) => {
   // we request a challenge from the server
   const challengeResponse = await generateChallenge({ address })
 
-  // sign the text with the wallet
-  const signature = await signText(challengeResponse.text)
+  // sign the text with the
+  const signature = ''
+  // const signature = await signText(challengeResponse.text)
+
 
   const authenticatedResult = await authenticate({ address, signature })
   console.log('login: result', authenticatedResult)

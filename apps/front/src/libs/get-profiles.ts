@@ -1,11 +1,10 @@
-import { apolloClient } from '../apollo-client'
-import { login } from '../authentication/login'
-import { argsBespokeInit } from '../config'
-import { getAddressFromSigner } from '../ethers.service'
+import { layoutApolloClient } from '../../apollo-client'
+import { login } from './authentication/login'
+// import { argsBespokeInit } from './config'
 import { ProfileQueryRequest, ProfilesDocument } from '../graphql/generated'
 
 const getProfilesRequest = async (request: ProfileQueryRequest) => {
-  const result = await apolloClient.query({
+  const result = await layoutApolloClient.query({
     query: ProfilesDocument,
     variables: {
       request,
@@ -16,7 +15,8 @@ const getProfilesRequest = async (request: ProfileQueryRequest) => {
 }
 
 export const profiles = async () => {
-  const address = getAddressFromSigner()
+   const address = ''
+  // const address = getAddressFromSigner()
   console.log('profiles: address', address)
 
   await login(address)
@@ -31,8 +31,8 @@ export const profiles = async () => {
 
   return profilesFromProfileIds
 }
-;(async () => {
-  if (argsBespokeInit()) {
-    await profiles()
-  }
-})()
+// ;(async () => {
+//   if (argsBespokeInit()) {
+//     await profiles()
+//   }
+// })()
