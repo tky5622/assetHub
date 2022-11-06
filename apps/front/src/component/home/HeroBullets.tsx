@@ -6,7 +6,7 @@ import {
   List,
   Text,
   ThemeIcon,
-  Title,
+  Title
 } from '@mantine/core'
 import { IconCheck } from '@tabler/icons'
 // import image from './image.svg';
@@ -74,13 +74,11 @@ export function HeroBullets() {
         <div className={classes.inner}>
           <div className={classes.content}>
             <Title className={classes.title}>
-              A <span className={classes.highlight}>Decentralized</span>{' '}
-              Metaverse <br /> 3D contents library
+              <span className={classes.highlight}>AssetHub</span>{' '}
+               Collaboration Tools <br /> for 3D Metaverse
             </Title>
             <Text color="dimmed" mt="md">
-              Build fully functional accessible web applications faster than
-              ever – Mantine includes more than 120 customizable components and
-              hooks to cover you in any situation
+
             </Text>
 
             <List
@@ -94,22 +92,19 @@ export function HeroBullets() {
               }
             >
               <List.Item>
-                <b>TypeScript based</b> – build type safe applications, all
-                components and hooks export types
+                <b>Bundle Assets by DAO</b> – a great way to monetize 3d assets
               </List.Item>
               <List.Item>
-                <b>Free and open source</b> – all packages have MIT license, you
-                can use Mantine in any project
+                <b>Access Controll</b> – share content based on access controll.
               </List.Item>
               <List.Item>
-                <b>No annoying focus ring</b> – focus ring will appear only when
-                user navigates with keyboard
+                <b>Content Graph</b> – stock reputations and get revenue fairly
               </List.Item>
             </List>
 
             <Group mt={30}>
               <Button radius="xl" size="md" className={classes.control}>
-                Get started
+                join DAO
               </Button>
               <Button
                 variant="default"
@@ -117,7 +112,7 @@ export function HeroBullets() {
                 size="md"
                 className={classes.control}
               >
-                Source code
+                Search Content
               </Button>
             </Group>
           </div>

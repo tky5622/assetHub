@@ -24,8 +24,6 @@ const usePostPublication = (values: any, setIsOpen: any) => {
       name: ''
     },
     types: [
-      // test: '',
-      // type: '',
     ] as any,
     value:[]
   })
