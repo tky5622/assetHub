@@ -8,8 +8,8 @@ import {
   Title
 } from '@mantine/core'
 // import image from './image.svg';
-import UploadNFTButton from './UploadNft'
-
+import React from 'react'
+import UploadNftModal from './UploadNftModal'
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -68,8 +68,11 @@ const useStyles = createStyles((theme) => ({
 
 export function NftDetails() {
   const { classes } = useStyles()
+  const [isOpen, setIsOpen] = React.useState(false)
+  console.log(isOpen, 'isOpen')
   return (
     <div>
+   <UploadNftModal isOpen={isOpen} setIsOpen={setIsOpen} />
       <Container>
         <div className={classes.inner}>
           <img
@@ -88,10 +91,9 @@ export function NftDetails() {
             </Text>
 
             <Group mt={30}>
-              <Button radius="xl" size="md" className={classes.control}>
+              <Button radius="xl" size="md" className={classes.control} onClick={() => setIsOpen(true)}>
                 Join DAO with your asset
               </Button>
-              <UploadNFTButton />
               <Button
                 variant="default"
                 radius="xl"
