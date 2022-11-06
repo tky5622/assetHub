@@ -40,6 +40,9 @@ export const RegisterArtistForm = ({
       ],
       version: '1.0.0',
       metadata_id: uuidv4(),
+      accessToken: '',
+      profileId: '',
+      address: ''
     },
   })
 
