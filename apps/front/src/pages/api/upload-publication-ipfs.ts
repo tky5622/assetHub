@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
+import { createProjectIdQuery } from '../../constant/LensContract';
 import { PublicationMainFocus } from '../../graphql/generated';
 import { uploadIpfs } from '../../libs/ipfs';
 import { Metadata } from '../../libs/publication-metadata';
-import { createProjectIdQuery } from '../../constant/LensContract'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log(req.body, 'body')
 
@@ -13,6 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(gltfUri)
 
 
+console.log(createProjectIdQuery(req.body.projectId), 'project ID')
 const test = {
   version: '2.0.0',
   mainContentFocus: PublicationMainFocus.Embed,
@@ -24,12 +25,10 @@ const test = {
   image: null,
   imageMimeType: null,
   name: 'Name',
-  attributes: [],
+  attributes: [createProjectIdQuery(req.body.projectId)],
   animation_url: gltfUri.path,
-  tags: [
-    createProjectIdQuery(req.body.projectId),
-  ],
-  appId: 'api_examples_github',
+  tags: [createProjectIdQuery(req.body.projectId)],
+  appId: 'standiart',
 } as unknown as Metadata
   console.log(test, 'test')
 

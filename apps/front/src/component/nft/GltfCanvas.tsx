@@ -21,7 +21,6 @@ type GltfCanvasProps = {
 
 export const GltfCanvas: FC<GltfCanvasProps> = ({ modelUrl }) => {
   const { progress } = useProgress()
-  console.log(modelUrl, 'modelUI')
 
   return (
     <Canvas

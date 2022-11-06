@@ -6,7 +6,7 @@ import {
   createStyles,
   Group,
   Header,
-  Menu,
+  Menu
 } from '@mantine/core'
 import { MantineLogo } from '@mantine/ds'
 import { useDisclosure } from '@mantine/hooks'
@@ -68,11 +68,11 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const links = [
-  {
-    link: '',
-    label: 'explore',
-    links: [{ link: '3d models;', label: '3d models' }],
-  },
+  // {
+  //   link: '',
+  //   label: 'explore',
+  //   links: [{ link: '3d models;', label: '3d models' }],
+  // },
   {
     link: '/artists',
     label: 'artists',

@@ -16,41 +16,7 @@ import { LensUserProfilesState } from '../../recoil/atoms/LensUserProfiles'
 import LitShare from '../litShare/LitShare'
 import RoundButton from '../shared/RoundButton'
 import NftDropZone from './NftDropZone'
-
-// const mintNftHandler = async (values: any, setLoading: any, setIsOpen: any) => {
-//   console.log(values, 'mintNftHandler')
-//   try {
-//     const { ethereum } = window
-//     console.log(ethereum)
-
-//     if (ethereum) {
-//       //@ts-ignore
-//       const provider = new ethers.providers.Web3Provider(ethereum)
-//       const signer = provider.getSigner()
-//       console.log(ABI, 'abi')
-//       const nftContract = new ethers.Contract(address, ABI, signer)
-//       console.log(nftContract, nftContract.mintNFT)
-//       const nftTxn = await nftContract.mintNFT(
-//         '0xE3EE8A5d4f74F7743BD9618b4848Ab94b771483e',
-//         'test'
-//       )
-//       console.log(nftTxn, 'fewf')
-//       setLoading(true)
-//       await nftTxn.wait()
-//       setLoading(false)
-//       setIsOpen(false)
-
-//       console.log('mined, see transaction h')
-//     }
-//   } catch (error) {
-//     setLoading(false)
-//     console.log(error, 'e')
-//   }
-// }
-
-
 const usePostPublication = (values: any, setIsOpen: any) => {
-  console.log(values, setIsOpen)
   const signer = useSigner()
   const profiles = useRecoilValue(LensUserProfilesState)
   const { signTypedData }= useSignTypedData({test: 'test'})
@@ -58,7 +24,7 @@ const usePostPublication = (values: any, setIsOpen: any) => {
   const projectId = pathname[2]
 
   const mintNftHandler = React.useCallback(async (profileId: string, ipfsResult: string, accessToken: string) => {
-    await createPost(profileId, ipfsResult, accessToken, signer.data, signTypedData)
+    await createPost(profileId, ipfsResult, accessToken, signer?.data, signTypedData)
   },[signTypedData, signer])
 
   const [isLoading, setIsLoading] = useState(false)

@@ -6,6 +6,7 @@ import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql
 import { pollUntilIndexed } from './has-transaction-been-indexed';
 // import { Metadata, PublicationMainFocus } from './publication-metadata';
 import { TypedDataDomain } from '@ethersproject/abstract-signer';
+import { Signer, TypedDataSigner } from 'ethers';
 import { omit } from './helpers';
 import { lensHubGenerator } from './lens-hub';
 
@@ -40,7 +41,7 @@ export const signedTypeData = async (
   domain: TypedDataDomain,
   types: Record<string, any>,
   value: Record<string, any>,
-  signTypedData: any
+  signTypedData: TypedDataSigner
 ) => {
   // remove the __typedname from the signature!
   console.log(signTypedData, 'before signTypedData Signer')
@@ -72,7 +73,7 @@ export const signedTypeData = async (
 
 export const signCreatePostTypedData = async (
   request: CreatePublicPostRequest,
-  signTypedData: any,
+  signTypedData: TypedDataSigner,
   accessToken: string
 ) => {
   const result = await createPostTypedData(request, accessToken)
@@ -94,10 +95,10 @@ export const signCreatePostTypedData = async (
 
 export const createPost = async (
   profileId: string,
-  path: any,
+  path: string,
   accessToken: string,
-  signer: any,
-  signTypedData: any
+  signer: Signer,
+  signTypedData: TypedDataSigner
 ) => {
   const createPostRequest = {
     profileId,
@@ -148,8 +149,10 @@ export const createPost = async (
   console.log(typedData, signedResult, 'signedResult.result.typedData')
 
   const { v, r, s } = splitSignature(signedResult.signature)
+  console.log(v, r, s, 'tx')
+  const lensHub = lensHubGenerator(signer)
 
-  const tx = await lensHubGenerator(signer).postWithSig({
+  const tx = await lensHub.postWithSig({
     profileId: typedData?.value.profileId,
     contentURI: typedData?.value.contentURI,
     collectModule: typedData?.value.collectModule,
@@ -163,6 +166,7 @@ export const createPost = async (
       deadline: typedData?.value.deadline,
     },
   })
+  console.log(tx, 'txfwefwffw')
 
   console.log('create post: tx hash', tx.hash)
 
@@ -188,7 +192,7 @@ export const createPost = async (
 
   const publicationId = utils.defaultAbiCoder.decode(
     ['uint256'],
-    profileCreatedEventLog ? profileCreatedEventLog[2] :  ''
+    profileCreatedEventLog ? profileCreatedEventLog[2] : ''
   )[0]
 
   console.log(

@@ -21,6 +21,7 @@ import { AuthChallengeQuery } from '../../graphql/queries/lens.auth.query';
 import { profileQueryById } from '../../graphql/queries/lens.profile-by-id.query';
 import { PUBLICATION_QUERY } from '../../graphql/queries/lens.publicaition.query';
 import { PUBLICATION_BY_PROJECT_QUERY } from '../../graphql/queries/lens.publications-by-project.query';
+import  { QUERY_BY_PUBLICATION_ID } from '../../graphql/queries/lens.publicaition-by-id.query'
 // import { CreateProfile } from '@use-lens/react-apollo'
 import { useRecoilState } from 'recoil';
 import { layoutApolloClient } from '../../../apollo-client';
@@ -284,9 +285,20 @@ export const usePublicationsByProject = (projectId: string) => {
       },
     }
   )
-
   return { data, loading, error }
+}
 
+
+export const usePublicationByPubId = (publicationId: string) => {
+    const { data, loading, error } = useQuery<PublicationQuery>(
+      QUERY_BY_PUBLICATION_ID,
+      {
+        variables: {
+          id: publicationId,
+        },
+      }
+    )
+    return { data, loading, error }
 }
 
 export const usePublications = (profileId: Scalars['ProfileId']) => {

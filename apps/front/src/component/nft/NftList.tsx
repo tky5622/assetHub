@@ -7,10 +7,10 @@ import {
   Grid,
   Image,
   Text,
-  useMantineTheme,
+  useMantineTheme
 } from '@mantine/core'
 import { Publication } from '@use-lens/react-apollo'
-
+import Link from 'next/link'
 type NftListProps = {
   publications?: Publication[]
 }
@@ -79,6 +79,7 @@ export function NftList({ publications }: NftListProps) {
 
             {/* <Hr /> */}
 
+            <Link href={`/content/${publication.id}`}>
             <Button
               size="sm"
               variant="light"
@@ -88,6 +89,7 @@ export function NftList({ publications }: NftListProps) {
             >
               Book tour
             </Button>
+            </Link>
           </Card>
         </Grid.Col>
       )}
