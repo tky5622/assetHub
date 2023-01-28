@@ -1,7 +1,6 @@
 import React from 'react'
 
 // global styles
-import 'rsuite/dist/rsuite.min.css'
 
 // libs
 import { ContextProvider, Player, usePlayer, useSystem } from 'pixel-streaming'
