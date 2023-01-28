@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import { MantineLogo } from '@mantine/ds'
 import { useDisclosure } from '@mantine/hooks'
-import { useAccount } from '@web3modal/react'
+import { useAccount } from 'wagmi'
 import Link from 'next/link'
 import { WalletConnectContainer } from '../walletConnect/WalletConnectContainer'
 import { UserMenu } from './UserMenu'

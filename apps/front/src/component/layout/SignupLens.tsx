@@ -2,7 +2,7 @@
 'use client'
 import { Button } from '@mantine/core'
 // import { CreateProfile } from '@use-lens/react-apollo'
-import { useAccount } from '@web3modal/react'
+import { useAccount } from 'wagmi'
 import React from 'react'
 import { useRecoilState } from 'recoil'
 import { LENS_ACCESS_TOKEN } from '../../constant/lensTokens'
@@ -13,7 +13,7 @@ import {
 import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
 import { LensSignupModalState } from '../../recoil/atoms/LensSignupModal'
 type SignupLensProps = {
-  address: string
+  address: `0x${string}` | undefined
 }
 
 export const SignupLens: React.FC<SignupLensProps> = ({ address }) => {

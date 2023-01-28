@@ -3,14 +3,14 @@ import {
   IconArrowsLeftRight,
   IconMessageCircle,
   IconPhoto,
-  IconSearch,
+  IconSearch
 } from '@tabler/icons'
-import { useAccount, useDisconnect } from '@web3modal/react'
+import { useAccount, useDisconnect } from 'wagmi'
 import { SignupLens } from './SignupLens'
 import { UserIcon } from './UserIcon'
 
 type UserMenuProps = {
-  address: string
+  address: `0x${string}` | undefined
 }
 
 export const UserMenu: React.FC<UserMenuProps> = ({ address }) => {
@@ -46,7 +46,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ address }) => {
           Transfer my data
         </Menu.Item>
         ,
-        <Menu.Item color="red" onClick={disconnect}>
+        <Menu.Item color="red" onClick={() => disconnect.disconnect()}>
           Disconnect
         </Menu.Item>
       </Menu.Dropdown>

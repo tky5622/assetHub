@@ -34,7 +34,7 @@ const authenticate = async (request: SignedAuthChallenge) => {
   return result.data!.authenticate
 }
 
-export const login = async (address: string) => {
+export const login = async (address: `0x${string}` | undefined) => {
   if(localStorage){
   const authToken = localStorage.getItem(LENS_ACCESS_TOKEN)
   if (authToken) {

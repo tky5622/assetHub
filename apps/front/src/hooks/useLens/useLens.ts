@@ -8,8 +8,8 @@ import {
   Scalars
 } from '@use-lens/react-apollo'
 // useRefreshMutation
-import { useSigner } from '@web3modal/react'
 import React from 'react'
+import { useSigner } from 'wagmi'
 import {
   LENS_ACCESS_TOKEN,
   LENS_REFRESH_TOKEN,
@@ -49,7 +49,7 @@ import { LensProfileIdState } from '../../recoil/atoms/LensProfile'
 //   return result.data.profiles
 // }
 
-export const useGetProfileByAddress = (address: string) => {
+export const useGetProfileByAddress = (address: `0x${string}` | undefined) => {
   const userProfile = useQuery(ProfilesDocument, {
     variables: {
       request: {
@@ -95,7 +95,7 @@ export const getDefaultProfileRequest = async (
   return result.data.defaultProfile
 }
 
-export const useLensAuth = (address: string) => {
+export const useLensAuth = (address: `0x${string}` | undefined) => {
   const [userProfileId, setUserProfileId] = useRecoilState(LensProfileIdState)
   const [authLoading, setAuthLoading] = useRecoilState(LensAuthLoadingState)
 
