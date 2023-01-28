@@ -27,7 +27,7 @@ const createProfileRequest = async (
   return result.data!.createProfile
 }
 
-export const createProfile = async (address: string, token: string) => {
+export const createProfile = async (address: `0x${string}` | undefined, token: string) => {
   console.log('create profile: address', address)
 
   await login(address)

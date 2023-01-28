@@ -1,19 +1,18 @@
 'use client'
-import { Button } from '@mantine/core'
-import { useConnectModal } from '@web3modal/react'
+// import { useConnectModal } from ''
 
 export const WalletConnectContainer = () => {
-  const { open } = useConnectModal()
+  // const { open } = useConnectModal()
   return (
     <div>
-      <Button
-        onClick={open}
+      {/* <Button
+        onClick={() => void}
         variant="gradient"
         gradient={{ from: 'orange', to: 'red' }}
       >
         {' '}
         Connect{' '}
-      </Button>
+      </Button> */}
     </div>
   )
 }

@@ -5,7 +5,7 @@
 'use client'
 
 import { AppShell, Notification } from '@mantine/core'
-import { useAccount } from '@web3modal/react'
+import { useAccount } from 'wagmi'
 import React from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
