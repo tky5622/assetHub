@@ -28,37 +28,8 @@ type LayoutProps = {
   children: React.ReactNode
 }
 
-// const useDefaultProfile = () => {
-//   const { address } = useAccount()
-//   console.log(address, 'ETH, address')
-//   const data = useDefaultProfileQuery({ ethereumAddress: address })
-
-//   // const getDefaultProfile = async () => {
-//   //   // const tokenZ = localStorage.getItem(LENS_ACCESS_TOKEN)
-//   //   const defaultProfile = await getDefaultProfileRequest({ ethereumAddress: address })
-//   //   console.log(defaultProfile, 'defaultProfile')
-//   //   return defaultProfile
-//   // }
-
-//   return { data }
-// }
-
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  // const router = useRouter()
-  // const { refreshTokenHandler } = useRefreshAuthToken()
-  // const listenForRouteChangeEvents = React.useCallback(async () => {
-  //   console.log(test, 'test layout')
-  //   // router.events.on('routeChangeStart', () => {
-  //   //   refreshAuthToken()
-  //   // })
-  // }, [])
   const { address, isConnected } = useAccount()
-  // const { address } = useAccount()
-  // const { getDefaultProfile } = useDefaultProfile()
-  // const [userProfileId, setUserProfileId] = useRecoilState(LensProfileIdState)
-  // const userProfileData = useGetProfile(userProfileId)
-  // console.log(userProfileId, userProfileData, 'ddata')
-
   React.useEffect(() => {
     const runRefresh = async () => {
       if(!localStorage) return
@@ -106,27 +77,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       setIsregistered(profiles?.some(checkIsArtist))
     }
   }, [profiles, setIsregistered])
-
-  // console.log(profile, 'default profile')
-  // const { defaultProfile } = useDefaultProfileQuery({ ethereumAddress: address })
-  // console.log(defaultProfile, 'default profile')
-
-  // const test = refreshTokenHandler()
-  // async function checkConnection() {
-  //   const provider = new ethers.providers.Web3Provider(
-  //     (window).ethereum
-  //   )
-  //   const addresses = await provider.listAccounts();
-  //   if (addresses.length) {
-  //     setConnected(true)
-  //     setUserAddress(addresses[0])
-  //     getUserProfile(addresses[0])
-  //   } else {
-  //     setConnected(false)
-  //   }
-  // }
-  // checkConnection()
-  // }, [listenForRouteChangeEvents])
   const isLoading = useRecoilValue(LensAuthLoadingState)
 
   return (
@@ -155,7 +105,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           },
         })}
       >
-        <WalletConnectModal />
         <SignupLensModal />
 
         {!isRegistered && (

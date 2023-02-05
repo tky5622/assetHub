@@ -77,6 +77,8 @@
     "core-js": "^3.6.5",
     "D": "^1.0.0",
     "ethers": "^5.7.2",
+    "firebase": "^9.17.1",
+    "firebase-tools": "^11.22.0",
     "fs": "^0.0.1-security",
     "graphql": "^16.6.0",
     "install": "^0.13.0",

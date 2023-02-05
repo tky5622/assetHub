@@ -1,10 +1,8 @@
 'use client'
-
-// import { chains, providers } from '@wagmi/core/chains'
-// import type { ConfigOptions } from '@web3modal/react'
 import { polygonMumbai } from '@wagmi/chains'
-import { modalConnectors, walletConnectProvider } from '@web3modal/ethereum'
-import { configureChains, createClient } from 'wagmi'
+import { EthereumClient, modalConnectors, walletConnectProvider } from '@web3modal/ethereum'
+import { Web3Modal } from '@web3modal/react'
+import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { WALLET_CONNECT_PROJECT_ID } from '../../constant/walletConnect'
 
 // Get projectID at https://cloud.walletconnect.com
@@ -13,7 +11,10 @@ import { WALLET_CONNECT_PROJECT_ID } from '../../constant/walletConnect'
 const chains = [polygonMumbai]
 const { provider } = configureChains(chains, [walletConnectProvider({ projectId : WALLET_CONNECT_PROJECT_ID })])
 
-// Configure web3modal
+type WalletConnectProps = {
+  children: React.ReactNode
+}
+
 export const wagmiClient = createClient({
   autoConnect: true,
   connectors: modalConnectors({
@@ -23,8 +24,22 @@ export const wagmiClient = createClient({
   provider
 })
 
-const WalletConnect: React.FC = () => {
-  return <></>
+
+const ethereumClient = new EthereumClient(wagmiClient, chains)
+
+
+// Configure web3modal
+
+const WalletConnect: React.FC<WalletConnectProps> = ({ children }) => {
+
+  return <>
+      <WagmiConfig client={wagmiClient}>
+        {children}
+      </WagmiConfig>
+
+    <Web3Modal projectId={WALLET_CONNECT_PROJECT_ID} ethereumClient={ethereumClient} />
+
+  </>
 }
 
 export default WalletConnect
