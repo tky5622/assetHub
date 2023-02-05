@@ -1,18 +1,11 @@
 'use client'
 // import { useConnectModal } from ''
+import { Web3Button } from '@web3modal/react'
 
 export const WalletConnectContainer = () => {
-  // const { open } = useConnectModal()
   return (
     <div>
-      {/* <Button
-        onClick={() => void}
-        variant="gradient"
-        gradient={{ from: 'orange', to: 'red' }}
-      >
-        {' '}
-        Connect{' '}
-      </Button> */}
+      <Web3Button icon="show" label="Connect Wallet" balance="show" />
     </div>
   )
 }

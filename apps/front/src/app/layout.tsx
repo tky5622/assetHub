@@ -6,16 +6,19 @@ import Head from 'next/head'
 import React, { PropsWithChildren } from 'react'
 import { layoutApolloClient } from '../../apollo-client'
 import Layout from '../component/layout/Layout'
+import WalletConnect from '../component/walletConnect/WalletConnectModal'
+import '../libs/firebase'; // Initialize FirebaseApp
+import RecoilProvider from '../recoil/RecoilProvider'
 import '../styles/globals.css'
 import '../styles/player.css'
 import RootStyleRegistry from './emotion'
-import RecoilProvider from '../recoil/RecoilProvider'
 
 const RootLayout: React.FC<PropsWithChildren> = ({ children }) => {
   // const [colorScheme, setColorScheme] = useState<ColorScheme>('dark')
 
   // const toggleColorScheme = (value?: ColorScheme) =>
   //   console.log(value || ('dark' === 'dark' ? 'dark' : 'dark'))
+  // both en and jp
   return (
     <html lang="en">
       <Head>
@@ -29,7 +32,11 @@ const RootLayout: React.FC<PropsWithChildren> = ({ children }) => {
           > */}
           <RecoilProvider>
             <ApolloProvider client={layoutApolloClient}>
-              <Layout>{children}</Layout>
+              <WalletConnect>
+                <Layout>
+                  {children}
+                </Layout>
+              </WalletConnect>
             </ApolloProvider>
           </RecoilProvider>
           {/* </ColorSchemeProvider> */}
