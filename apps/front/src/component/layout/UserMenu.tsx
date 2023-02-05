@@ -8,14 +8,14 @@ import {
 import { SignupLens } from './SignupLens'
 import { UserIcon } from './UserIcon'
 // import { InjectedConnector } from 'wagmi/connectors/injected'
+import { useDisconnect } from 'wagmi'
 
 type UserMenuProps = {
   address: `0x${string}` | undefined
 }
 
 export const UserMenu: React.FC<UserMenuProps> = ({ address }) => {
-  // const { isConnected } = useAccount()
-  // const { disconnect } = useDisconnect()
+  const { disconnect } = useDisconnect()
 
   return (
     <Menu shadow="md" width={200}>
@@ -46,8 +46,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ address }) => {
           Transfer my data
         </Menu.Item>
         ,
-        {/* <Menu.Item color="red" onClick={() => disconnect()}> */}
-        <Menu.Item>
+        <Menu.Item color="red" onClick={() => disconnect()}>
           Disconnect
         </Menu.Item>
       </Menu.Dropdown>
