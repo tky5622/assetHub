@@ -22,7 +22,7 @@ export const refreshAuth = async (
   return result.data?.refresh
 }
 
-export const refresh = async (address: string) => {
+export const refresh = async (address: `0x${string}`) => {
   console.log('refresh: address', address)
 
   const authenticationResult = await login(address)

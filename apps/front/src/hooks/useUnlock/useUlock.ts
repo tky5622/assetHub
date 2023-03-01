@@ -10,6 +10,7 @@ const unlockHandler = React.useCallback((e: any) => {
 }, [])
 
 const checkout = React.useCallback(() => {
+  //@ts-ignore
   window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
 }, [])
 

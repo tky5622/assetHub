@@ -40,7 +40,7 @@ export const RegisterArtistForm = ({ profiles }: RegisterArtistFormProps) => {
       metadata_id: uuidv4(),
       accessToken: '',
       profileId: '',
-      address: '',
+      address: undefined,
     },
   })
 

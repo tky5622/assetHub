@@ -13,14 +13,14 @@ import { GltfCanvas } from './GltfCanvas'
 
 type NftDropZoneProps = {
   type: string
-  id: string
+  // id: string
   onChangeForm: (file: any) => void
   file: any
 }
 
 export function NftDropZone({
   type,
-  id,
+  // id,
   onChangeForm,
   file,
 }: NftDropZoneProps & Partial<DropzoneProps>) {
@@ -35,7 +35,7 @@ export function NftDropZone({
         }}
         typeof={type}
         onReject={(files) => console.log('rejected files', files)}
-        id={id}
+        // id={id}
         maxSize={3 * 1024 ** 2}
         // {...props}
       >

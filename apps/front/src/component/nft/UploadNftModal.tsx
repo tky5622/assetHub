@@ -25,6 +25,7 @@ const usePostPublication = (values: any, setIsOpen: any) => {
     },
     types: [
     ] as any,
+    //@ts-ignore
     value:[]
   })
   const pathname = usePathname().split('/')

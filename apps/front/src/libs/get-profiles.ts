@@ -15,7 +15,7 @@ const getProfilesRequest = async (request: ProfileQueryRequest) => {
 }
 
 export const profiles = async () => {
-   const address = ''
+   const address = undefined
   // const address = getAddressFromSigner()
   console.log('profiles: address', address)
 
