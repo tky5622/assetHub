@@ -11,6 +11,7 @@ interface ModelProps {
 }
 
 const Model: FC<ModelProps> = ({ progress, modelUrl }) => {
+  //@ts-ignore
   const gltf: StdlibGLTF = useGLTF(modelUrl)
 
   return <primitive object={gltf?.scene} />

@@ -8,7 +8,7 @@ export interface AttributeData {
 export interface ProfileMetadata extends GenericMetadata {
   accessToken: string | null
   profileId: string
-  address: string
+  address: `0x${string}` | undefined
   name?: string
   bio?: string
   cover_picture?: string

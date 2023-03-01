@@ -12,7 +12,7 @@ export const getSigner = () => {
 }
 
 export const getAddressFromSigner = () => {
-  return getSigner().address
+  return getSigner().address as `0x${string}`
 }
 
 export const signedTypeData = (
